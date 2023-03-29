@@ -1,3 +1,10 @@
+ClearDialogueCHS:
+	coord hl, 1, 13
+	ld b, 4
+	ld c, 18
+	call ClearScreenArea
+	ret
+
 DisplayPokemartDialogue_::
 	ld a, [wListScrollOffset]
 	ld [wSavedListScrollOffset], a
@@ -49,6 +56,7 @@ DisplayPokemartDialogue_::
 	jp z, .bagEmpty
 	ld hl, PokemonSellingGreetingText
 	call PrintText
+	call ClearDialogueCHS
 	call SaveScreenTilesToBuffer1 ; save screen
 .sellMenuLoop
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
@@ -130,6 +138,7 @@ DisplayPokemartDialogue_::
 
 	ld hl, PokemartBuyingGreetingText
 	call PrintText
+	call ClearDialogueCHS
 	call SaveScreenTilesToBuffer1
 .buyMenuLoop
 	call LoadScreenTilesFromBuffer1

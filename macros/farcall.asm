@@ -1,10 +1,10 @@
-MACRO farcall
+MACRO farcall ;callba
 	ld b, BANK(\1)
 	ld hl, \1
 	call Bankswitch
 ENDM
 
-MACRO callfar
+MACRO callfar ;callab
 	ld hl, \1
 	ld b, BANK(\1)
 	call Bankswitch

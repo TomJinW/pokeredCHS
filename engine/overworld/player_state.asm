@@ -237,13 +237,13 @@ PrintSafariZoneSteps::
 	hlcoord 1, 3
 	ld de, SafariBallText
 	call PlaceString
-	ld a, [wNumSafariBalls]
-	cp 10
-	jr nc, .tenOrMore
-	hlcoord 5, 3
-	ld a, " "
-	ld [hl], a
-.tenOrMore
+; 	ld a, [wNumSafariBalls]
+; 	cp 10
+; 	jr nc, .tenOrMore
+; 	hlcoord 5, 3
+; 	ld a, " "
+; 	ld [hl], a
+; .tenOrMore
 	hlcoord 6, 3
 	ld de, wNumSafariBalls
 	lb bc, 1, 2

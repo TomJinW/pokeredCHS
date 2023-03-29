@@ -474,8 +474,9 @@ ItemUseBall:
 	ld hl, wEnemyBattleStatus3
 	bit TRANSFORMED, [hl]
 	jr z, .notTransformed
-	ld a, DITTO
-	ld [wEnemyMonSpecies2], a
+	; PKMNRB_Fix 10 Transformed Pokémon are assumed to be Dittos
+	; ld a, DITTO ;
+	; ld [wEnemyMonSpecies2], a ;
 	jr .skip6
 
 .notTransformed
@@ -830,6 +831,8 @@ ItemUseMedicine:
 	line "any #MON!"
 	prompt
 .notUsingSoftboiled
+	ld a, 1 ;CHS_FIX 20 for opening party menu using items
+	ld [wIfPartyMenuOpenedDuringBattle], a;
 	call DisplayPartyMenu
 .getPartyMonDataAddress
 	jp c, .canceledItemUse
@@ -1955,6 +1958,8 @@ ItemUsePPRestore:
 	ld [wUpdateSpritesEnabled], a
 	ld a, USE_ITEM_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
+	ld a, 1 ;CHS_FIX 20 for opening party menu using items
+	ld [wIfPartyMenuOpenedDuringBattle],a ;
 	call DisplayPartyMenu
 	jr nc, .chooseMove
 	jp .itemNotUsed

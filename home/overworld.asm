@@ -876,7 +876,14 @@ LoadTilesetTilePatternData::
 	ld a, [wTilesetGfxPtr + 1]
 	ld h, a
 	ld de, vTileset
-	ld bc, $600
+
+	ld a, [wTempSpace] ; CHS_FIX 04 
+	cp 1 ;
+	ld bc, $600 ;
+	jr nz, .finish ;
+	ld bc, $10 ;
+.finish ;
+	
 	ld a, [wTilesetBank]
 	jp FarCopyData2
 

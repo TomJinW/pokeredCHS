@@ -177,6 +177,43 @@ ROMX $2B
 	"Pokédex Text"
 ROMX $2C
 	"Move Names"
+
+ROMX $40
+	"Home 2"
+
+ROMX $41
+	"DFS"
+
+ROMX $50
+	"Chinese Fonts 50"
+
+ROMX $51
+	"Chinese Fonts 51"
+
+ROMX $52
+	"Chinese Fonts 52"
+
+ROMX $53
+	"Chinese Fonts 53"
+
+ROMX $54
+	"Chinese Fonts 54"
+
+ROMX $55
+	"Chinese Fonts 55"
+
+ROMX $56
+	"Chinese Fonts 56"
+
+ROMX $57
+	"Chinese Fonts 57"
+
+ROMX $58
+	"Chinese Fonts 58"
+
+ROMX $59
+	"Chinese Fonts 59"
+
 WRAM0
 	"Audio RAM"
 	org $c100
@@ -188,8 +225,9 @@ WRAM0
 	"Party Data"
 	"Main Data"
 	"Current Box Data"
-	org $df00
+	org $dfff
 	"Stack"
+
 VRAM
 	"VRAM"
 SRAM $0

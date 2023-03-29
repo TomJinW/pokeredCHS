@@ -1650,6 +1650,12 @@ LoadBattleMonFromParty:
 	ld de, wBattleMonNick
 	ld bc, NAME_LENGTH
 	call CopyData
+	; CHS_Fix 01
+
+	ld de, wEnemyMonNick ;
+	ld c, 15 | (0 << 7) ;
+	callfar FixStrLength_Gen1 ;
+
 	ld hl, wBattleMonLevel
 	ld de, wPlayerMonUnmodifiedLevel ; block of memory used for unmodified stats
 	ld bc, 1 + NUM_STATS * 2
@@ -1820,9 +1826,17 @@ DrawPlayerHUDAndHPBar:
 	hlcoord 18, 9
 	ld [hl], $73
 	ld de, wBattleMonNick
-	hlcoord 10, 7
+	; hlcoord 10, 7
+	hlcoord 9, 8 ; CHS_Fix 02
 	call CenterMonName
 	call PlaceString
+
+	cp a, LOW(wTileMap + SCREEN_WIDTH * 8 + 18) ; CHS_Fix 02
+	jr c, .doNotAdjustPlace ; CHS_Fix 02
+	ld c, LOW(wTileMap + SCREEN_WIDTH * 8 + 17) ; CHS_Fix 02
+.doNotAdjustPlace ; CHS_Fix 02
+	push bc ; CHS_Fix 02
+
 	ld hl, wBattleMonSpecies
 	ld de, wLoadedMon
 	ld bc, wBattleMonDVs - wBattleMonSpecies
@@ -1831,9 +1845,10 @@ DrawPlayerHUDAndHPBar:
 	ld de, wLoadedMonLevel
 	ld bc, wBattleMonPP - wBattleMonLevel
 	call CopyData
-	hlcoord 14, 8
+	; hlcoord 14, 8 ; CHS_Fix 02
+	pop hl ; CHS_Fix 02
 	push hl
-	inc hl
+	; inc hl ; CHS_Fix 02
 	ld de, wLoadedMonStatus
 	call PrintStatusConditionNotFainted
 	pop hl
@@ -1879,12 +1894,16 @@ DrawEnemyHUDAndHPBar:
 	call ClearScreenArea
 	callfar PlaceEnemyHUDTiles
 	ld de, wEnemyMonNick
-	hlcoord 1, 0
+	; hlcoord 1, 0
+	hlcoord 1, 0 ; CHS_Fix 03
 	call CenterMonName
 	call PlaceString
-	hlcoord 4, 1
+	; hlcoord 4, 1 CHS_Fix 03
+	ld h, b ; CHS_Fix 03
+	ld l, c ; CHS_Fix 03
+
 	push hl
-	inc hl
+	; inc hl ; CHS_Fix 03
 	ld de, wEnemyMonStatus
 	call PrintStatusConditionNotFainted
 	pop hl
@@ -1977,24 +1996,41 @@ GetBattleHealthBarColor:
 ; (i.e. for names longer than 4 letters)
 CenterMonName:
 	push de
-	inc hl
-	inc hl
-	ld b, $2
-.loop
-	inc de
-	ld a, [de]
-	cp "@"
-	jr z, .done
-	inc de
-	ld a, [de]
-	cp "@"
-	jr z, .done
-	dec hl
-	dec b
-	jr nz, .loop
-.done
-	pop de
-	ret
+	; CHS_Fix 04
+	push hl ;
+	farcall GetStrLength_Gen1 ;
+	pop hl ;
+	ld a, d ;
+	cp a, $8 ;
+	jr nc, .plus0 ;
+	cp a, $6 ;
+	jr nc, .plus1 ;
+	cp a, $5 ;
+	jr nc, .plus2 ;
+.plus3  ;
+	inc hl  ;
+.plus2  ;
+	inc hl  ;
+.plus1  ;
+	inc hl  ;
+.plus0  ;
+	inc hl  ;
+	ld b, $2  ;
+; .loop  ;
+; 	inc de  ;
+; 	ld a, [de]  ;
+; 	cp "@"  ;
+; 	jr z, .done  ;
+; 	inc de  ;
+; 	ld a, [de]  ;
+; 	cp "@"  ;
+; 	jr z, .done  ;
+; 	dec hl  ;
+; 	dec b  ;
+; 	jr nz, .loop  ;
+; .done  ;
+	pop de  ;
+	ret  ;
 
 DisplayBattleMenu::
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
@@ -2063,14 +2099,18 @@ DisplayBattleMenu::
 	ld a, " "
 	jr z, .safariLeftColumn
 ; put cursor in left column for normal battle menu (i.e. when it's not a Safari battle)
-	ldcoord_a 15, 14 ; clear upper cursor position in right column
-	ldcoord_a 15, 16 ; clear lower cursor position in right column
+	; CHS_Fix 04
+	; ldcoord_a 15, 14
+	; ldcoord_a 15, 16
+	ldcoord_a 13, 14 ; clear upper cursor position in right column
+	ldcoord_a 13, 16 ; clear lower cursor position in right column
 	ld b, $9 ; top menu item X
 	jr .leftColumn_WaitForInput
 .safariLeftColumn
 	ldcoord_a 13, 14
 	ldcoord_a 13, 16
-	hlcoord 7, 14
+	; hlcoord 7, 14 ; CHS_Fix 04
+	hlcoord 8, 14 ; CHS_Fix 04
 	ld de, wNumSafariBalls
 	lb bc, 1, 2
 	call PrintNumber
@@ -2098,12 +2138,14 @@ DisplayBattleMenu::
 ; put cursor in right column for normal battle menu (i.e. when it's not a Safari battle)
 	ldcoord_a 9, 14 ; clear upper cursor position in left column
 	ldcoord_a 9, 16 ; clear lower cursor position in left column
-	ld b, $f ; top menu item X
+	; ld b, $f ; top menu item X CHS_Fix 05
+	ld b, $d ; top menu item X
 	jr .rightColumn_WaitForInput
 .safariRightColumn
 	ldcoord_a 1, 14 ; clear upper cursor position in left column
 	ldcoord_a 1, 16 ; clear lower cursor position in left column
-	hlcoord 7, 14
+	; hlcoord 7, 14
+	hlcoord 8, 14 ;CHS_Fix 05
 	ld de, wNumSafariBalls
 	lb bc, 1, 2
 	call PrintNumber
@@ -2321,12 +2363,17 @@ PartyMenuOrRockOrRun:
 	call LoadHudTilePatterns
 	call LoadScreenTilesFromBuffer2
 	call RunDefaultPaletteCommand
+	call ReloadMonPic ; Fix Battle Party Menu
 	call GBPalNormal
 	jp DisplayBattleMenu
 .partyMonDeselected
+	hlcoord 11, 10 ; CHS_Fix 06
+	ld bc, 9 ; CHS_Fix 06
+	ld a, " " ; CHS_Fix 06
+	call FillMemory ; CHS_Fix 06
 	hlcoord 11, 11
 	ld bc, 6 * SCREEN_WIDTH + 9
-	ld a, " "
+	; ld a, " "  ; CHS_Fix 06
 	call FillMemory
 	xor a ; NORMAL_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
@@ -2367,28 +2414,28 @@ PartyMenuOrRockOrRun:
 ; display the two status screens
 	predef StatusScreen
 	predef StatusScreen2
-; now we need to reload the enemy mon pic
-	ld a, [wEnemyBattleStatus2]
-	bit HAS_SUBSTITUTE_UP, a ; does the enemy mon have a substitute?
-	ld hl, AnimationSubstitute
-	jr nz, .doEnemyMonAnimation
+; now we need to reload the enemy mon pic ; CHS_Fix 07
+	; ld a, [wEnemyBattleStatus2]
+	; bit HAS_SUBSTITUTE_UP, a ; does the enemy mon have a substitute?
+	; ld hl, AnimationSubstitute
+	; jr nz, .doEnemyMonAnimation
 ; enemy mon doesn't have substitute
-	ld a, [wEnemyMonMinimized]
-	and a ; has the enemy mon used Minimise?
-	ld hl, AnimationMinimizeMon
-	jr nz, .doEnemyMonAnimation
+	; ld a, [wEnemyMonMinimized]
+	; and a ; has the enemy mon used Minimise?
+	; ld hl, AnimationMinimizeMon
+	; jr nz, .doEnemyMonAnimation
 ; enemy mon is not minimised
-	ld a, [wEnemyMonSpecies]
-	ld [wcf91], a
-	ld [wd0b5], a
-	call GetMonHeader
-	ld de, vFrontPic
-	call LoadMonFrontSprite
-	jr .enemyMonPicReloaded
+	; ld a, [wEnemyMonSpecies]
+	; ld [wcf91], a
+	; ld [wd0b5], a
+	; call GetMonHeader
+	; ld de, vFrontPic
+	; call LoadMonFrontSprite
+	; jr .enemyMonPicReloaded
 .doEnemyMonAnimation
-	ld b, BANK(AnimationSubstitute) ; BANK(AnimationMinimizeMon)
-	call Bankswitch
-.enemyMonPicReloaded ; enemy mon pic has been reloaded, so return to the party menu
+	; ld b, BANK(AnimationSubstitute) ; BANK(AnimationMinimizeMon)
+	; call Bankswitch
+; .enemyMonPicReloaded ; enemy mon pic has been reloaded, so return to the party menu
 	jp .partyMenuWasSelected
 .switchMon
 	ld a, [wPlayerMonNumber]
@@ -2406,6 +2453,7 @@ PartyMenuOrRockOrRun:
 	ld a, $1
 	ld [wActionResultOrTookBattleTurn], a
 	call GBPalWhiteOut
+	call ReloadMonPic ; CHS_Fix 07
 	call ClearSprites
 	call LoadHudTilePatterns
 	call LoadScreenTilesFromBuffer1
@@ -2434,6 +2482,61 @@ SwitchPlayerMon:
 	ld a, $2
 	ld [wCurrentMenuItem], a
 	and a
+	ret
+
+ReloadMonPic:
+; now we need to reload the enemy mon pic
+	ld a, 1
+	ld [hWhoseTurn], a
+	ld a, [wEnemyBattleStatus2]
+	bit HAS_SUBSTITUTE_UP, a ; does the enemy mon have a substitute?
+	ld hl, AnimationSubstitute
+	jr nz, .doEnemyMonAnimation
+; enemy mon doesn't have substitute
+	ld a, [wEnemyMonMinimized]
+	and a ; has the enemy mon used Minimise?
+	ld hl, AnimationMinimizeMon
+	jr nz, .doEnemyMonAnimation
+; enemy mon is not minimised
+	ld a, [wEnemyMonSpecies]
+	ld [wcf91], a
+	ld [wd0b5], a
+	call GetMonHeader
+	ld de, vFrontPic
+	call LoadMonFrontSprite
+	jr .enemyMonPicReloaded
+.doEnemyMonAnimation
+	ld b, BANK(AnimationSubstitute) ; BANK(AnimationMinimizeMon)
+	call Bankswitch
+.enemyMonPicReloaded ; enemy mon pic has been reloaded, so quit
+; now we need to reload the player mon pic
+	xor a
+	ld [hWhoseTurn], a
+	ld a, [wPlayerBattleStatus2]
+	bit HAS_SUBSTITUTE_UP, a ; does the player mon have a substitute?
+	ld hl, AnimationSubstitute
+	jr nz, .doPlayerMonAnimation
+; player mon doesn't have substitute
+	ld a, [wPlayerMonMinimized]
+	and a ; has the player mon used Minimise?
+	ld hl, AnimationMinimizeMon
+	jr nz, .doPlayerMonAnimation
+; player mon is not minimised
+	ld a, [wBattleMonSpecies2]
+	push af
+	ld a, [wBattleMonSpecies]
+	ld [wBattleMonSpecies2], a
+	ld [wcf91], a
+	ld [wd0b5], a
+	call GetMonHeader
+	predef LoadMonBackPic
+	pop af
+	ld [wBattleMonSpecies2], a
+	jr .playerMonPicReloaded
+.doPlayerMonAnimation
+	ld b, BANK(AnimationSubstitute) ; BANK(AnimationMinimizeMon)
+	call Bankswitch
+.playerMonPicReloaded ; player mon pic has been reloaded, so quit
 	ret
 
 AlreadyOutText:
@@ -2471,14 +2574,14 @@ MoveSelectionMenu:
 	ret
 
 .writemoves
-	ld de, wMovesString
-	ldh a, [hUILayoutFlags]
-	set 2, a
-	ldh [hUILayoutFlags], a
+	ld de, wMovesString ; CHS_Fix 08
+	; ldh a, [hUILayoutFlags] ; CHS_Fix 08
+	; set 2, a ; CHS_Fix 08
+	; ldh [hUILayoutFlags], a ; CHS_Fix 08
 	call PlaceString
-	ldh a, [hUILayoutFlags]
-	res 2, a
-	ldh [hUILayoutFlags], a
+	; ldh a, [hUILayoutFlags] ; CHS_Fix 08
+	; res 2, a ; CHS_Fix 08
+	; ldh [hUILayoutFlags], a ; CHS_Fix 08
 	ret
 
 .regularmenu
@@ -2486,9 +2589,12 @@ MoveSelectionMenu:
 	ret z
 	ld hl, wBattleMonMoves
 	call .loadmoves
-	hlcoord 4, 12
-	ld b, 4
-	ld c, 14
+	; hlcoord 4, 12
+	; ld b, 4
+	; ld c, 14
+	hlcoord 0,8 ; CHS_Fix 09
+	lb bc, 8, 9 ; CHS_Fix 09
+
 	di ; out of pure coincidence, it is possible for vblank to occur between the di and ei
 	   ; so it is necessary to put the di ei block to not cause tearing
 	call TextBoxBorder
@@ -2497,22 +2603,27 @@ MoveSelectionMenu:
 	hlcoord 10, 12
 	ld [hl], $7e
 	ei
-	hlcoord 6, 13
+	;hlcoord 6, 13
+	hlcoord 2, 10 ; CHS_Fix 09
 	call .writemoves
-	ld b, $5
-	ld a, $c
+	; ld b, $5
+	; ld a, $c
+	ld b, $1 ; CHS_Fix 09
+	ld a, $8 ; CHS_Fix 09
 	jr .menuset
 .mimicmenu
 	ld hl, wEnemyMonMoves
 	call .loadmoves
-	hlcoord 0, 7
-	ld b, 4
-	ld c, 14
+	; hlcoord 0, 7 ; CHS_Fix 10
+	; ld b, 4 ; CHS_Fix 10
+	; ld c, 14 ; CHS_Fix 10
+	hlcoord 0, 8 ; CHS_Fix 10
+	lb bc, 8, 9 ; CHS_Fix 10
 	call TextBoxBorder
-	hlcoord 2, 8
+	hlcoord 2, 10 ; hlcoord 2, 8 CHS_Fix 10
 	call .writemoves
 	ld b, $1
-	ld a, $7
+	ld a, $8 ;ld a, $7 CHS_Fix 10
 	jr .menuset
 .relearnmenu
 	ld a, [wWhichPokemon]
@@ -2580,7 +2691,7 @@ SelectMenuItem:
 	jr z, .battleselect
 	dec a
 	jr nz, .select
-	hlcoord 1, 14
+	hlcoord 12, 14 ; hlcoord 1, 14 CHS_Fix 11
 	ld de, WhichTechniqueString
 	call PlaceString
 	jr .select
@@ -2592,17 +2703,17 @@ SelectMenuItem:
 	ld a, [wMenuItemToSwap]
 	and a
 	jr z, .select
-	hlcoord 5, 13
+	hlcoord 1, 10 ; hlcoord 5, 13 CHS_Fix 11
 	dec a
-	ld bc, SCREEN_WIDTH
+	ld bc, SCREEN_WIDTH * 2 ; ld bc, SCREEN_WIDTH
 	call AddNTimes
 	ld [hl], "▷"
 .select
-	ld hl, hUILayoutFlags
-	set 1, [hl]
+	; ld hl, hUILayoutFlags ; CHS_Fix 12
+	; set 1, [hl] ; CHS_Fix 12
 	call HandleMenuInput
-	ld hl, hUILayoutFlags
-	res 1, [hl]
+	; ld hl, hUILayoutFlags ; CHS_Fix 12
+	; res 1, [hl] ; CHS_Fix 12
 	bit BIT_D_UP, a
 	jp nz, SelectMenuItem_CursorUp
 	bit BIT_D_DOWN, a
@@ -2829,9 +2940,12 @@ SwapMovesInMenu:
 PrintMenuItem:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	hlcoord 0, 8
-	ld b, 3
-	ld c, 9
+	; hlcoord 0, 8 ; CHS_Fix 13
+	; ld b, 3 ; CHS_Fix 13
+	; ld c, 9 ; CHS_Fix 13
+	hlcoord 10, 12 ; CHS_Fix 13
+	lb bc, 4, 8 ; CHS_Fix 13
+
 	call TextBoxBorder
 	ld a, [wPlayerDisabledMove]
 	and a
@@ -2842,7 +2956,8 @@ PrintMenuItem:
 	ld a, [wCurrentMenuItem]
 	cp b
 	jr nz, .notDisabled
-	hlcoord 1, 10
+	; hlcoord 1, 10
+	hlcoord $0B, $0F ; CHS_Fix 14
 	ld de, DisabledText
 	call PlaceString
 	jr .moveDisabled
@@ -2874,23 +2989,23 @@ PrintMenuItem:
 	and $3f
 	ld [wcd6d], a
 ; print TYPE/<type> and <curPP>/<maxPP>
-	hlcoord 1, 9
+	hlcoord 11, 15 ; hlcoord 1, 9
 	ld de, TypeText
 	call PlaceString
-	hlcoord 7, 11
+	hlcoord 13, 16 ; hlcoord 7, 11
 	ld [hl], "/"
-	hlcoord 5, 9
+	hlcoord 16, 13 ; hlcoord 5, 9
 	ld [hl], "/"
-	hlcoord 5, 11
+	hlcoord 14, 13 ; hlcoord 5, 11
 	ld de, wcd6d
 	lb bc, 1, 2
 	call PrintNumber
-	hlcoord 8, 11
+	hlcoord 17, 13 ; hlcoord 8, 11
 	ld de, wMaxPP
 	lb bc, 1, 2
 	call PrintNumber
 	call GetCurrentMove
-	hlcoord 2, 10
+	hlcoord 14, 16 ; hlcoord 2, 10
 	predef PrintMoveType
 .moveDisabled
 	ld a, $1
@@ -7023,6 +7138,7 @@ LoadMonBackPic:
 ; been loaded with GetMonHeader.
 	ld a, [wBattleMonSpecies2]
 	ld [wcf91], a
+LoadMonBackPic2: ; CHS_Fix 14
 	hlcoord 1, 5
 	ld b, 7
 	ld c, 8

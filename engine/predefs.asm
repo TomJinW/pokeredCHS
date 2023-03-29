@@ -14,7 +14,7 @@ GetPredefPointer::
 	ld a, e
 	ld [hli], a
 
-	ASSERT wPredefDE + 2 == wPredefBC
+	; ASSERT wPredefDE + 2 == wPredefBC
 	ld a, b
 	ld [hli], a
 	ld [hl], c

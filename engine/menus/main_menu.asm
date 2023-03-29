@@ -35,7 +35,7 @@ MainMenu:
 ; there's a save file
 	hlcoord 0, 0
 	ld b, 6
-	ld c, 13
+	ld c, 9 ; ld c, 13 CHS_Fix 25 save dialog
 	call TextBoxBorder
 	hlcoord 2, 2
 	ld de, ContinueText
@@ -44,7 +44,7 @@ MainMenu:
 .noSaveFile
 	hlcoord 0, 0
 	ld b, 4
-	ld c, 13
+	ld c, 9 ; ld c, 13
 	call TextBoxBorder
 	hlcoord 2, 2
 	ld de, NewGameText
@@ -351,19 +351,19 @@ DisplayContinueGameInfo:
 	ldh [hAutoBGTransferEnabled], a
 	hlcoord 4, 7
 	ld b, 8
-	ld c, 14
+	ld c, 13 ;ld c, 14 CHS_Fix 25
 	call TextBoxBorder
 	hlcoord 5, 9
 	ld de, SaveScreenInfoText
 	call PlaceString
-	hlcoord 12, 9
+	hlcoord 11, 9 ;hlcoord 12, 9
 	ld de, wPlayerName
 	call PlaceString
-	hlcoord 17, 11
+	hlcoord 14, 11 ;hlcoord 17, 11
 	call PrintNumBadges
-	hlcoord 16, 13
+	hlcoord 13, 13 ;hlcoord 16, 13
 	call PrintNumOwnedMons
-	hlcoord 13, 15
+	hlcoord 12, 15 ;hlcoord 13, 15
 	call PrintPlayTime
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
@@ -373,21 +373,21 @@ DisplayContinueGameInfo:
 PrintSaveScreenText:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	hlcoord 4, 0
+	hlcoord 5, 0 ;hlcoord 4, 0
 	ld b, $8
-	ld c, $e
+	ld c, $d ;ld c, $e
 	call TextBoxBorder
 	call LoadTextBoxTilePatterns
 	call UpdateSprites
-	hlcoord 5, 2
+	hlcoord 6, 2 ;hlcoord 5, 2
 	ld de, SaveScreenInfoText
 	call PlaceString
-	hlcoord 12, 2
+	hlcoord 11, 2;hlcoord 12, 2
 	ld de, wPlayerName
 	call PlaceString
-	hlcoord 17, 4
+	hlcoord 15, 4;hlcoord 17, 4
 	call PrintNumBadges
-	hlcoord 16, 6
+	hlcoord 14, 6;hlcoord 16, 6
 	call PrintNumOwnedMons
 	hlcoord 13, 8
 	call PrintPlayTime

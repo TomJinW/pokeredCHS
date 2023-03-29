@@ -2,14 +2,14 @@ DrawHP:
 ; Draws the HP bar in the stats screen
 	call GetPredefRegisters
 	ld a, $1
-	jr DrawHP_
+	; jr DrawHP_
 
-DrawHP2:
-; Draws the HP bar in the party screen
-	call GetPredefRegisters
-	ld a, $2
+; DrawHP2:
+; ; Draws the HP bar in the party screen
+; 	call GetPredefRegisters
+; 	ld a, $2
 
-DrawHP_:
+; DrawHP_:
 	ld [wHPBarType], a
 	push hl
 	ld a, [wLoadedMonHP]
@@ -40,10 +40,14 @@ DrawHP_:
 	push hl
 	call DrawHPBar
 	pop hl
-	ldh a, [hUILayoutFlags]
-	bit 0, a
-	jr z, .printFractionBelowBar
-	ld bc, $9 ; right of bar
+	; ldh a, [hUILayoutFlags]
+	; bit 0, a
+	; jr z, .printFractionBelowBar
+	; ld bc, $9 ; right of bar
+	ld a, [wHPBarType]
+	cp a, $2
+	jr nz, .printFractionBelowBar
+	ld bc, -SCREEN_WIDTH
 	jr .printFraction
 .printFractionBelowBar
 	ld bc, SCREEN_WIDTH + 1 ; below bar
@@ -61,6 +65,34 @@ DrawHP_:
 	pop de
 	ret
 
+DrawHP2:
+; Draws the HP bar in the party screen
+	call GetPredefRegisters
+	ld a, $2
+	ld [wHPBarType], a
+	push hl
+	ld a, [wLoadedMonHP]
+	ld b, a
+	ld a, [wLoadedMonHP + 1]
+	ld c, a
+	or b
+	jr nz, .nonzeroHP
+	xor a
+	ld c, a
+	ld e, a
+	ld a, $4
+	ld d, a
+	jp DrawHP.drawHPBarAndPrintFraction
+.nonzeroHP
+	ld a, [wLoadedMonMaxHP]
+	ld d, a
+	ld a, [wLoadedMonMaxHP + 1]
+	ld e, a
+	predef ShortHPBarLength
+	ld a, $4
+	ld d, a
+	ld c, a
+	jp DrawHP.drawHPBarAndPrintFraction
 
 ; Predef 0x37
 StatusScreen:
@@ -116,7 +148,7 @@ StatusScreen:
 	hlcoord 19, 9
 	lb bc, 8, 6
 	call DrawLineBox ; Draws the box around types, ID No. and OT
-	hlcoord 10, 9
+	hlcoord 9, 10 ;hlcoord 10, 9
 	ld de, Type1Text
 	call PlaceString ; "TYPE1/"
 	hlcoord 11, 3
@@ -127,16 +159,16 @@ StatusScreen:
 	call RunPaletteCommand
 	hlcoord 16, 6
 	ld de, wLoadedMonStatus
-	call PrintStatusCondition
+	call PrintStatusCondition_StatusScreen ;call PrintStatusCondition
 	jr nz, .StatusWritten
 	hlcoord 16, 6
 	ld de, OKText
 	call PlaceString ; "OK"
 .StatusWritten
-	hlcoord 9, 6
+	hlcoord 12, 6 ;hlcoord 9, 6
 	ld de, StatusText
 	call PlaceString ; "STATUS/"
-	hlcoord 14, 2
+	hlcoord 16, 2 ;hlcoord 14, 2
 	call PrintLevel ; Pokémon level
 	ld a, [wMonHIndex]
 	ld [wd11e], a
@@ -146,7 +178,7 @@ StatusScreen:
 	ld de, wd11e
 	lb bc, LEADING_ZEROES | 1, 3
 	call PrintNumber ; Pokémon no.
-	hlcoord 11, 10
+	hlcoord 14, 10 ;hlcoord 11, 10
 	predef PrintMonType
 	ld hl, NamePointers2
 	call .GetStringPointer
@@ -158,9 +190,20 @@ StatusScreen:
 	call .GetStringPointer
 	ld d, h
 	ld e, l
-	hlcoord 12, 16
+
+	push de
+	farcall GetStrLength_Gen1
+	ld a, d
+	coord hl, 14, 16
+	cp a, 6
+	jr c, .stopAdjustOTPlace
+	dec hl
+	jr z, .stopAdjustOTPlace
+	dec hl
+.stopAdjustOTPlace
+	pop de
 	call PlaceString ; OT
-	hlcoord 12, 14
+	hlcoord 14, 14
 	ld de, wLoadedMonOTID
 	lb bc, LEADING_ZEROES | 2, 5
 	call PrintNumber ; ID Number
@@ -204,6 +247,55 @@ NamePointers2:
 	dw wBoxMonNicks
 	dw wDayCareMonName
 
+PrintStatusCondition_StatusScreen::
+	push de
+	dec de
+	dec de ; de = address of current HP
+	ld a, [de]
+	ld b, a
+	dec de
+	ld a, [de]
+	or b ; is the pokemon's HP zero?
+	jr nz, .NotFainted
+; if the pokemon's HP is 0, print "FNT"
+	ld e, 0
+	jr .end
+
+.NotFainted:
+	pop de
+	ld a, [de]
+	ld e, 1
+	bit PSN, a
+	jr nz, .end
+	inc e
+	bit BRN, a
+	jr nz, .end
+	inc e
+	bit FRZ, a
+	jr nz, .end
+	inc e
+	bit PAR, a
+	jr nz, .end
+	inc e
+	and SLP_MASK
+	jr nz, .end
+	ret ; ret zero
+.end
+	push hl
+	ld d, 0
+	ld hl, StatusText2
+	add hl, de
+	add hl, de
+	add hl, de
+	add hl, de
+	add hl, de
+	ld d, h
+	ld e, l
+	pop hl
+	call PlaceString
+	rlca ; ret nozero
+	ret
+
 Type1Text:
 	db   "TYPE1/"
 	next ""
@@ -225,6 +317,15 @@ StatusText:
 
 OKText:
 	db "OK@"
+
+StatusText2:
+	db "D@"
+	db "Po@"
+	db "B@"
+	db "F@"
+	db "Pa@"
+	db "S@"
+	db "@"
 
 ; Draws a line starting from hl high b and wide c
 DrawLineBox:
@@ -252,18 +353,18 @@ PrintStatsBox:
 	jr nz, .DifferentBox
 	hlcoord 0, 8
 	ld b, 8
-	ld c, 8
+	ld c, 7 ;ld c, 8
 	call TextBoxBorder ; Draws the box
-	hlcoord 1, 9 ; Start printing stats from here
-	ld bc, $19 ; Number offset
+	hlcoord 1, 10 ;hlcoord 1, 9 ; Start printing stats from here
+	ld bc, $0004 ;ld bc, $19 ; Number offset
 	jr .PrintStats
 .DifferentBox
 	hlcoord 9, 2
 	ld b, 8
 	ld c, 9
 	call TextBoxBorder
-	hlcoord 11, 3
-	ld bc, $18
+	hlcoord 11, 4; hlcoord 11, 3
+	ld bc, $0004 ;ld bc, $18
 .PrintStats
 	push bc
 	push hl
@@ -309,8 +410,8 @@ StatusScreen2:
 	ld bc, NUM_MOVES
 	call CopyData
 	callfar FormatMovesString
-	hlcoord 9, 2
-	lb bc, 5, 10
+	hlcoord 9, 3 ;hlcoord 9, 2
+	lb bc, 4, 10 ;lb bc, 5, 10
 	call ClearScreenArea ; Clear under name
 	hlcoord 19, 3
 	ld [hl], $78
@@ -318,7 +419,7 @@ StatusScreen2:
 	ld b, 8
 	ld c, 18
 	call TextBoxBorder ; Draw move container
-	hlcoord 2, 9
+	hlcoord 2, 10 ;hlcoord 2, 9
 	ld de, wMovesString
 	call PlaceString ; Print moves
 	ld a, [wNumMovesMinusOne]
@@ -400,9 +501,13 @@ StatusScreen2:
 	ld [wLoadedMonLevel], a ; Increase temporarily if not 100
 .Level100
 	hlcoord 14, 6
-	ld [hl], "<to>"
-	inc hl
-	inc hl
+	; ld [hl], "<to>"
+	; inc hl
+	; inc hl
+	ld de, StatusScreenToText
+	call PlaceString
+	ld h, b
+	ld l, c
 	call PrintLevel
 	pop af
 	ld [wLoadedMonLevel], a
@@ -467,6 +572,9 @@ StatusScreenExpText:
 	db   "EXP POINTS"
 	next "LEVEL UP@"
 
+StatusScreenToText:
+	db "to@"
+
 StatusScreen_ClearName:
 	ld bc, 10
 	ld a, " "
@@ -474,9 +582,26 @@ StatusScreen_ClearName:
 
 StatusScreen_PrintPP:
 ; print PP or -- c times, going down two rows each time
+	cp a, "-"
+	jr z, .dfsprint
 	ld [hli], a
 	ld [hld], a
 	add hl, de
 	dec c
 	jr nz, StatusScreen_PrintPP
 	ret
+
+.dfsprint
+	push bc
+	push de
+	ld de, .dfschar
+	call PlaceString
+	pop de
+	add hl, de
+	pop bc
+	dec c
+	jr nz, .dfsprint
+	ret
+
+.dfschar:
+	db "--@"

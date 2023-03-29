@@ -8,6 +8,27 @@ sSpriteBuffer2:: ds SPRITEBUFFERSIZE
 
 sHallOfFame:: ds HOF_TEAM * HOF_TEAM_CAPACITY
 
+	ds $8
+	
+sDFSFreeEng:: ds 1
+sDFSRaw4Font:: ds 6
+sDFSCombineAddr:: ds 2
+sDFSReserved:: ds 16 - 1 - 6 - 2
+sDFS8Font::
+	ds $20
+	ds $70
+sDFSUsed:: ; start at XX00
+	ds $100 ; $36 really
+sDFSCache:: ; start at XX00
+	ds $36 * 4
+sDFSCacheTileMapBackup::
+	ds $36 * 4
+sDFSCacheTileMapBackup2::
+	ds $36 * 4
+sDFSCacheMenuBuffer::
+	ds $36 * 4
+sMenuBuffer::
+	ds 6 * 6
 
 SECTION "Save Data", SRAM
 

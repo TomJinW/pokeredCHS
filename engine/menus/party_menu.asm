@@ -11,12 +11,13 @@ RedrawPartyMenu_::
 	jp z, .printMessage
 	call ErasePartyMenuCursors
 	farcall InitPartyMenuBlkPacket
-	hlcoord 3, 0
+	hlcoord 3, 1 ;hlcoord 3, 0
 	ld de, wPartySpecies
 	xor a
 	ld c, a
 	ldh [hPartyMonIndex], a
 	ld [wWhichPartyMenuHPBar], a
+	ld b, a ; DFSStaticize First Char
 .loop
 	ld a, [de]
 	cp $FF ; reached the terminator?
@@ -28,8 +29,27 @@ RedrawPartyMenu_::
 	push hl
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
+
+
+	ld c, 15 | (0 << 7)
+	callfar FixStrLength_Gen1
+	pop hl
+	call IncreaseDFSStack
+	push hl
+	push de
+	dec hl
+	dec hl
+	ld de, .FullSpaceText
+	call PlaceString
+	ld [hl], " "
+	ld bc, -SCREEN_WIDTH
+	add hl, bc
+	ld [hl], " "
+	pop de
+
 	pop hl
 	call PlaceString ; print the pokemon's name
+	call DecreaseDFSStack
 	farcall WriteMonPartySpriteOAMByPartyIndex ; place the appropriate pokemon icon
 	ldh a, [hPartyMonIndex]
 	ld [wWhichPokemon], a
@@ -62,21 +82,21 @@ RedrawPartyMenu_::
 	cp EVO_STONE_PARTY_MENU
 	jr z, .evolutionStoneMenu
 	push hl
-	ld bc, 14 ; 14 columns to the right
+	ld bc , -SCREEN_WIDTH + 7 ; ld bc, 14 ; 14 columns to the right
 	add hl, bc
 	ld de, wLoadedMonStatus
-	call PrintStatusCondition
+	call PrintStatusCondition_PartyMenu ; call PrintStatusCondition
 	pop hl
 	push hl
-	ld bc, SCREEN_WIDTH + 1 ; down 1 row and right 1 column
-	ldh a, [hUILayoutFlags]
-	set 0, a
-	ldh [hUILayoutFlags], a
+	ld bc, 10 ;ld bc, SCREEN_WIDTH + 1 ; down 1 row and right 1 column
+	; ldh a, [hUILayoutFlags]
+	; set 0, a
+	; ldh [hUILayoutFlags], a
 	add hl, bc
 	predef DrawHP2 ; draw HP bar and prints current / max HP
-	ldh a, [hUILayoutFlags]
-	res 0, a
-	ldh [hUILayoutFlags], a
+	; ldh a, [hUILayoutFlags]
+	; res 0, a
+	; ldh [hUILayoutFlags], a
 	call SetPartyMenuHPBarColor ; color the HP bar (on SGB)
 	pop hl
 	jr .printLevel
@@ -90,15 +110,24 @@ RedrawPartyMenu_::
 	jr nz, .placeMoveLearnabilityString
 	ld de, .notAbleToLearnMoveText
 .placeMoveLearnabilityString
-	ld bc, 20 + 9 ; down 1 row and right 9 columns
+	ld bc, 0 + 11 ;ld bc, 20 + 9 ; down 1 row and right 9 columns
 	push hl
 	add hl, bc
 	call PlaceString
 	pop hl
 .printLevel
 	ld bc, 10 ; move 10 columns to the right
+	ld bc, 7
 	add hl, bc
 	call PrintLevel
+	ld hl, sp+5
+	ld a, [hl] ; DFSStaticize Char
+	pop hl
+	push hl
+	ld bc, -SCREEN_WIDTH - 1
+	add hl, bc
+	lb bc, 2, 8
+	call DFSStaticize
 	pop hl
 	pop de
 	inc de
@@ -106,7 +135,10 @@ RedrawPartyMenu_::
 	add hl, bc
 	pop bc
 	inc c
+	ld b, a
 	jp .loop
+.FullSpaceText
+	db "　@"
 .ableToLearnMoveText
 	db "ABLE@"
 .notAbleToLearnMoveText
@@ -157,13 +189,13 @@ RedrawPartyMenu_::
 ; if it does match
 	ld de, .ableToEvolveText
 .placeEvolutionStoneString
-	ld bc, 20 + 9 ; down 1 row and right 9 columns
+	ld bc, 11; ld bc, 20 + 9 ; down 1 row and right 9 columns
 	pop hl
 	push hl
 	add hl, bc
 	call PlaceString
 	pop hl
-	jr .printLevel
+	jp .printLevel ;jr .printLevel
 .ableToEvolveText
 	db "ABLE@"
 .notAbleToEvolveText
@@ -292,15 +324,51 @@ RareCandyText:
 	text_promptbutton
 	text_end
 
+PrintStatusCondition_PartyMenu:
+	push de
+	dec de
+	dec de ; de = address of current HP
+	ld a, [de]
+	ld b, a
+	dec de
+	ld a, [de]
+	or b ; is the pokemon's HP zero?
+	pop de
+	jp nz, PrintStatusConditionNotFainted
+; if the pokemon's HP is 0, print "FNT"
+	ld de, .FNT
+	call PlaceString
+	and a
+	ret
+
+.FNT
+	db $C0, $C1, $50 ; 濒死
+
 SetPartyMenuHPBarColor:
 	ld hl, wPartyMenuHPBarColors
 	ld a, [wWhichPartyMenuHPBar]
 	ld c, a
 	ld b, 0
 	add hl, bc
-	call GetHealthBarColor
+	call GetShortHealthBarColor ;call GetHealthBarColor
 	ld b, SET_PAL_PARTY_MENU_HP_BARS
 	call RunPaletteCommand
 	ld hl, wWhichPartyMenuHPBar
 	inc [hl]
 	ret
+
+GetShortHealthBarColor::
+	; Return at hl the palette of
+	; an HP bar e pixels long.
+	ld a, e
+	cp 18
+	ld d, 0 ; green
+	jr nc, .gotColor
+	cp 7
+	inc d ; yellow
+	jr nc, .gotColor
+	inc d ; red
+.gotColor
+	ld [hl], d
+	ret
+	

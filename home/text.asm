@@ -46,7 +46,119 @@ TextBoxBorder::
 	jr nz, .loop
 	ret
 
+; a: start tile id
+; bc: y * x
+; hl: tilemap
+DFSStaticize::
+	push af
+	swap a
+	ld d, a
+	and $F0
+	ld e, a
+	ld a, d
+	and $0F
+	or HIGH(vChars2)
+	ld d, a
+	pop af
+.row
+	push bc
+	push hl
+.col
+	push af
+	ld a, [hl]
+	cp a, $EC
+	jr nc, .static
+	cp a, $80
+	jr c, .static
+
+	push hl
+	swap a
+	ld h, a
+	and $F0
+	ld l, a
+	ld a, h
+	and $0F
+	or HIGH(vChars0)
+	ld h, a
+
+	push bc
+	lb bc, $10, LOW(rSTAT)
+	di
+.loop
+	; ldh a, [rLY]
+	; cp a, $8c
+	; jr nc, .loop
+	ldh a, [c]
+	and $2
+	jr nz, .loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .loop
+	ei
+	pop bc
+
+	pop hl
+
+	pop af
+	ld [hli], a
+	inc a
+	cp a, $03 ; flower
+	jr z, .skipmovingtile
+	cp a, $14 ; water
+	jr z, .skipmovingtile
+
+.staticend
+	dec c
+	jr nz, .col
+	pop hl
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .row
+	ret
+
+.static
+	inc hl
+	pop af
+	jr .staticend
+
+.skipmovingtile
+	inc a
+	swap e
+	inc e
+	swap e
+	jr .staticend
+
+IncreaseDFSStack::
+	push af
+	ld a, [wDFSStack]
+	inc a
+	ld [wDFSStack], a
+	dec a
+	jr nz, .not_bottom
+	; xor a
+	ld [wDFSCombineCode], a
+.not_bottom
+	pop af
+	ret
+
+DecreaseDFSStack::
+	push af
+	ld a, [wDFSStack]
+	dec a
+	ld [wDFSStack], a
+	jr nz, .not_bottom
+	; xor a
+	ld [wDFSCombineCode], a
+.not_bottom
+	pop af
+	ret
+
 PlaceString::
+	call IncreaseDFSStack
 	push hl
 
 PlaceNextChar::
@@ -55,6 +167,7 @@ PlaceNextChar::
 	jr nz, .NotTerminator
 	ld b, h
 	ld c, l
+	call DecreaseDFSStack
 	pop hl
 	ret
 
@@ -104,12 +217,31 @@ PlaceNextChar::
 	dict "<TARGET>",  PlaceMoveTargetsName
 	dict "<USER>",    PlaceMoveUsersName
 
+	push hl
+	push de
+	ld hl,wDFSCode
+rept 3
+
 	ld [hli], a
-	call PrintLetterDelay
+	inc de
+	ld a,[de]
+	; call PrintLetterDelay
+endr
+	ld [hl], a
+    pop de
+    pop hl
+	call dfsUnion
 
 NextChar::
 	inc de
 	jp PlaceNextChar
+
+PlaceDFSChar::
+	xor a
+	ld [wDFSCombineCode], a
+dfsUnion::
+	homecall _dfsUnion
+	ret
 
 NullChar::
 	ld b, h
@@ -172,15 +304,23 @@ PlaceCommandCharacter::
 	inc de
 	jp PlaceNextChar
 
-TMCharText::      db "TM@"
-TrainerCharText:: db "TRAINER@"
-PCCharText::      db "PC@"
-RocketCharText::  db "ROCKET@"
-PlacePOKeText::   db "POKé@"
-SixDotsCharText:: db "……@"
-EnemyText::       db "Enemy @"
-PlacePKMNText::   db "<PK><MN>@"
+; TMCharText::      db "TM@"
+; TrainerCharText:: db "TRAINER@"
+; PCCharText::      db "PC@"
+; RocketCharText::  db "ROCKET@"
+; PlacePOKeText::   db "POKé@"
+; SixDotsCharText:: db "……@"
+; EnemyText::       db "Enemy @"
+; PlacePKMNText::   db "<PK><MN>@"
 
+TMCharText::      db "TM@"
+TrainerCharText:: db "@"
+PCCharText::      db "@"
+RocketCharText::  db "@"
+PlacePOKeText::   db "POKE@"
+SixDotsCharText:: db "@"
+EnemyText::       db "EMEY@"
+PlacePKMNText::   db "@"
 ContText::
 	push de
 	ld b, h
@@ -207,14 +347,15 @@ PromptText::
 	cp LINK_STATE_BATTLING
 	jp z, .ok
 	ld a, "▼"
-	ldcoord_a 18, 16
+	ldcoord_a 18, 17 ; ldcoord_a 18, 16
 .ok
 	call ProtectedDelay3
 	call ManualTextScroll
 	ld a, " "
-	ldcoord_a 18, 16
+	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 
 DoneText::
+	call DecreaseDFSStack
 	pop hl
 	ld de, .stop
 	dec de
@@ -226,7 +367,7 @@ DoneText::
 Paragraph::
 	push de
 	ld a, "▼"
-	ldcoord_a 18, 16
+	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 	call ProtectedDelay3
 	call ManualTextScroll
 	hlcoord 1, 13
@@ -241,7 +382,7 @@ Paragraph::
 PageChar::
 	push de
 	ld a, "▼"
-	ldcoord_a 18, 16
+	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 	call ProtectedDelay3
 	call ManualTextScroll
 	hlcoord 1, 10
@@ -257,13 +398,13 @@ PageChar::
 
 _ContText::
 	ld a, "▼"
-	ldcoord_a 18, 16
+	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 	call ProtectedDelay3
 	push de
 	call ManualTextScroll
 	pop de
 	ld a, " "
-	ldcoord_a 18, 16
+	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 _ContTextNoPause::
 	push de
 	call ScrollTextUpOneLine
@@ -433,12 +574,12 @@ TextCommand_PROMPT_BUTTON::
 	cp LINK_STATE_BATTLING
 	jp z, TextCommand_WAIT_BUTTON
 	ld a, "▼"
-	ldcoord_a 18, 16 ; place down arrow in lower right corner of dialogue text box
+	ldcoord_a 18, 17 ;ldcoord_a 18, 16 ; place down arrow in lower right corner of dialogue text box
 	push bc
 	call ManualTextScroll ; blink arrow and wait for A or B to be pressed
 	pop bc
 	ld a, " "
-	ldcoord_a 18, 16 ; overwrite down arrow with blank space
+	ldcoord_a 18, 17 ;ldcoord_a 18, 16 ; overwrite down arrow with blank space
 	pop hl
 	jp NextTextCommand
 

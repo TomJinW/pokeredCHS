@@ -1,3 +1,10 @@
+ClearBuySellMenuCHS:
+	coord hl, 2, 1
+	ld b, 6
+	ld c, 5
+	call ClearScreenArea
+	ret
+	
 ; function to draw various text boxes
 DisplayTextBoxID_::
 	ld a, [wTextBoxID]
@@ -161,7 +168,7 @@ DoBuySellQuitMenu:
 	ld [wMenuWatchedKeys], a
 	ld a, $2
 	ld [wMaxMenuItem], a
-	ld a, $1
+	ld a, $2 ; ld a, $1
 	ld [wTopMenuItemY], a
 	ld a, $1
 	ld [wTopMenuItemX], a
@@ -182,6 +189,7 @@ DoBuySellQuitMenu:
 	ld [wMenuExitMethod], a
 	jr .quit
 .pressedA
+	call ClearBuySellMenuCHS
 	ld a, CHOSE_MENU_ITEM
 	ld [wMenuExitMethod], a
 	ld a, [wCurrentMenuItem]
@@ -253,7 +261,14 @@ DisplayTwoOptionMenu:
 	ld e, l
 	ld d, h
 	pop hl
+	ld a, [de]
+	inc de
 	push de
+	and a ; put blank line before first menu item?
+	jr z, .noAutoMove
+	ld de, $10000 - SCREEN_WIDTH
+	add hl, de
+.noAutoMove
 	ld a, [wTwoOptionMenuID]
 	cp TRADE_CANCEL_MENU
 	jr nz, .notTradeCancelMenu
@@ -264,12 +279,12 @@ DisplayTwoOptionMenu:
 .afterTextBoxBorder
 	call UpdateSprites
 	pop hl
-	ld a, [hli]
-	and a ; put blank line before first menu item?
+	; ld a, [hli]
+	; and a ; put blank line before first menu item?
 	ld bc, 20 + 2
-	jr z, .noBlankLine
-	ld bc, 2 * 20 + 2
-.noBlankLine
+; 	jr z, .noBlankLine
+; 	ld bc, 2 * 20 + 2
+; .noBlankLine
 	ld a, [hli]
 	ld e, a
 	ld a, [hli]
@@ -341,6 +356,8 @@ DisplayTwoOptionMenu:
 ; The bottom and right edges of the menu may remain after the function returns.
 
 TwoOptionMenu_SaveScreenTiles:
+	ld de, -SCREEN_WIDTH
+	add hl, de
 	ld de, wBuffer
 	lb bc, 5, 6
 .loop
@@ -356,9 +373,18 @@ TwoOptionMenu_SaveScreenTiles:
 	ld c, $6
 	dec b
 	jr nz, .loop
+	ld de, wBuffer2
+.loop2
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .loop2
 	ret
 
 TwoOptionMenu_RestoreScreenTiles:
+	ld de, -SCREEN_WIDTH
+	add hl, de
 	ld de, wBuffer
 	lb bc, 5, 6
 .loop
@@ -374,6 +400,13 @@ TwoOptionMenu_RestoreScreenTiles:
 	ld c, 6
 	dec b
 	jr nz, .loop
+	ld de, wBuffer2
+.loop2
+	ld a, [de]
+	inc de
+	ld [hli], a
+	dec c
+	jr nz, .loop2
 	call UpdateSprites
 	ret
 
@@ -394,8 +427,8 @@ DisplayFieldMoveMonMenu:
 	jr nz, .fieldMovesExist
 
 ; no field moves
-	hlcoord 11, 11
-	ld b, 5
+	hlcoord 11, 10 ;hlcoord 11, 11
+	ld b, 6 ;ld b, 5
 	ld c, 7
 	call TextBoxBorder
 	call UpdateSprites

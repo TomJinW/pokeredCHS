@@ -44,6 +44,15 @@ DisplayMonFrontSpriteInBox:
 	ldh [hStartTileID], a
 	hlcoord 10, 11
 	predef AnimateSendingOutMon
+	
+	; PKMNRB_Fix 09 Articuno's cry may get distorted when you see it in the binoculars on Route 15/Fossils play their Pokémon's cry when they shouldn't in Pewter Museum
+	ld a, [wcf91] ;
+	cp FOSSIL_KABUTOPS ;
+	jr z, .skipCry ;
+	cp FOSSIL_AERODACTYL ;
+	jr z, .skipCry ;
+	call PlayCry ;
+.skipCry ;
 	call WaitForTextScrollButtonPress
 	call LoadScreenTilesFromBuffer1
 	call Delay3

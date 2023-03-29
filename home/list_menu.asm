@@ -31,7 +31,7 @@ DisplayListMenuID::
 	call DisplayTextBoxID ; draw the menu text box
 	call UpdateSprites ; disable sprites behind the text box
 ; the code up to .skipMovingSprites appears to be useless
-	hlcoord 4, 2 ; coordinates of upper left corner of menu text box
+	hlcoord 5, 2 ;hlcoord 4, 2 ; coordinates of upper left corner of menu text box
 	lb de, 9, 14 ; height and width of menu text box
 	ld a, [wListMenuID]
 	and a ; PCPOKEMONLISTMENU?
@@ -416,7 +416,7 @@ PrintListMenuEntries::
 	ld [wcf91], a
 	call GetItemPrice ; get price
 	pop hl
-	ld bc, SCREEN_WIDTH + 5 ; 1 row down and 5 columns right
+	ld bc, 6; ld bc, SCREEN_WIDTH + 5 ; 1 row down and 5 columns right
 	add hl, bc
 	ld c, $a3 ; no leading zeroes, right-aligned, print currency symbol, 3 bytes
 	call PrintBCDNumber
@@ -454,7 +454,7 @@ PrintListMenuEntries::
 	ld [wLoadedMonLevel], a
 .skipCopyingLevel
 	pop hl
-	ld bc, $1c
+	ld bc, $0008 ;ld bc, $1c
 	add hl, bc
 	call PrintLevel
 	pop af
@@ -474,7 +474,7 @@ PrintListMenuEntries::
 	and a ; is the item unsellable?
 	jr nz, .skipPrintingItemQuantity ; if so, don't print the quantity
 	push hl
-	ld bc, SCREEN_WIDTH + 8 ; 1 row down and 8 columns right
+	ld bc, 10 ;ld bc, SCREEN_WIDTH + 8 ; 1 row down and 8 columns right
 	add hl, bc
 	ld a, "×"
 	ld [hli], a
@@ -523,4 +523,4 @@ PrintListMenuEntries::
 	jp PlaceString
 
 ListMenuCancelText::
-	db "CANCEL@"
+	db "CANCE@"

@@ -1253,13 +1253,16 @@ Audio2_InitPitchSlideVars:
 ; This means that the result will be 0x200 greater than it should be if the
 ; low byte of the current frequency is greater than the low byte of the
 ; target frequency.
-	ld a, d
-	sbc b
-	ld d, a
-
+	; PKMNRB_Fix 02
+	; ld a, d
+	; sbc b
+	; ld d, a
+	push af ;
 	ld hl, wChannelPitchSlideTargetFrequencyHighBytes
 	add hl, bc
+	pop af ;
 	ld a, [hl]
+	sbc b ;
 	sub d
 	ld d, a
 	ld b, 0

@@ -25,6 +25,7 @@ StartMenu_Pokemon::
 	jr nc, .chosePokemon
 .exitMenu
 	call GBPalWhiteOutWithDelay3
+	call ReloadMapData ; CHS_Fix 28 eloadMapData
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
 	jp RedisplayStartMenu
@@ -99,7 +100,7 @@ StartMenu_Pokemon::
 	ld [wMonDataLocation], a
 	predef StatusScreen
 	predef StatusScreen2
-	call ReloadMapData
+	; call ReloadMapData
 	jp StartMenu_Pokemon
 .choseOutOfBattleMove
 	push hl
@@ -273,6 +274,7 @@ StartMenu_Pokemon::
 	text_far _NotHealthyEnoughText
 	text_end
 .goBackToMap
+	call ReloadMapData
 	call RestoreScreenTilesAndReloadTilePatterns
 	jp CloseTextDisplay
 .newBadgeRequired
@@ -307,6 +309,18 @@ StartMenu_Item::
 	call PrintText
 	jr .exitMenu
 .notInCableClubRoom
+	coord hl, 11, 1
+	ld b, 1
+	ld c, 8
+	call ClearScreenArea
+
+	CheckEvent EVENT_GOT_POKEDEX
+	jr z,.notHavingPokedex
+	coord hl, $0B, $0D
+	ld b, 2
+	ld c, 8
+	call ClearScreenArea
+.notHavingPokedex
 	ld bc, wNumBagItems
 	ld hl, wListPointer
 	ld a, c
@@ -413,6 +427,7 @@ StartMenu_Item::
 	cp $02
 	jp z, .partyMenuNotDisplayed
 	call GBPalWhiteOutWithDelay3
+	call ReloadMapData ;CHS_FIX 29 for reloading Maps after closing party Menu
 	call RestoreScreenTilesAndReloadTilePatterns
 	pop af
 	ld [wUpdateSpritesEnabled], a
@@ -462,6 +477,12 @@ StartMenu_TrainerInfo::
 	predef DrawBadges ; draw badges
 	ld b, SET_PAL_TRAINER_CARD
 	call RunPaletteCommand
+
+	; PKMNRB_Fix 03 Trainer Card transition screens can show brief garbage on DMG
+	ld a, [wOnSGB] ;
+	and a ;
+	call z, Delay3 ; 
+	
 	call GBPalNormal
 	call WaitForTextScrollButtonPress ; wait for button press
 	call GBPalWhiteOut
@@ -469,6 +490,12 @@ StartMenu_TrainerInfo::
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	call RunDefaultPaletteCommand
 	call ReloadMapData
+
+	; PKMNRB_Fix 03 Trainer Card transition screens can show brief garbage on DMG
+	ld a, [wOnSGB] ;
+	and a ;
+	call z, Delay3;
+
 	call LoadGBPal
 	pop af
 	ldh [hTileAnimations], a
@@ -476,6 +503,7 @@ StartMenu_TrainerInfo::
 
 ; loads tile patterns and draws everything except for gym leader faces / badges
 DrawTrainerInfo:
+	callfar dfsClearCache
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $01
 	predef DisplayPicCenteredOrUpperRight
@@ -541,13 +569,13 @@ DrawTrainerInfo:
 	call TrainerInfo_DrawVerticalLine
 	hlcoord 19, 10
 	call TrainerInfo_DrawVerticalLine
-	hlcoord 6, 9
+	hlcoord 5, 9 ;hlcoord 6, 9
 	ld de, TrainerInfo_BadgesText
 	call PlaceString
 	hlcoord 2, 2
 	ld de, TrainerInfo_NameMoneyTimeText
 	call PlaceString
-	hlcoord 7, 2
+	hlcoord 6, 2 ;hlcoord 7, 2
 	ld de, wPlayerName
 	call PlaceString
 	hlcoord 8, 4

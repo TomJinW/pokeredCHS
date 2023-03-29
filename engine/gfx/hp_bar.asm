@@ -13,6 +13,7 @@ GetHPBarLength:
 	ld a, c
 	ld [hli], a
 	ld [hl], $30
+.callMultiply ; CHS_Fix 17
 	call Multiply      ; 48 * bc (hp bar is 48 pixels long)
 	ld a, d
 	and a
@@ -213,13 +214,18 @@ UpdateHPBar_PrintHPNumber:
 	ld a, [wHPBarOldHP + 1]
 	ld [wHPBarTempHP], a
 	push hl
-	ldh a, [hUILayoutFlags]
-	bit 0, a
-	jr z, .hpBelowBar
-	ld de, $9
-	jr .next
-.hpBelowBar
-	ld de, $15
+	ld de, $15 ; CHS_Fix 18 
+	ld a, [wHPBarType] ; CHS_Fix 18 
+	cp a, $2 ; CHS_Fix 18 
+	; ldh a, [hUILayoutFlags] 
+	; bit 0, a ; CHS_Fix 18 
+	; jr z, .hpBelowBar ; CHS_Fix 18 
+	; ld de, $9 ; CHS_Fix 18 
+	; jr .next ; CHS_Fix 18 
+	jr nz, .next ; CHS_Fix 18 
+	ld de, -SCREEN_WIDTH ; CHS_Fix 18 
+; .hpBelowBar ; CHS_Fix 18 
+; 	ld de, $15 ; CHS_Fix 18 
 .next
 	add hl, de
 	push hl
@@ -263,6 +269,163 @@ UpdateHPBar_CalcOldNewHPBarPixels:
 	pop bc
 	push af
 	call GetHPBarLength ; calc num pixels for new HP
+	pop af
+	ld d, e
+	ld e, a
+	pop hl
+	ret
+
+; predef new
+ShortHPBarLength:
+	call GetPredefRegisters
+GetShortHPBarLength:
+	push hl
+	xor a
+	ld hl, hMultiplicand
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, c
+	ld [hli], a
+	ld [hl], 32
+	jp GetHPBarLength.callMultiply
+
+; predef new
+UpdateShortHPBar:
+	push hl
+	ld hl, wHPBarOldHP
+	ld a, [hli]
+	ld c, a      ; old HP into bc
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld e, a      ; new HP into de
+	ld d, [hl]
+	pop hl
+	push de
+	push bc
+	call UpdateHPBar_CalcHPDifference
+	ld a, e
+	ld [wHPBarHPDifference+1], a
+	ld a, d
+	ld [wHPBarHPDifference], a
+	pop bc
+	pop de
+	call UpdateHPBar_CompareNewHPToOldHP
+	ret z
+	ld a, $ff
+	jr c, .HPdecrease
+	ld a, $1
+.HPdecrease
+	ld [wHPBarDelta], a
+	call GetPredefRegisters
+	ld a, [wHPBarNewHP]
+	ld e, a
+	ld a, [wHPBarNewHP+1]
+	ld d, a
+.animateHPBarLoop
+	push de
+	ld a, [wHPBarOldHP]
+	ld c, a
+	ld a, [wHPBarOldHP+1]
+	ld b, a
+	call UpdateHPBar_CompareNewHPToOldHP
+	jr z, .animateHPBarDone
+	jr nc, .HPIncrease
+; HP decrease
+	dec bc        ; subtract 1 HP
+	ld a, c
+	ld [wHPBarNewHP], a
+	ld a, b
+	ld [wHPBarNewHP+1], a
+	call UpdateShortHPBar_CalcOldNewHPBarPixels
+	ld a, e
+	sub d         ; calc pixel difference
+	jr .ok
+.HPIncrease
+	inc bc        ; add 1 HP
+	ld a, c
+	ld [wHPBarNewHP], a
+	ld a, b
+	ld [wHPBarNewHP+1], a
+	call UpdateShortHPBar_CalcOldNewHPBarPixels
+	ld a, d
+	sub e         ; calc pixel difference
+.ok
+	call UpdateHPBar_PrintHPNumber
+	and a
+	jr z, .noPixelDifference
+	call UpdateShortHPBar_AnimateHPBar
+.noPixelDifference
+	ld a, [wHPBarNewHP]
+	ld [wHPBarOldHP], a
+	ld a, [wHPBarNewHP+1]
+	ld [wHPBarOldHP+1], a
+	pop de
+	jr .animateHPBarLoop
+.animateHPBarDone
+	pop de
+	ld a, e
+	ld [wHPBarOldHP], a
+	ld a, d
+	ld [wHPBarOldHP+1], a
+	or e
+	jr z, .monFainted
+	call UpdateShortHPBar_CalcOldNewHPBarPixels
+	ld d, e
+.monFainted
+	call UpdateHPBar_PrintHPNumber
+	ld a, $1
+	call UpdateShortHPBar_AnimateHPBar
+	jp Delay3
+
+UpdateShortHPBar_AnimateHPBar:
+	push hl
+.barAnimationLoop
+	push af
+	push de
+	ld d, $4
+	call DrawHPBar
+	ld c, 2
+	call DelayFrames
+	pop de
+	ld a, [wHPBarDelta] ; +1 or -1
+	add e
+	cp 32 + 1
+	jr nc, .barFilledUp
+	ld e, a
+	pop af
+	dec a
+	jr nz, .barAnimationLoop
+	pop hl
+	ret
+.barFilledUp
+	pop af
+	pop hl
+	ret
+
+UpdateShortHPBar_CalcOldNewHPBarPixels:
+	push hl
+	ld hl, wHPBarMaxHP
+	ld a, [hli]  ; max HP into de
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli]  ; old HP into bc
+	ld c, a
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]  ; new HP into hl
+	ld h, [hl]
+	ld l, a
+	push hl
+	push de
+	call GetShortHPBarLength ; calc num pixels for old HP
+	ld a, e
+	pop de
+	pop bc
+	push af
+	call GetShortHPBarLength ; calc num pixels for new HP
 	pop af
 	ld d, e
 	ld e, a

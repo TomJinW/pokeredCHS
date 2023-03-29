@@ -197,6 +197,13 @@ HandlePokedexListMenu:
 	hlcoord 16, 10
 	ld de, PokedexMenuItemsText
 	call PlaceString
+	ld a, $31
+	lb bc, 10, 3
+	coord hl, 16, 7
+	call DFSStaticize
+	lb bc, 5, 3
+	coord hl, 15, 0
+	call DFSStaticize
 ; find the highest pokedex number among the pokemon the player has seen
 	ld hl, wPokedexSeenEnd - 1
 	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
@@ -454,6 +461,12 @@ ShowPokedexDataInternal:
 	hlcoord 9, 2
 	call PlaceString
 
+	;CHS_Fix 26 Pokedex
+	ld a, $31
+	lb bc, 8, 10 ;
+	coord hl, 9, 1 ;
+	call DFSStaticize ;
+
 	ld hl, PokedexEntryPointers
 	ld a, [wd11e]
 	dec a
@@ -515,17 +528,17 @@ ShowPokedexDataInternal:
 	jp z, .waitForButtonPress ; if the pokemon has not been owned, don't print the height, weight, or description
 	inc de ; de = address of feet (height)
 	ld a, [de] ; reads feet, but a is overwritten without being used
-	hlcoord 12, 6
+	hlcoord 13, 6 ;hlcoord 12, 6
 	lb bc, 1, 2
 	call PrintNumber ; print feet (height)
-	ld a, "′"
+	ld a, $F2; ld a, "′"
 	ld [hl], a
 	inc de
 	inc de ; de = address of inches (height)
-	hlcoord 15, 6
-	lb bc, LEADING_ZEROES | 1, 2
+	hlcoord 10, 6 ;hlcoord 15, 6
+	lb bc,   1, 1 ;lb bc, LEADING_ZEROES | 1, 2
 	call PrintNumber ; print inches (height)
-	ld a, "″"
+	ld a, $61; ld a, "″"
 	ld [hl], a
 ; now print the weight (note that weight is stored in tenths of pounds internally)
 	inc de

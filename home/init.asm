@@ -20,77 +20,85 @@ DEF rLCDC_DEFAULT EQU %11100011
 
 	di
 
-	xor a
-	ldh [rIF], a
-	ldh [rIE], a
-	ldh [rSCX], a
-	ldh [rSCY], a
-	ldh [rSB], a
-	ldh [rSC], a
-	ldh [rWX], a
-	ldh [rWY], a
-	ldh [rTMA], a
-	ldh [rTAC], a
-	ldh [rBGP], a
-	ldh [rOBP0], a
-	ldh [rOBP1], a
-
-	ld a, rLCDC_ENABLE_MASK
-	ldh [rLCDC], a
-	call DisableLCD
-
-	ld sp, wStack
-
-	ld hl, WRAM0_Begin
-	ld bc, WRAM1_End - WRAM0_Begin
-.loop
-	ld [hl], 0
-	inc hl
-	dec bc
-	ld a, b
-	or c
-	jr nz, .loop
-
-	call ClearVram
-
-	ld hl, HRAM_Begin
-	ld bc, HRAM_End - HRAM_Begin
-	call FillMemory
-
-	call ClearSprites
-
+	ld a, BANK(Init_home2)
+	ld [MBC1RomBank], a
+	jp Init_home2
+home2_ret::
 	ld a, BANK(WriteDMACodeToHRAM)
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
-	call WriteDMACodeToHRAM
 
-	xor a
-	ldh [hTileAnimations], a
-	ldh [rSTAT], a
-	ldh [hSCX], a
-	ldh [hSCY], a
-	ldh [rIF], a
-	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
-	ldh [rIE], a
+	; xor a
+	; ldh [rIF], a
+	; ldh [rIE], a
+	; ldh [rSCX], a
+	; ldh [rSCY], a
+	; ldh [rSB], a
+	; ldh [rSC], a
+	; ldh [rWX], a
+	; ldh [rWY], a
+	; ldh [rTMA], a
+	; ldh [rTAC], a
+	; ldh [rBGP], a
+	; ldh [rOBP0], a
+	; ldh [rOBP1], a
 
-	ld a, 144 ; move the window off-screen
-	ldh [hWY], a
-	ldh [rWY], a
-	ld a, 7
-	ldh [rWX], a
+; 	ld a, rLCDC_ENABLE_MASK
+; 	ldh [rLCDC], a
+; 	call DisableLCD
 
-	ld a, CONNECTION_NOT_ESTABLISHED
-	ldh [hSerialConnectionStatus], a
+; 	ld sp, wStack
 
-	ld h, HIGH(vBGMap0)
-	call ClearBgMap
-	ld h, HIGH(vBGMap1)
-	call ClearBgMap
+; 	ld hl, WRAM0_Begin
+; 	ld bc, WRAM1_End - WRAM0_Begin
+; .loop
+; 	ld [hl], 0
+; 	inc hl
+; 	dec bc
+; 	ld a, b
+; 	or c
+; 	jr nz, .loop
 
-	ld a, rLCDC_DEFAULT
-	ldh [rLCDC], a
-	ld a, 16
-	ldh [hSoftReset], a
+; 	call ClearVram
+
+; 	ld hl, HRAM_Begin
+; 	ld bc, HRAM_End - HRAM_Begin
+; 	call FillMemory
+
+; 	call ClearSprites
+
+; 	ld a, BANK(WriteDMACodeToHRAM)
+; 	ldh [hLoadedROMBank], a
+; 	ld [MBC1RomBank], a
+; 	call WriteDMACodeToHRAM
+
+; 	xor a
+; 	ldh [hTileAnimations], a
+; 	ldh [rSTAT], a
+; 	ldh [hSCX], a
+; 	ldh [hSCY], a
+; 	ldh [rIF], a
+; 	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
+; 	ldh [rIE], a
+
+; 	ld a, 144 ; move the window off-screen
+; 	ldh [hWY], a
+; 	ldh [rWY], a
+; 	ld a, 7
+; 	ldh [rWX], a
+
+; 	ld a, CONNECTION_NOT_ESTABLISHED
+; 	ldh [hSerialConnectionStatus], a
+
+; 	ld h, HIGH(vBGMap0)
+; 	call ClearBgMap
+; 	ld h, HIGH(vBGMap1)
+; 	call ClearBgMap
+
+; 	ld a, rLCDC_DEFAULT
+; 	ldh [rLCDC], a
+; 	ld a, 16
+; 	ldh [hSoftReset], a
 	call StopAllSounds
 
 	ei

@@ -63,11 +63,11 @@ GetMachineName::
 	add NUM_HMS
 	ld [wd11e], a
 	ld hl, HiddenPrefix ; points to "HM"
-	ld bc, 2
+	ld bc, 2 ; TM Length
 	jr .WriteMachinePrefix
 .WriteTM
 	ld hl, TechnicalPrefix ; points to "TM"
-	ld bc, 2
+	ld bc, 2 ; TM Length
 .WriteMachinePrefix
 	ld de, wcd6d
 	call CopyData

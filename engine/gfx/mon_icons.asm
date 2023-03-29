@@ -235,7 +235,7 @@ WriteMonPartySpriteOAM:
 ; Write the OAM blocks for the first animation frame into the OAM buffer and
 ; make a copy at wMonPartySpritesSavedOAM.
 	push af
-	ld c, $10
+	ld c, $0d ;ld c, $10
 	ld h, HIGH(wShadowOAM)
 	ldh a, [hPartyMonIndex]
 	swap a

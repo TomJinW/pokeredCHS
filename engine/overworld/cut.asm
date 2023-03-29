@@ -40,6 +40,7 @@ UsedCut:
 	ld a, SCREEN_HEIGHT_PX
 	ldh [hWY], a
 	call Delay3
+	call ReloadMapData
 	call LoadGBPal
 	call LoadCurrentMapView
 	call SaveScreenTilesToBuffer2
