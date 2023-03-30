@@ -1,0 +1,10 @@
+text/PalletTown.asm
+text/ViridianCity.asm
+text/PewterCity.asm
+text/CeruleanCity.asm
+text/LavenderTown.asm
+text/VermilionCity.asm
+text/CeladonCity.asm
+text/FuchsiaCity.asm
+text/CinnabarIsland.asm
+text/SaffronCity.asm
