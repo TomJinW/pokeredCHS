@@ -1895,7 +1895,7 @@ DrawEnemyHUDAndHPBar:
 	callfar PlaceEnemyHUDTiles
 	ld de, wEnemyMonNick
 	; hlcoord 1, 0
-	hlcoord 1, 0 ; CHS_Fix 03
+	hlcoord 0, 1 ; CHS_Fix 03
 	call CenterMonName
 	call PlaceString
 	; hlcoord 4, 1 CHS_Fix 03
