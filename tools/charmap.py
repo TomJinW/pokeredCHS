@@ -39,7 +39,8 @@ def replaceText(text,dictionary):
                 ending = ''
             result += dictionary[char]+ending
         else:
-            print('Code Table Not Found!')
+            print(text)
+            print(char + ' : Code Table Not Found!')
     return result + ' ; ' + text
 
 def readCharMaps():

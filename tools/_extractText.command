@@ -1,11 +1,14 @@
 filepath=$(cd "$(dirname "$0")"; pwd)
 cd "$filepath"
 
-# python3 ./_extractText.py ./__exporterList/towns.txt ./__exporterText/towns.xlsx
-# python3 ./_extractText.py ./__exporterList/buildingsA.txt ./__exporterText/buildingsA.xlsx
-# python3 ./_extractText.py ./__exporterList/buildingsB.txt ./__exporterText/buildingsB.xlsx
-python3 ./_extractText.py ./__exporterList/indoor.txt ./__exporterText/indoor.xlsx
-python3 ./_extractText.py ./__exporterList/routes.txt ./__exporterText/routes.xlsx
-# python3 ./_extractText.py ./__exporterList/roots.txt ./__exporterText/roots.xlsx
+python3 ./tools/_extractText.py ./__exporterList/towns.txt ./xlsx/towns.xlsx
+python3 ./tools/_extractText.py ./__exporterList/dex.txt ./xlsx/dex.xlsx
+python3 ./tools/_extractText.py ./__exporterList/core.txt ./xlsx/core.xlsx
 
-# python3 ./_extractText.py ./__exporterList/pokedex.txt ./__exporterText/pokedex.xlsx
+python3 ./tools/_extractText.py ./__exporterList/buildingsA.txt ./xlsx/buildingsA.xlsx
+python3 ./tools/_extractText.py ./__exporterList/buildingsB.txt ./xlsx/buildingsB.xlsx
+python3 ./tools/_extractText.py ./__exporterList/indoor.txt ./xlsx/indoor.xlsx
+python3 ./tools/_extractText.py ./__exporterList/routes.txt ./xlsx/routes.xlsx
+
+
+# python3 ./tools/_extractText.py ./__exporterList/pokedex.txt ./xlsx/pokedex.xlsx

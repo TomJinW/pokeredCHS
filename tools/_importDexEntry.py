@@ -49,7 +49,11 @@ charMap = charmap.readCharMaps()
 for sheet in wb._sheets:
 	# Get init File Path
     filePath = sheet.cell(row=1, column=1).value
+    print()
+    print()
+    print('Importing Dex Entries')
     print(filePath)
+    print('.............')
 	# Backup Original Files
     addFilePaths(filePath)
     textLines = readTextFileLines(filePath)

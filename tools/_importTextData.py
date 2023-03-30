@@ -22,7 +22,7 @@ def addFilePaths(path):
     if not path in filePaths:
         filePaths.append(path)
         os.makedirs(os.path.dirname(tmp+path), exist_ok=True)
-        shutil.copyfile(path,tmp+path)
+        
 
 def readTextFile(path):
     file = open(path,"r")
@@ -95,10 +95,7 @@ for sheet in wb._sheets:
         f.write(text2Modify)
 # input(bcolors.OKGREEN + "Any key..")
 print(bcolors.OKGREEN)
-input("Any key..")
-os.system("make --always-make RGBDS=rgbds-061/")
+input("Press Return to proceed..")
 
 
 
-for path in filePaths:
-    shutil.copyfile(tmp+path,path)

@@ -1,6 +1,8 @@
 ; $00-$17 are TX_* constants (see macros/scripts/text.asm)
 
 ; Control characters (see home/text.asm)
+	charmap "ć",    $52
+	charmap "č",    $53
 
 	charmap "<NULL>",    $00
 	charmap "<PAGE>",    $49
