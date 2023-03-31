@@ -39,7 +39,7 @@ def removeNone(text):
     return text
 
 def isChinese(_char):
-    if _char == '…' or _char == '　' or _char == '！' or _char == '？' or _char == '：' or _char == '。':
+    if _char == '…' or _char == '　' or _char == '！' or _char == '？' or _char == '：' or _char == '。' or _char == '，':
         return True
     return '\u4e00' <= _char <= '\u9fa5'
 
@@ -98,10 +98,18 @@ def getLabelType(label):
         if components[-1].lower() == 'start':
             return 3
 
+def ifTextContains(text,list):
+    tmp = removeNone(text)
+    for item in list:
+        if item in tmp:
+            return True
+    return False
+
 # ifOverLength('我大意了。',64)
 # exit(0)
 textCommands=['page','text','line','cont','para','next']
 textPlacerCommands=['text_ram','text_decimal','text_bcd']
+textOldPlacerCommands=['TX_RAM','TX_NUM','TX_BCD']
 # charmap "%",$2EB8 ;PP
 # charmap "&", $5D ;训练家
 # charmap "+", $5E ;火箭队
@@ -109,16 +117,17 @@ textPlacerCommands=['text_ram','text_decimal','text_bcd']
 # charmap "~", $56 ;......
 textReplacement = {'#MON':'#','#':'宝可梦','&':'训练家'}
 #textRevReplacement = {'宝可梦':'#','训练家':'&','火箭队':'+','#MON':'#','招式学习器':'^','……':'~'}
-textRevReplacement = {'<PLAYER>':'ć','<RIVAL>':'č','宝可梦':'#','&':'训练家','#MON':'#','+':'火箭队'}
+textRevReplacement = {'宝可梦':'#','&':'训练家','#MON':'#','+':'火箭队'}
+chsReplacement = {'<PLAYER>':'ć','<RIVAL>':'č','<USER>':'犇','<TARGET>':'骉'}
 def getInstType(inst):
     if inst == None:
         return -1
-    for cmd in textCommands:
-        if cmd in inst:
-            return 0
     for cmd in textPlacerCommands:
         if inst == cmd:
             return 1
+    for cmd in textCommands:
+        if cmd in inst:
+            return 0
     return -2
 
 def replaceText(text,dict):
@@ -128,8 +137,10 @@ def replaceText(text,dict):
     return output
 
 
-def textFormat(text,mode):
+def textFormat(text,mode,isCHS):
     output = replaceText(removeNone(text),textRevReplacement)
+    if isCHS:
+        output = replaceText(removeNone(output),chsReplacement)
     if mode == 0:
         return '\"' + output + '\"'
     return output
@@ -178,12 +189,20 @@ for sheet in wb._sheets:
         labelType = getLabelType(label)
 
         if labelType == 0:
+            if sheet.cell(row=id, column=mode + 1).value != None:
+                print(bcolors.WARNING + '警告！')
+                print(xlsxListPath)
+                print(sheet.title)
+                print(label)
+                print(sheet.cell(row=id, column=mode + 1).value)
+                print('标签有多余内容！\n')
             outputText += label + '\n'
             if 'EndBattleText'.upper() in label.upper():
                 text = sheet.cell(row=id+1, column=mode + 2).value
                 if ifOverLength(text,8*8):
                     sheet.cell(row=id+1, column=mode + 2).fill = warningFill
                     print(bcolors.WARNING + '警告！战斗结束文本 in')
+                    print(sheet.title)
                     print(xlsxListPath)
                     print(label)
                     print(text)
@@ -199,12 +218,36 @@ for sheet in wb._sheets:
         else:
             inst = sheet.cell(row=id, column=mode + 1).value
             content = sheet.cell(row=id, column=mode + 2).value
-
+            if ifTextContains(inst,textOldPlacerCommands):
+                print(bcolors.FAIL + '警告！')
+                print(xlsxListPath)
+                print(sheet.title)
+                print(inst)
+                print(content)
+                print('包含非法内容！\n')
+            
+            # if '@@' in removeNone(content):
+            #     print(bcolors.OKBLUE + '提醒：')
+            #     print(xlsxListPath)
+            #     print(sheet.title)
+            #     print(inst)
+            #     print(content)
+            #     print('包含@@！\n，可能是老文本！\n')
+            
+            # if inst == 'text' and content == None:
+            #     print(bcolors.OKBLUE + '提醒：')
+            #     print(xlsxListPath)
+            #     print(sheet.title)
+            #     print(inst)
+            #     sheet.cell(row=id, column=mode + 1).value = 'text_start'
+            #     print('有空白 text \n，可能是老文本！\n')
             instType = getInstType(inst)
+            # print(inst)
+            # print(instType)
             if instType == 0 or instType == 1:
-                textline = textFormat(content,instType)
+                textline = textFormat(content,instType,False)
                 if ifContainsChinese(textline):
-                    textline = charmap.replaceText(textFormat(content,1),charMap)
+                    textline = charmap.replaceText(textFormat(content,1,True),charMap)
             
                 outputText += '\t' + inst + ' ' + textline.replace('\"\"','') + '\n'
                 lengthchk = replaceText(content,textReplacement)
@@ -222,11 +265,11 @@ for sheet in wb._sheets:
                     # else:
                     #     sheet.cell(row=id, column=mode + 2).fill = noFill
 
-                    if ifcontains(content):
-                        print(bcolors.OKBLUE + '提醒！')
-                        print(xlsxListPath)
-                        print(sheet.title)
-                        print('' + replaceText(content,textReplacement) + '\n含有半角符号！\n')
+                    # if ifcontains(content):
+                    #     print(bcolors.OKBLUE + '提醒！')
+                    #     print(xlsxListPath)
+                    #     print(sheet.title)
+                    #     print('' + replaceText(content,textReplacement) + '\n含有半角符号！\n')
                 if instType == 1:
                     lastContent = sheet.cell(row=id - 1, column=mode + 2).value
                     if lastContent == None:
@@ -235,6 +278,7 @@ for sheet in wb._sheets:
                     if (lastInst != None and not '@' in lastContent):
                         print(bcolors.FAIL + '警告！')
                         print(id - 1)
+                        print(sheet.title)
                         print(xlsxListPath)
                         print(inst)
                         print(content)
@@ -249,6 +293,11 @@ for sheet in wb._sheets:
                 outputText += '\n'
         id += 1
     
+    if sheet.cell(row=id, column=mode + 1).value != None:
+        print(bcolors.WARNING + '提醒！')
+        print(xlsxListPath)
+        print(sheet.title)
+        print('末尾可能有其他符号！\n')
     with open(outputPath, 'w') as f:
         f.write(outputText)
 

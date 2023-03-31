@@ -50,7 +50,7 @@ for sheet in wb._sheets:
 	# Get init File Path
     filePath = sheet.cell(row=1, column=1).value
     print()
-    print()
+    print(bcolors.OKGREEN)
     print('Importing Dex Entries')
     print(filePath)
     print('.............')
@@ -101,5 +101,7 @@ for sheet in wb._sheets:
 
 
 
-
-
+print(bcolors.OKGREEN)
+print('Dex Entries Import Complete')
+print(filePath)
+print('.............')

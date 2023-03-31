@@ -45,6 +45,10 @@ filePaths = []
 
 charMap = charmap.readCharMaps()
 
+print()
+print(bcolors.OKGREEN)
+print('Importing db Data...')
+
 for sheet in wb._sheets:
     replacees = []
 	# Get init File Path
@@ -95,6 +99,8 @@ for sheet in wb._sheets:
         f.write(text2Modify)
 # input(bcolors.OKGREEN + "Any key..")
 print(bcolors.OKGREEN)
+print()
+print('db Data Import complete.')
 input("Press Return to proceed..")
 
 
