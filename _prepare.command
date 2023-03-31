@@ -19,6 +19,7 @@ python3 tools/_importText.py xlsx/dex.xlsx 5
 python3 tools/_importText.py xlsx/buildingsA.xlsx 5
 python3 tools/_importText.py xlsx/buildingsB.xlsx 5
 python3 tools/_importText.py xlsx/indoor.xlsx 5
+python3 tools/_importText.py xlsx/routes.xlsx 5
 
 python3 tools/_importText.py xlsx/core.xlsx 5
 
