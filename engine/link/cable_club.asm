@@ -407,10 +407,10 @@ TradeCenter_SelectMon:
 	call ClearScreenArea
 .playerMonMenu_HandleInput
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	set 2, [hl]
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	res 2, [hl]
 	and a ; was anything pressed?
 	jr nz, .playerMonMenu_SomethingPressed
 	jp .getNewInput
@@ -551,7 +551,7 @@ TradeCenter_SelectMon:
 	ld [hl], a
 .cancelMenuItem_Loop
 	ld a, "▶" ; filled arrow cursor
-	ldcoord_a 1, 16
+	ldcoord_a 1, 16 ; ldcoord_a 1, 16
 .cancelMenuItem_JoypadLoop
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
@@ -603,8 +603,10 @@ TradeCenter_DrawCancelBox:
 	ld a, $7e
 	ld bc, 2 * SCREEN_WIDTH + 9
 	call FillMemory
-	hlcoord 0, 15
-	ld b, 1
+	hlcoord 0, 14
+	; ld b, 1
+	; ld c, 9
+	ld b, 2
 	ld c, 9
 	call CableClub_TextBoxBorder
 	hlcoord 2, 16
@@ -633,24 +635,39 @@ TradeCenter_DisplayStats:
 	jp TradeCenter_DrawCancelBox
 
 TradeCenter_DrawPartyLists:
-	hlcoord 0, 0
-	ld b, 6
-	ld c, 18
+	; hlcoord 0, 0
+	; ld b, 6
+	; ld c, 18
+	hlcoord 0, 1
+	ld b, 12
+	ld c, 8
 	call CableClub_TextBoxBorder
-	hlcoord 0, 8
-	ld b, 6
-	ld c, 18
+	; hlcoord 0, 8
+	; ld b, 6
+	; ld c, 18
+	hlcoord $0A, 1
+	ld b, 12
+	ld c, 8
 	call CableClub_TextBoxBorder
-	hlcoord 5, 0
+	; hlcoord 5, 0
+	hlcoord 3, 1
 	ld de, wPlayerName
 	call PlaceString
-	hlcoord 5, 8
+	; hlcoord 5, 8
+	hlcoord $0D, 1
 	ld de, wLinkEnemyTrainerName
 	call PlaceString
-	hlcoord 2, 1
+	; hlcoord 2, 1
+	hlcoord 2, 3
 	ld de, wPartySpecies
 	call TradeCenter_PrintPartyListNames
-	hlcoord 2, 9
+	; hlcoord 2, 9
+
+	ld a, 0
+	lb bc, 12, 9
+	hlcoord 1, 2
+	call DFSStaticize
+	hlcoord $0C, 3
 	ld de, wEnemyPartySpecies
 	; fall through
 
@@ -673,7 +690,7 @@ TradeCenter_PrintPartyListNames:
 	pop de
 	inc de
 	pop hl
-	ld bc, 20
+	ld bc, 40
 	add hl, bc
 	pop bc
 	inc c
@@ -687,7 +704,7 @@ TradeCenter_Trade:
 	ld [wSerialExchangeNybbleReceiveData], a
 	ld [wMenuWatchMovingOutOfBounds], a
 	ld [wMenuJoypadPollCount], a
-	hlcoord 0, 12
+	hlcoord 0, 12 ;hlcoord 0, 12
 	ld b, 4
 	ld c, 18
 	call CableClub_TextBoxBorder
