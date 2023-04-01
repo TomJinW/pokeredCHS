@@ -356,8 +356,17 @@ INCLUDE "data/maps/objects/SafariZoneNorthRestHouse.asm"
 
 INCLUDE "data/maps/headers/CeruleanCave2F.asm"
 INCLUDE "scripts/CeruleanCave2F.asm"
+
 INCLUDE "data/maps/objects/CeruleanCave2F.asm"
 CeruleanCave2F_Blocks: INCBIN "maps/CeruleanCave2F.blk"
+; BLUE_FIX
+; IF DEF(_BLUE)
+; INCLUDE "data/maps/objects/CeruleanCave2F_b.asm"
+; CeruleanCave2F_Blocks: INCBIN "maps/CeruleanCave2F_b.blk"
+; ELSE
+; INCLUDE "data/maps/objects/CeruleanCave2F.asm"
+; CeruleanCave2F_Blocks: INCBIN "maps/CeruleanCave2F.blk"
+; ENDC
 
 INCLUDE "data/maps/headers/CeruleanCaveB1F.asm"
 INCLUDE "scripts/CeruleanCaveB1F.asm"

@@ -36,7 +36,8 @@ DEF NUM_NPC_TRADES EQU const_value
 ; InGameTradeTextPointers indexes (see engine/events/in_game_trades.asm)
 	const_def
 	const TRADE_DIALOGSET_CASUAL
-	const TRADE_DIALOGSET_EVOLUTION
+	; const TRADE_DIALOGSET_EVOLUTION
+	const TRADE_DIALOGSET_POLITE
 	const TRADE_DIALOGSET_HAPPY
 
 ; badges
