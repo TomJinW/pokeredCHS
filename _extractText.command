@@ -1,7 +1,7 @@
 filepath=$(cd "$(dirname "$0")"; pwd)
 cd "$filepath"
 
-# python3 ./tools/_extractText.py ./__exporterList/towns.txt ./xlsx/towns.xlsx
+# python3 ./tools/_extractText.py ./__exporterList/towns.txt ./xlsx/outdoor.xlsx
 # python3 ./tools/_extractText.py ./__exporterList/dex.txt ./xlsx/dex.xlsx
 # python3 ./tools/_extractText.py ./__exporterList/core.txt ./xlsx/core.xlsx
 

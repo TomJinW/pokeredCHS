@@ -71,7 +71,12 @@ if mode != 0:
 for path in filePaths:
     if mode == 0:
         print('Backing up: ' + path)
-        shutil.copyfile(path,tmp+path)
+        try:
+            shutil.copyfile(path,tmp+path)
+        except:
+            print('caught something that is not a file!')
+            print(path)
+       
     else:
         # print('Restoring: ' + path)
         try:

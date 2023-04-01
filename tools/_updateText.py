@@ -14,7 +14,6 @@ def readLines(filename):
 
 asmListPath = sys.argv[1]
 outputPath = sys.argv[2]
-updateMode = sys.argv[2]
 
 textCommands=['page','text','line','cont','para','next']
 def isTextCommand(component):
@@ -25,16 +24,18 @@ def isTextCommand(component):
 
 fileList = readLines(asmListPath)
 
-wb = Workbook()
-ws = wb.active
-ws.title = "Blank"
-blankWS = ws
-for file in fileList:
+wb = load_workbook(filename = outputPath)
+index = 0
+for i in range(len(fileList)):
+    file = fileList[index]
     fileName = file.split('/')[-1]
-    ws1 = wb.create_sheet(fileName.replace('\n','').replace('.asm',''))
+    ws1 = wb.get_sheet_by_name(fileName.replace('\n','').replace('.asm',''))
     lines = readLines(file.replace('\n',''))
 
-   
+    for row in ws1['A1:C2000']:
+        for cell in row:
+            cell.value = None
+
     ws1.column_dimensions['A'].width = 28
     ws1.column_dimensions['B'].width = 16
     ws1.column_dimensions['C'].width = 28
@@ -54,7 +55,6 @@ for file in fileList:
             if line1[-1] == ':':
                 # it's an asm label
                 ws1.cell(row=id, column=1, value = line1.replace('\n',''))
-                ws1.cell(row=id, column=5, value = line1.replace('\n',''))
             else:
                 
                 components = line1.split(part)
@@ -72,24 +72,15 @@ for file in fileList:
                     if True or isTextCommand(components[0]):
                         ws1.cell(row=id, column=2, value = components[0])
                         ws1.cell(row=id, column=3, value = components[1])
-                        
-                        ws1.cell(row=id, column=6, value = components[0])
-                        ws1.cell(row=id, column=7, value = components[1])
-                    else:
-                        ws1.cell(row=id, column=2, value = line1.replace('\n',''))
-                        ws1.cell(row=id, column=6, value = line1.replace('\n',''))
                 elif len(components) == 1:
                     ws1.cell(row=id, column=2, value = components[0])
-                    ws1.cell(row=id, column=6, value = components[0])
                 else:
                     ws1.cell(row=id, column=1, value = line1.replace('\n',''))
-                    ws1.cell(row=id, column=5, value = line1.replace('\n',''))
         id += 1
-
     ws1.cell(row=id, column=1, value = 'end')
-    ws1.cell(row=id, column=5, value = 'end')
+    index += 1
 
-wb.remove(blankWS)
+
 wb.save(outputPath)
 
 
