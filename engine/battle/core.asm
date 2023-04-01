@@ -2391,7 +2391,7 @@ PartyMenuOrRockOrRun:
 	call FillMemory ; CHS_Fix 06
 	hlcoord 11, 11
 	ld bc, 6 * SCREEN_WIDTH + 9
-	; ld a, " "  ; CHS_Fix 06
+	ld a, " "  ; CHS_Fix 06
 	call FillMemory
 	xor a ; NORMAL_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
