@@ -10,4 +10,5 @@ python3 tools/_checkValid.py xlsx/buildingsB.xlsx 1 5 0
 python3 tools/_checkValid.py xlsx/dex.xlsx 1 5 0
 python3 tools/_checkValid.py xlsx/outdoor.xlsx 1 5 0
 python3 tools/_checkValid.py xlsx/indoor.xlsx 1 5 0
+python3 tools/_checkValid.py xlsx/dexRGB.xlsx 1 5 0
 

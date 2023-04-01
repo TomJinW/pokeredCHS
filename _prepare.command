@@ -10,6 +10,8 @@ cp data.xlsx $filepath/xlsx/data.xlsx
 cp indoor.xlsx $filepath/xlsx/indoor.xlsx
 cp outdoor.xlsx $filepath/xlsx/outdoor.xlsx
 cp routes.xlsx $filepath/xlsx/routes.xlsx
+cp dex.xlsx $filepath/xlsx/dex.xlsx
+cp dexRGB.xlsx $filepath/xlsx/dexRGB.xlsx
 
 cd $filepath
 python3 tools/_backup.py xlsx/xlsxList.txt xlsx/ 0
