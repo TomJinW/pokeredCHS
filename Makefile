@@ -54,7 +54,7 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDARY:
 .PHONY: all red blue green blue_debug clean tidy compare tools
 
-all: $(roms)
+all: $(patches)
 red:        pokered.gbc
 blue:       pokeblue.gbc
 green:      pokegreen.gbc

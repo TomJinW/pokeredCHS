@@ -14,9 +14,6 @@ MACRO vc_hook_blue
 	IF DEF(_BLUE_VC)
 	.VC_\1::
 	ENDC
-ENDM
-
-MACRO vc_hook_green
 	IF DEF(_GREEN_VC)
 	.VC_\1::
 	ENDC

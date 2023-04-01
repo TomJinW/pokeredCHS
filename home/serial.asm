@@ -255,7 +255,7 @@ Serial_SyncAndExchangeNybble::
 	inc a
 	jr z, .loop1
 	vc_patch Wireless_net_delay_3
-IF DEF(_RED_VC) || DEF(_BLUE_VC)
+IF DEF(_RED_VC) || DEF(_BLUE_VC) || DEF(_GREEN_VC)
 	ld b, 26
 ELSE
 	ld b, 10
@@ -267,7 +267,7 @@ ENDC
 	dec b
 	jr nz, .loop2
 	vc_patch Wireless_net_delay_4
-IF DEF(_RED_VC) || DEF(_BLUE_VC)
+IF DEF(_RED_VC) || DEF(_BLUE_VC) || DEF(_GREEN_VC)
 	ld b, 26
 ELSE
 	ld b, 10
