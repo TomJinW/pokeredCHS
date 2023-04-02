@@ -179,7 +179,8 @@ def getInstDict(col,sheet,filePath):
 
 textStarterCommands=['text','text_start','text_ram','text_decimal','text_bcd','text $4c,','text "<_CONT>@"','vc_patch Change_link_closed_inactivity_message ']
 textStarterCommands2=['text','text_ram','text_decimal','text_bcd','next','page']
-textEndingCommands=['done','prompt','dex','text_end','page']
+textEndingCommands=['done','prompt','dex','text_end']
+textInstCommands=['text_ram','text_decimal','text_bcd']
 
 def ifTextIsInList(text,commands):
     for command in commands:
@@ -235,6 +236,13 @@ def checkDictValid(instDict):
             if ifTextContains(instruction.content,halfNumChars) and not ifTextIsInList(instruction.inst,textPlacerCommands):
                 printLog(InfoType.INFO,sheet,instruction,'发现半角数字！')
 
+def getCountInfoFrom(instructions):
+    count = [0,0,0,0,0,0,0,0,0,0]
+    for instruction in instructions:
+        for i in range(len(textInstCommands)):
+            if instruction.inst == textInstCommands[i]:
+                count[i] += 1
+    return (count[0],count[1],count[2])
 
 def compareDicts(origDict,transDict):
     for key in origDict:
@@ -243,6 +251,7 @@ def compareDicts(origDict,transDict):
         else:
             origInstructions = origDict[key]
             transInstructions = transDict[key]
+            # 检查结尾是否一致
             if len(origInstructions) > 0 and len(transInstructions) > 0:
                 inst1 = origInstructions[-1].inst.replace('text_end','text')
                 inst2 = origInstructions[-1].inst.replace('text_end','text')
@@ -250,6 +259,12 @@ def compareDicts(origDict,transDict):
                      printLog(InfoType.ERROR,sheet,origInstructions[-1],'结尾指令不一致！')
             else:
                 printLog(InfoType.INFO,sheet,None,key +'：标签为空白指令')
+
+            # 检查['text_ram','text_decimal','text_bcd']数量是否一致
+            origReplacerCount = getCountInfoFrom(origInstructions)
+            transReplacerCount = getCountInfoFrom(transInstructions)
+            if origReplacerCount != transReplacerCount:
+                printLog(InfoType.ERROR,sheet,origInstructions[0],'文本替代控制符号不一致！')
 
 xlsxListPath = sys.argv[1]
 colOrig = int(sys.argv[2])
@@ -270,6 +285,7 @@ for sheet in wb._sheets:
     TransDict = getInstDict(colTrans,sheet,xlsxListPath)
     checkDictValid(TransDict)
     compareDicts(origDict,TransDict)
+
 
 print('检查结束')
 print(bcolors.FAIL)

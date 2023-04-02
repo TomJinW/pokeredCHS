@@ -226,21 +226,24 @@ for sheet in wb._sheets:
                 print(content)
                 print('包含非法内容！\n')
             
-            # if '@@' in removeNone(content):
-            #     print(bcolors.OKBLUE + '提醒：')
-            #     print(xlsxListPath)
-            #     print(sheet.title)
-            #     print(inst)
-            #     print(content)
-            #     print('包含@@！\n，可能是老文本！\n')
-            
-            # if inst == 'text' and content == None:
-            #     print(bcolors.OKBLUE + '提醒：')
-            #     print(xlsxListPath)
-            #     print(sheet.title)
-            #     print(inst)
-            #     sheet.cell(row=id, column=mode + 1).value = 'text_start'
-            #     print('有空白 text \n，可能是老文本！\n')
+            if '@@' in removeNone(content):
+                print(bcolors.OKBLUE + '提醒：')
+                print(xlsxListPath)
+                print(sheet.title)
+                print(inst)
+                print(content)
+                print('包含@@！\n，可能是老文本！\n')
+                sheet.insert_rows(id + 1)
+                sheet.cell(row=id, column=mode + 2).value = content.replace('@@','@')
+                sheet.cell(row=id + 1, column=mode + 1).value = 'text_end'
+                id += 1
+            if inst == 'text' and content == None:
+                print(bcolors.OKBLUE + '提醒：')
+                print(xlsxListPath)
+                print(sheet.title)
+                print(inst)
+                sheet.cell(row=id, column=mode + 1).value = 'text_start'
+                print('有空白 text \n，可能是老文本！\n')
             instType = getInstType(inst)
             # print(inst)
             # print(instType)
@@ -301,7 +304,7 @@ for sheet in wb._sheets:
     with open(outputPath, 'w') as f:
         f.write(outputText)
 
-wb.save(xlsxListPath)
+# wb.save(xlsxListPath)
    
 
 
