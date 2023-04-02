@@ -7,6 +7,7 @@ roms := \
 
 patches := \
 	pokered.patch \
+	pokeblue_debug.gbc \
 	pokeblue.patch
 
 rom_obj := \
