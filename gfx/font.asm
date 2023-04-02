@@ -4,7 +4,12 @@ FontGraphicsEnd::
 
 ABTiles: INCBIN "gfx/font/AB.2bpp"
 
-HpBarAndStatusGraphics:: INCBIN "gfx/font/font_battle_extra.2bpp"
+HpBarAndStatusGraphics::
+IF DEF(_BLUE)
+INCBIN "gfx/font/font_battle_extra.2bpp"
+ELSE
+INCBIN "gfx/font/font_battle_extra_RG.2bpp"
+ENDC
 HpBarAndStatusGraphicsEnd::
 
 BattleHudTiles1: INCBIN "gfx/battle/battle_hud_1.1bpp"
