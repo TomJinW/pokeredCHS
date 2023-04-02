@@ -17,7 +17,7 @@ cd $filepath
 python3 tools/_backup.py xlsx/xlsxList.txt xlsx/ 0
 
 python3 tools/_importText.py xlsx/outdoor.xlsx 5
-python3 tools/_importText.py xlsx/dex.xlsx 5
+python3 tools/_importText.py xlsx/dexRGB.xlsx 5
 python3 tools/_importText.py xlsx/buildingsA.xlsx 5
 python3 tools/_importText.py xlsx/buildingsB.xlsx 5
 python3 tools/_importText.py xlsx/indoor.xlsx 5
