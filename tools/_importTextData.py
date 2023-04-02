@@ -37,6 +37,7 @@ tmp = 'tmp/'
 # Program Start
 xlsxListPath = sys.argv[1]
 mode = int(sys.argv[2])
+ver = sys.argv[3]
 
 # Load Workbook
 wb = load_workbook(filename = xlsxListPath)
@@ -49,10 +50,17 @@ print()
 print(bcolors.OKGREEN)
 print('Importing db Data...')
 
+def getIfSkipped(inputVer):
+    if inputVer == '':
+        return True
+    return inputVer != ver
+
 for sheet in wb._sheets:
     replacees = []
 	# Get init File Path
     filePath = sheet.cell(row=1, column=mode).value
+    tmpVer = removeNone(sheet.cell(row=1, column=mode + 2).value)
+    skipped = getIfSkipped(tmpVer)
     endChar = removeNone(sheet.cell(row=1, column=mode+1).value)
 	# Backup Original Files
     addFilePaths(filePath)
@@ -67,6 +75,8 @@ for sheet in wb._sheets:
                     f.write(text2Modify)
                 replacees = []
                 filePath = sheet.cell(row=id, column=mode).value
+                tmpVer = removeNone(sheet.cell(row=id, column=mode + 2).value)
+                skipped = getIfSkipped(tmpVer)
                 endChar = removeNone(sheet.cell(row=id, column=mode+1).value)
                 addFilePaths(filePath)
                 text2Modify = readTextFile(filePath)
@@ -76,7 +86,7 @@ for sheet in wb._sheets:
         replacee = removeNone(sheet.cell(row=id, column = mode + 1).value)
         replacer = removeNone(sheet.cell(row=id, column = mode + 2).value) + endChar
 
-        if replacee != '':
+        if replacee != '' and (not skipped):
             repetitive = False
             for currentsReplacee in replacees:
                 if replacee in currentsReplacee:
