@@ -85,6 +85,7 @@ def ifOverLength(text,maxPixels):
     return pixels > maxPixels
 
 halfNumChars = ['0','1','2','3','4','5','6','7','8','9']
+alphabet = 'abcdefghijklmnopqrstuvwxyz!?'
 def ifTextContains(text,list):
     tmp = removeNone(text)
     for item in list:
@@ -182,6 +183,7 @@ textStarterCommands2=['text','text_ram','text_decimal','text_bcd','next','page']
 textEndingCommands=['done','prompt','dex','text_end']
 textInstCommands=['text_ram','text_decimal','text_bcd']
 
+
 def ifTextIsInList(text,commands):
     for command in commands:
         if text == command:
@@ -235,7 +237,8 @@ def checkDictValid(instDict):
             #其他检查
             if ifTextContains(instruction.content,halfNumChars) and not ifTextIsInList(instruction.inst,textPlacerCommands):
                 printLog(InfoType.INFO,sheet,instruction,'发现半角数字！')
-
+            # if ifTextContains(instruction.content.lower(),alphabet) and not ifTextIsInList(instruction.inst,textPlacerCommands):
+            #     printLog(InfoType.INFO,sheet,instruction,'发现英文符号！')
 def getCountInfoFrom(instructions):
     count = [0,0,0,0,0,0,0,0,0,0]
     for instruction in instructions:
