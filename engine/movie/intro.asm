@@ -12,12 +12,12 @@ PlayIntro:
 	ldh [hAutoBGTransferEnabled], a
 	call PlayShootingStar
 	call PlayIntroScene
-IF DEF(_BLUE) ; jp Red and Green hung on the hit for much longer before fading
-	;nothing
-ELSE
-	ld c, 80
-	call DelayFrames
-ENDC
+; IF DEF(_BLUE) ; jp Red and Green hung on the hit for much longer before fading
+; 	;nothing
+; ELSE
+; 	ld c, 80
+; 	call DelayFrames
+; ENDC
 	call GBFadeOutToWhite
 	xor a
 	ldh [hSCX], a
