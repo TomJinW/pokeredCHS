@@ -23,9 +23,14 @@ ENDC
 GamefreakLogoGraphics: INCBIN "gfx/title/gamefreak_inc.2bpp"
 GamefreakLogoGraphicsEnd:
 
-TextBoxGraphics:: INCBIN "gfx/font/font_extra.2bpp"
+TextBoxGraphics:: 
+IF DEF(_BLUE)
+INCBIN "gfx/font/font_extra.2bpp"
+ELSE
+INCBIN "gfx/font/font_extra_RG.2bpp"
+ENDC
 TextBoxGraphicsEnd::
-
+    
 PokedexTileGraphics: INCBIN "gfx/pokedex/pokedex.2bpp"
 PokedexTileGraphicsEnd:
 
