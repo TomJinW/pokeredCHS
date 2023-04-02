@@ -12,6 +12,12 @@ PlayIntro:
 	ldh [hAutoBGTransferEnabled], a
 	call PlayShootingStar
 	call PlayIntroScene
+IF DEF(_BLUE) ; jp Red and Green hung on the hit for much longer before fading
+	;nothing
+ELSE
+	ld c, 80
+	call DelayFrames
+ENDC
 	call GBFadeOutToWhite
 	xor a
 	ldh [hSCX], a
@@ -19,12 +25,8 @@ PlayIntro:
 	call ClearSprites
 	call DelayFrame
 	ret
-IF DEF(_BLUE) ; jp Red and Green hung on the hit for much longer before fading
-	;nothing
-ELSE
-	ld c, 80
-	call DelayFrames
-ENDC
+
+
 PlayIntroScene:
 	ld b, SET_PAL_NIDORINO_INTRO
 	call RunPaletteCommand
@@ -36,7 +38,11 @@ PlayIntroScene:
 	ldh [hSCX], a
 	ld b, TILEMAP_GENGAR_INTRO_1
 	call IntroCopyTiles
+IF DEF(_BLUE)
 	ld a, 0
+ELSE ; Nidorino is 8px further over then Jiggly Puff in the JP Red and Green
+	ld a, 8
+ENDC
 	ld [wBaseCoordX], a
 	ld a, 80
 	ld [wBaseCoordY], a
