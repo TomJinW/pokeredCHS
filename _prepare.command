@@ -29,7 +29,7 @@ python3 tools/_importText.py xlsx/core.xlsx 5
 
 
 python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1
-python3 tools/_importTextData.py xlsx/data.xlsx 1
+python3 tools/_importTextData.py xlsx/data.xlsx 1 RB
 
 
 make --always-make RGBDS=rgbds-061/
