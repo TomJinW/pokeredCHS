@@ -178,6 +178,7 @@ def getInstDict(col,sheet,filePath):
     return outputDict
 
 textStarterCommands=['text','text_start','text_ram','text_decimal','text_bcd','text $4c,','text "<_CONT>@"','vc_patch Change_link_closed_inactivity_message ']
+textStarterCommands2=['text','text_ram','text_decimal','text_bcd','next','page']
 textEndingCommands=['done','prompt','dex','text_end']
 
 def ifTextIsInList(text,commands):
@@ -227,8 +228,8 @@ def checkDictValid(instDict):
             if '@@' in instruction.content:
                 printLog(InfoType.INFO,sheet,instruction,'发现旧工程文本@@！')
             
-            # if instruction.inst == 'text' and instruction.content == '':
-            #     printLog(InfoType.INFO,sheet,instruction,'发现旧工程text空白符号！')
+            if ifTextIsInList(instruction.inst,textStarterCommands2) and instruction.content == '':
+                printLog(InfoType.INFO,sheet,instruction,'发现空白内容！')
             
             #其他检查
             if ifTextContains(instruction.content,halfNumChars) and not ifTextIsInList(instruction.inst,textPlacerCommands):
