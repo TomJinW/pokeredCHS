@@ -314,7 +314,7 @@ PlaceCommandCharacter::
 ; PlacePKMNText::   db "<PK><MN>@"
 
 TMCharText::      db "TM@"
-TrainerCharText:: db "@"
+TrainerCharText:: db "TRAINER@"
 PCCharText::      db "@"
 RocketCharText::  db "@"
 PlacePOKeText::   db "POKé@"
