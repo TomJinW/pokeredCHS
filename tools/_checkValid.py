@@ -179,7 +179,7 @@ def getInstDict(col,sheet,filePath):
 
 textStarterCommands=['text','text_start','text_ram','text_decimal','text_bcd','text $4c,','text "<_CONT>@"','vc_patch Change_link_closed_inactivity_message ']
 textStarterCommands2=['text','text_ram','text_decimal','text_bcd','next','page']
-textEndingCommands=['done','prompt','dex','text_end']
+textEndingCommands=['done','prompt','dex','text_end','page']
 
 def ifTextIsInList(text,commands):
     for command in commands:
