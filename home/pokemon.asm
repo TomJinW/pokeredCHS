@@ -362,12 +362,12 @@ PrintLevelCommon::
 
 GetwMoves::
 ; Unused. Returns the move at index a from wMoves in a
-	ld hl, wMoves
-	ld c, a
-	ld b, 0
-	add hl, bc
-	ld a, [hl]
-	ret
+	; ld hl, wMoves
+	; ld c, a
+	; ld b, 0
+	; add hl, bc
+	; ld a, [hl]
+	; ret
 
 ; copies the base stat data of a pokemon to wMonHeader
 ; INPUT:
