@@ -14,7 +14,12 @@ TitleScroll_Out:
 ; Scroll a TitleMon out to the left.
 ; hi: speed
 ; lo: duration
+IF DEF(_BLUE)
 	db $12, $22, $32, $42, $52, $62, $83, $93, 0
+ELSE
+	db $12, $22, $32, $42, $52, $62, $83, $93, $a3, 0;
+	;added a3 at the end for a bit more scrolling
+ENDC
 
 TitleScroll:
 	ld a, d

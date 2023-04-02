@@ -8,8 +8,14 @@
 ; slot Mew in there. What we did would be unthinkable nowadays!"
 ; http://iwataasks.nintendo.com/interviews/#/ds/pokemon/0/0
 
+IF DEF(_BLUE)
 MewPicFront:: INCBIN "gfx/pokemon/front/mew.pic"
 MewPicBack::  INCBIN "gfx/pokemon/back/mewb.pic"
+
+ELSE
+MewPicFront:: INCBIN "gfx/pokemon/front_rg/mew.pic"
+MewPicBack::  INCBIN "gfx/pokemon/back/mewb.pic"
+ENDC
 
 MewBaseStats::
 INCLUDE "data/pokemon/base_stats/mew.asm"
