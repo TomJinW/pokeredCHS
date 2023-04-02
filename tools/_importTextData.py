@@ -52,7 +52,7 @@ print('Importing db Data...')
 
 def getIfSkipped(inputVer):
     if inputVer == '':
-        return True
+        return False
     return inputVer != ver
 
 for sheet in wb._sheets:
