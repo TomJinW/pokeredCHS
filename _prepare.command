@@ -32,6 +32,6 @@ python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1
 python3 tools/_importTextData.py xlsx/data.xlsx 1 RB
 
 
-make --always-make RGBDS=rgbds-061/
+./_build.command
 
 python3 tools/_backup.py xlsx/xlsxList.txt xlsx/ 1
