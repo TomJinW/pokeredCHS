@@ -21,9 +21,10 @@ class bcolors:
 
 xlsxListPath = sys.argv[1]
 mode = int(sys.argv[2])
+ver = sys.argv[3]
 extraTextPath = ''
-if len(sys.argv) > 3:
-    extraTextPath = sys.argv[3]
+if len(sys.argv) > 4:
+    extraTextPath = sys.argv[4]
 
 wb = load_workbook(filename = xlsxListPath)
 
@@ -187,6 +188,13 @@ for sheet in wb._sheets:
     while sheet.cell(row=id, column=mode).value != 'end' and id <= 10000:
         label = sheet.cell(row=id, column=mode).value
         labelType = getLabelType(label)
+
+        if mode - 1 > 0:
+            verValue = sheet.cell(row=id, column=mode - 1).value
+            if verValue != None:
+                if ver != verValue:
+                    id += 1
+                    continue
 
         if labelType == 0:
             if sheet.cell(row=id, column=mode + 1).value != None:
