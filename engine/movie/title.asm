@@ -448,7 +448,15 @@ INCLUDE "data/pokemon/title_mons.asm"
 
 ; prints version text (red, blue)
 PrintGameVersionOnTitleScreen:
+IF DEF (_RED)
 	hlcoord 7, 8
+ENDC
+IF DEF (_GREEN)
+	hlcoord 6, 8
+ENDC
+IF DEF (_BLUE)
+	hlcoord 7, 8
+ENDC
 	ld de, VersionOnTitleScreenText
 	jp PlaceString
 
