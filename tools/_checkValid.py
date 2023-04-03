@@ -138,6 +138,11 @@ def getInstDict(col,sheet,filePath):
     labels = []
     while sheet.cell(row=id, column=col).value != 'end' and id <= 10000:
         label = removeNone(sheet.cell(row=id, column=col).value)
+        if col - 1 > 0:
+            verVal = sheet.cell(row=id, column=col - 1).value
+            if verVal != None:
+                if verVal != 'RB' and verVal != 'RGB' and verVal != 'Y':
+                    printLog(InfoType.ERROR,sheet,None,'row '+ str(id) + '\ncol ' + str(col) + '\n的版本符号有误！ver:'+verVal)
         if ':' in label:
             labelrows.append(id)
             labels.append(label)
@@ -155,6 +160,8 @@ def getInstDict(col,sheet,filePath):
         for j in range(labelrows[i],labelrows[i + 1]):
             inst = sheet.cell(row=j, column=col + 1).value
             content = sheet.cell(row=j, column=col + 2).value
+            if sheet.cell(row=j, column=col + 3).value == 'MACRO':
+                continue
             if inst != None and not ';' in inst:
                 newInstructions = Instruction()
                 newInstructions.label = labels[i]
@@ -257,7 +264,11 @@ def compareDicts(origDict,transDict):
             # 检查结尾是否一致
             if len(origInstructions) > 0 and len(transInstructions) > 0:
                 inst1 = origInstructions[-1].inst.replace('text_end','text')
-                inst2 = origInstructions[-1].inst.replace('text_end','text')
+                inst2 = transInstructions[-1].inst.replace('text_end','text')
+                # print(origInstructions[0].label)
+                # print(inst1)
+                # print(inst2)
+                # print()
                 if inst1 != inst2:
                      printLog(InfoType.ERROR,sheet,origInstructions[-1],'结尾指令不一致！')
             else:
