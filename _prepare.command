@@ -23,7 +23,7 @@ python3 tools/_importText.py xlsx/buildingsB.xlsx 5 RGB
 python3 tools/_importText.py xlsx/indoor.xlsx 5 RGB
 python3 tools/_importText.py xlsx/routes.xlsx 5 RGB
 
-python3 tools/_importText.py xlsx/core.xlsx 5
+python3 tools/_importText.py xlsx/core.xlsx 5 RGB
 
 # python3 tools/_importText.py xlsx/routes.xlsx 5
 
