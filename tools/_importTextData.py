@@ -33,6 +33,36 @@ def removeNone(text):
         return ''
     return text
 
+def replaceTextwithCondition(text,replacee,replacer,lastRow):
+    
+    lines = text.split('\n')
+    output = ''
+    if len(lines) > 0:
+        output = lines[0] +' \n'
+    for i in range(1,len(lines)):
+        line = lines[i]
+        lastLine = lines[i - 1]
+        if lastRow in lastLine:
+            output += line.replace(replacee,replacer + ' from: ' + replacee) + '\n'
+        else:
+            output += line  + '\n'
+    return output
+# def replaceTextwithCondition(origText,text,replacee,replacer,lastRow):
+    
+#     lines = text.split('\n')
+#     origLines = origText.split('\n')
+#     output = ''
+#     if len(lines) > 0:
+#         output = lines[0] +' \n'
+#     for i in range(1,len(lines)):
+#         line = lines[i]
+#         lastLine = origLines[i - 1]
+#         if lastRow in lastLine:
+#             output += line.replace(replacee,replacer + ' from: ' + replacee) + '\n'
+#         else:
+#             output += line  + '\n'
+#     return output
+
 tmp = 'tmp/'
 # Program Start
 xlsxListPath = sys.argv[1]
@@ -65,6 +95,7 @@ for sheet in wb._sheets:
 	# Backup Original Files
     addFilePaths(filePath)
     text2Modify = readTextFile(filePath)
+    originalText = readTextFile(filePath)
 
     id = 2
     while sheet.cell(row=id, column=mode).value != 'end':
@@ -95,13 +126,19 @@ for sheet in wb._sheets:
             if not repetitive:
                 replacees.append(replacee)    
 
-            if sheet.cell(row=id, column = mode + 3).value != None:
-                newReplacee = sheet.cell(row=id, column = mode + 3).value
-                text2Modify = text2Modify.replace(replacee,newReplacee)
+            if sheet.cell(row=id, column = mode + 4).value == None:
+                if sheet.cell(row=id, column = mode + 3).value != None:
+                    newReplacee = sheet.cell(row=id, column = mode + 3).value
+                    text2Modify = text2Modify.replace(replacee,newReplacee)
+                else:
+                    text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap) + ' from: ' + replacee)
             else:
-                text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap))
-
-
+                lastRow = sheet.cell(row=id, column = mode + 4).value
+                if sheet.cell(row=id, column = mode + 3).value != None:
+                    newReplacee = sheet.cell(row=id, column = mode + 3).value
+                    text2Modify = replaceTextwithCondition(text2Modify,replacee,newReplacee,lastRow)
+                else:
+                    text2Modify = replaceTextwithCondition(text2Modify,replacee,charmap.replaceText(replacer,charMap),lastRow)
         id += 1
 
     # print(text2Modify)
