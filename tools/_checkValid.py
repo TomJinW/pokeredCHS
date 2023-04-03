@@ -17,6 +17,126 @@ def replaceText(text,dict):
         output = output.replace(key,dict[key])
     return output
 
+class INSTName():
+    text = 'text'
+    text_start = 'text_start'
+    line = 'line'
+    cont = 'cont'
+    para = 'para'
+    next = 'next'
+    page = 'page'
+    dex = 'dex'
+    text_end = 'text_end'
+    done = 'done'
+    prompt = 'prompt'
+    text_ram = 'text_ram'
+    text_decimal = 'text_decimal'
+    text_bcd = 'text_bcd'
+    TX_RAM = 'TX_RAM'
+    TX_NUM = 'TX_NUM'
+    TX_BCD = 'TX_BCD'
+    PLAYER = '<PLAYER>'
+    RIVAL = '<RIVAL>'
+
+class ListMode(Enum):
+    blackList = 0
+    whiteList = 1
+
+class INSTFilter:
+    def __init__(self,name,upList,upListMode,downList,downListMode) -> None:
+        self.name = name
+        self.upList = upList
+        self.upListMode = upListMode
+        self.downList = downList
+        self.downListMode = downListMode
+
+class INST(Enum):
+    text = INSTFilter(INSTName.text,
+                      [],ListMode.blackList,
+                      [INSTName.text],ListMode.blackList)
+    
+    text_start = INSTFilter(INSTName.text_start,
+                            [INSTName.text_ram,INSTName.text_bcd,INSTName.text_decimal,INSTName.line],ListMode.whiteList,
+                            [INSTName.text_start],ListMode.blackList)
+    
+    line = INSTFilter(INSTName.line,
+                      [],ListMode.blackList,
+                      [INSTName.line,INSTName.text],ListMode.blackList)
+    
+    para = INSTFilter(INSTName.para,
+                      [],ListMode.blackList,
+                      [INSTName.cont],ListMode.blackList)
+    
+    cont = INSTFilter(INSTName.cont,
+                      [],ListMode.blackList,
+                      [],ListMode.blackList)
+    
+    next = INSTFilter(INSTName.next,
+                      [],ListMode.blackList,
+                      [INSTName.next,INSTName.page,INSTName.dex,INSTName.done,INSTName.prompt],ListMode.whiteList)
+    
+    page = INSTFilter(INSTName.page,
+                      [INSTName.dex],ListMode.blackList,
+                      [],ListMode.blackList)
+    
+    dex = INSTFilter(INSTName.dex,
+                     [INSTName.next],ListMode.whiteList,
+                     [],ListMode.whiteList)
+    
+    text_end = INSTFilter(INSTName.text_end,[],ListMode.blackList,[],ListMode.whiteList)
+    done = INSTFilter(INSTName.done,[],ListMode.blackList,[],ListMode.whiteList)
+    prompt = INSTFilter(INSTName.prompt,[],ListMode.blackList,[],ListMode.whiteList)
+    
+    text_ram = INSTFilter(INSTName.text_ram,
+                          [INSTName.line,INSTName.para,INSTName.text,INSTName.cont],ListMode.whiteList,
+                          [INSTName.text,INSTName.text_end,INSTName.text_start],ListMode.whiteList)
+
+    text_decimal = INSTFilter(INSTName.text_decimal,
+                                [INSTName.line,INSTName.para,INSTName.text,INSTName.cont],ListMode.whiteList,
+                              [INSTName.text,INSTName.text_end,INSTName.text_start],ListMode.whiteList)
+    
+    text_bcd = INSTFilter(INSTName.text_bcd,
+                          [INSTName.line,INSTName.para,INSTName.text,INSTName.cont],ListMode.whiteList,
+                          [INSTName.text,INSTName.text_end,INSTName.text_start],ListMode.whiteList)
+
+    TX_RAM = INSTFilter(INSTName.TX_RAM,
+                        [],ListMode.blackList,
+                        [],ListMode.blackList)
+    
+    TX_NUM = INSTFilter(INSTName.TX_NUM,
+                        [],ListMode.blackList,
+                        [],ListMode.blackList)
+    
+    TX_BCD = INSTFilter(INSTName.TX_BCD,
+                        [],ListMode.blackList,
+                        [],ListMode.blackList)
+    
+    # PLAYER = INSTFilter(INSTName.PLAYER,[],ListMode.blackList,[],ListMode.blackList)
+    # RIVAL = INSTFilter(INSTName.RIVAL,[],ListMode.blackList,[],ListMode.blackList)
+
+def getINSTbyName(name):
+    for inst in INST:
+        if inst.name == name:
+            return inst._value_
+    return None
+
+def checkSingleRelationVaild(instruction,nameList,filterMode):
+    inst = instruction.inst
+    for name in nameList:
+        if inst == name:
+            return filterMode != ListMode.blackList
+    return filterMode == ListMode.blackList
+
+def checkInstRelation(instructions,sheet):
+    for i in range(len(instructions)):
+        filter = getINSTbyName(instructions[i].inst)
+        if filter != None:
+            if i > 0:
+                if not checkSingleRelationVaild(instructions[i-1],filter.upList,filter.upListMode):
+                    printLog(InfoType.WARNING,sheet,instructions[i], instructions[i - 1].inst + '：上方指令不匹配！' + str(filter.upListMode))
+            if i < len(instructions) - 1:
+                if not checkSingleRelationVaild(instructions[i+1],filter.downList,filter.downListMode):
+                    printLog(InfoType.WARNING,sheet,instructions[i], instructions[i + 1].inst + '：下方指令不匹配！' + str(filter.downListMode))
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -49,7 +169,7 @@ def ifContainsChinese(text):
 def ifOverLength(text,maxPixels):
     if text == None:
         return False
-    newText = text.replace('<PLAYER>','PLAYER ').replace('<RIVAL>','RIVALN ').replace('\n','')
+    newText = text.replace(INSTName.PLAYER,'PLAYER ').replace(INSTName.RIVAL,'RIVALN ').replace('\n','')
     if len(newText) <= 0:
         return False
     charProp = isChinese(newText[0])
@@ -129,8 +249,8 @@ def printLog(type,sheet,instuction,message):
 errors = 0
 warnings = 0
 infos = 0
-textOldPlacerCommands=['TX_RAM','TX_NUM','TX_BCD']
-textPlacerCommands=['text_ram','text_decimal','text_bcd']
+textOldPlacerCommands=[INSTName.TX_RAM,INSTName.TX_NUM,INSTName.TX_BCD]
+textPlacerCommands=[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd]
 def getInstDict(col,sheet,filePath):
     outputDict = {}
     id = 2
@@ -185,10 +305,10 @@ def getInstDict(col,sheet,filePath):
     #     print()
     return outputDict
 
-textStarterCommands=['text','text_start','text_ram','text_decimal','text_bcd','text $4c,','text "<_CONT>@"','vc_patch Change_link_closed_inactivity_message ']
-textStarterCommands2=['text','text_ram','text_decimal','text_bcd','next','page']
-textEndingCommands=['done','prompt','dex','text_end']
-textInstCommands=['text_ram','text_decimal','text_bcd']
+textStarterCommands=[INSTName.text,INSTName.text_start,INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd,'text $4c,','text "<_CONT>@"','vc_patch Change_link_closed_inactivity_message ']
+textStarterCommands2=[INSTName.text,INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd,INSTName.next,INSTName.page]
+textEndingCommands=[INSTName.done,INSTName.prompt,INSTName.dex,INSTName.text_end]
+textInstCommands=[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd]
 
 
 def ifTextIsInList(text,commands):
@@ -197,11 +317,12 @@ def ifTextIsInList(text,commands):
             return True
     return False
 
-def checkDictValid(instDict):
+def checkDictValid(instDict,sheet):
     for key in instDict:
         instructions = instDict[key]
 
-        
+        checkInstRelation(instructions,sheet)
+
         if len(instructions) > 0:
             # 检查开头和结尾符号
             if not ifTextIsInList(instructions[0].inst,textStarterCommands):
@@ -225,7 +346,7 @@ def checkDictValid(instDict):
                 if ifOverLength(lengthchk,18 * 8):
                     printLog(InfoType.WARNING,sheet,instruction,'文本可能太长！')
 
-            # 检查 textPlacerCommands=['text_ram','text_decimal','text_bcd'] 是否合法
+            # 检查 textPlacerCommands=[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd] 是否合法
             if i > 0:
                 if ifTextIsInList(instruction.inst,textPlacerCommands):
                     if len(instructions[i - 1].content) > 0:
@@ -246,6 +367,7 @@ def checkDictValid(instDict):
                 printLog(InfoType.INFO,sheet,instruction,'发现半角数字！')
             # if ifTextContains(instruction.content.lower(),alphabet) and not ifTextIsInList(instruction.inst,textPlacerCommands):
             #     printLog(InfoType.INFO,sheet,instruction,'发现英文符号！')
+
 def getCountInfoFrom(instructions):
     count = [0,0,0,0,0,0,0,0,0,0]
     for instruction in instructions:
@@ -254,7 +376,7 @@ def getCountInfoFrom(instructions):
                 count[i] += 1
     return (count[0],count[1],count[2])
 
-def compareDicts(origDict,transDict):
+def compareDicts(origDict,transDict,sheet):
     for key in origDict:
         if not key in transDict:
             printLog(InfoType.ERROR,sheet,None,key + '：标签不存在！')
@@ -263,8 +385,8 @@ def compareDicts(origDict,transDict):
             transInstructions = transDict[key]
             # 检查结尾是否一致
             if len(origInstructions) > 0 and len(transInstructions) > 0:
-                inst1 = origInstructions[-1].inst.replace('text_end','text')
-                inst2 = transInstructions[-1].inst.replace('text_end','text')
+                inst1 = origInstructions[-1].inst.replace(INSTName.text_end,INSTName.text)
+                inst2 = transInstructions[-1].inst.replace(INSTName.text_end,INSTName.text)
                 # print(origInstructions[0].label)
                 # print(inst1)
                 # print(inst2)
@@ -274,7 +396,7 @@ def compareDicts(origDict,transDict):
             else:
                 printLog(InfoType.INFO,sheet,None,key +'：标签为空白指令')
 
-            # 检查['text_ram','text_decimal','text_bcd']数量是否一致
+            # 检查[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd]数量是否一致
             origReplacerCount = getCountInfoFrom(origInstructions)
             transReplacerCount = getCountInfoFrom(transInstructions)
             if origReplacerCount != transReplacerCount:
@@ -289,6 +411,8 @@ bypassFileCheck = int(sys.argv[4])
 print(xlsxListPath +'：检查 xlsx 合法性...')
 print()
 
+
+
 wb = load_workbook(filename = xlsxListPath)
 for sheet in wb._sheets:
     outputPath = sheet.cell(row=1, column=1).value
@@ -297,8 +421,8 @@ for sheet in wb._sheets:
             printLog(InfoType.ERROR,sheet,None,outputPath + '\n文件不存在！')
     origDict = getInstDict(colOrig,sheet,xlsxListPath)
     TransDict = getInstDict(colTrans,sheet,xlsxListPath)
-    checkDictValid(TransDict)
-    compareDicts(origDict,TransDict)
+    checkDictValid(TransDict,sheet)
+    compareDicts(origDict,TransDict,sheet)
 
 
 print('检查结束')
