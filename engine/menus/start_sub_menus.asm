@@ -575,7 +575,7 @@ DrawTrainerInfo:
 	hlcoord 2, 2
 	ld de, TrainerInfo_NameMoneyTimeText
 	call PlaceString
-	hlcoord 6, 2 ;hlcoord 7, 2
+	hlcoord 8, 2 ;hlcoord 7, 2
 	ld de, wPlayerName
 	call PlaceString
 	hlcoord 8, 4
