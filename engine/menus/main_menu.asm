@@ -391,6 +391,17 @@ PrintSaveScreenText:
 	call PrintNumOwnedMons
 	hlcoord 13, 8
 	call PrintPlayTime
+
+	ld a, $60
+	lb bc, 4, 3
+	coord hl, 6, 1
+	call DFSStaticize
+	
+	ld a, $6E
+	lb bc, 2, 3
+	coord hl, 6, 5
+	call DFSStaticize
+
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld c, 30

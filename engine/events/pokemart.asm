@@ -1,4 +1,6 @@
 ClearDialogueCHS:
+	ld c, 10
+	call DelayFrames
 	coord hl, 1, 13
 	ld b, 4
 	ld c, 18

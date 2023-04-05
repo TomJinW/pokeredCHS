@@ -134,7 +134,11 @@ StartMenu_Pokemon::
 	bit BIT_THUNDERBADGE, a
 	jp z, .newBadgeRequired
 	call CheckIfInOutsideMap
+IF DEF (_DEBUG)
+	jr  .canFly
+ELSE
 	jr z, .canFly
+ENDC
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
@@ -575,7 +579,7 @@ DrawTrainerInfo:
 	hlcoord 2, 2
 	ld de, TrainerInfo_NameMoneyTimeText
 	call PlaceString
-	hlcoord 6, 2 ;hlcoord 7, 2
+	hlcoord 8, 2 ;hlcoord 7, 2
 	ld de, wPlayerName
 	call PlaceString
 	hlcoord 8, 4
