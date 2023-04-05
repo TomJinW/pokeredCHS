@@ -9,6 +9,7 @@ cp pokered_vc.gbc roms/rgb/pokered_vc.gbc
 cp pokered_debug.gbc roms/rgb/pokered_debug.gbc
 cp pokegreen.gbc roms/rgb/pokegreen.gbc
 cp pokegreen_vc.gbc roms/rgb/pokegreen_vc.gbc
+cp pokegreen_debug.gbc roms/rgb/pokegreen_debug.gbc
 cp pokeblue.gbc roms/rgb/pokeblue.gbc
 cp pokeblue_vc.gbc roms/rgb/pokeblue_vc.gbc
 cp pokeblue_debug.gbc roms/rgb/pokeblue_debug.gbc
