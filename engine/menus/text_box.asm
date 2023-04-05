@@ -1,8 +1,12 @@
 ClearBuySellMenuCHS:
-	coord hl, 2, 1
-	ld b, 6
-	ld c, 5
+	coord hl, 5, 5
+	ld b, 2
+	ld c, 6
 	call ClearScreenArea
+	ld a, $60
+	lb bc, 6, 3
+	coord hl, 2, 1
+	call DFSStaticize
 	ret
 	
 ; function to draw various text boxes

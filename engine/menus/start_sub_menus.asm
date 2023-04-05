@@ -134,7 +134,11 @@ StartMenu_Pokemon::
 	bit BIT_THUNDERBADGE, a
 	jp z, .newBadgeRequired
 	call CheckIfInOutsideMap
+IF DEF (_DEBUG)
+	jr  .canFly
+ELSE
 	jr z, .canFly
+ENDC
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
