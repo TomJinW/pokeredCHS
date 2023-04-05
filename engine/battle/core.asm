@@ -2211,7 +2211,7 @@ DisplayBattleMenu::
 	jr UseBagItem
 
 .upperLeftMenuItemWasNotSelected ; a menu item other than the upper left item was selected
-	cp $2
+	cp $1
 	jp nz, PartyMenuOrRockOrRun
 
 ; either the bag (normal battle) or bait (safari battle) was selected
@@ -2231,7 +2231,7 @@ DisplayBattleMenu::
 	jr nz, BagWasSelected
 
 ; bait was selected
-	ld a, SAFARI_BAIT
+	ld a, SAFARI_ROCK
 	ld [wcf91], a
 	jr UseBagItem
 
@@ -2356,7 +2356,8 @@ ItemsCantBeUsedHereText:
 	text_end
 
 PartyMenuOrRockOrRun:
-	dec a ; was Run selected?
+	; dec a ; was Run selected?
+	cp 2;
 	jp nz, BattleMenu_RunWasSelected
 ; party menu or rock was selected
 	call SaveScreenTilesToBuffer2
@@ -2364,7 +2365,7 @@ PartyMenuOrRockOrRun:
 	cp BATTLE_TYPE_SAFARI
 	jr nz, .partyMenuWasSelected
 ; safari battle
-	ld a, SAFARI_ROCK
+	ld a, SAFARI_BAIT
 	ld [wcf91], a
 	jp UseBagItem
 .partyMenuWasSelected
