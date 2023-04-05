@@ -1,8 +1,16 @@
 ClearPlayerPCMenuMain_CHS:
+	ld a, $60
+	lb bc, 8, 2
 	coord hl, 2, 1
-	ld b, 8
-	ld c, 6
-	call ClearScreenArea
+	call DFSStaticize
+	ld a, $70
+	lb bc, 1, 4
+	coord hl, 4, 1
+	call DFSStaticize
+	; coord hl, 2, 1
+	; ld b, 8
+	; ld c, 6
+	; call ClearScreenArea
 	; coord hl, 1, 1
 	; ld b, 1
 	; ld c, 7
