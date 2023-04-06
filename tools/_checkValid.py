@@ -231,12 +231,15 @@ def printLog(type,sheet,instuction,message):
     global infos
     if type == InfoType.ERROR:
         print(bcolors.FAIL)
+        print('错误！')
         errors += 1
     elif type == InfoType.WARNING:
         print(bcolors.WARNING)
+        print('警告！')
         warnings += 1
     else:
         print(bcolors.OKCYAN)
+        print('提醒！')
         infos += 1
     print('xlsx 路径：' + xlsxListPath)
     print('sheet 标题：' + sheet.title)
@@ -280,6 +283,8 @@ def getInstDict(col,sheet,filePath):
         for j in range(labelrows[i],labelrows[i + 1]):
             inst = sheet.cell(row=j, column=col + 1).value
             content = sheet.cell(row=j, column=col + 2).value
+            if removeNone(inst) == '' and removeNone(content) != '' and not 'mailto:' in removeNone(content):
+                printLog(InfoType.ERROR,sheet,None,labels[i] +'\n' + content + '\n文本内容没有指令！')
             if sheet.cell(row=j, column=col + 3).value == 'MACRO':
                 continue
             if inst != None and not ';' in inst:
