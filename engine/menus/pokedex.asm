@@ -197,13 +197,24 @@ HandlePokedexListMenu:
 	hlcoord 16, 10
 	ld de, PokedexMenuItemsText
 	call PlaceString
+
+	ld a, $49
+	lb bc, 6, 3
+	coord hl, 16, 1
+	call DFSStaticize
+
 	ld a, $31
-	lb bc, 10, 3
-	coord hl, 16, 7
+	lb bc, 8, 3
+	coord hl, 16, 9
 	call DFSStaticize
-	lb bc, 5, 3
-	coord hl, 15, 0
-	call DFSStaticize
+
+	; ld a, $31
+	; lb bc, 10, 3
+	; coord hl, 16, 7
+	; call DFSStaticize
+	; lb bc, 5, 3
+	; coord hl, 15, 0
+	; call DFSStaticize
 ; find the highest pokedex number among the pokemon the player has seen
 	ld hl, wPokedexSeenEnd - 1
 	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
@@ -463,9 +474,20 @@ ShowPokedexDataInternal:
 
 	;CHS_Fix 26 Pokedex
 	ld a, $31
-	lb bc, 8, 10 ;
+	lb bc, 8, 3 ;
 	coord hl, 9, 1 ;
 	call DFSStaticize ;
+
+	ld a, $43
+	lb bc, 2, 2 ;
+	coord hl, 17, 7 ;
+	call DFSStaticize ;
+
+	ld a, $51
+	lb bc, 2, 5 ;
+	coord hl, $C, 1 ;
+	call DFSStaticize ;
+
 
 	ld hl, PokedexEntryPointers
 	ld a, [wd11e]
@@ -481,6 +503,31 @@ ShowPokedexDataInternal:
 	hlcoord 9, 4
 	call PlaceString ; print species name
 
+	push af
+	push bc
+	push de
+	push hl
+
+	ld a, $47
+	lb bc, 2, 5 ;
+	coord hl, $C, 3 ;
+	call DFSStaticize ;
+	
+	ld a, $5B
+	lb bc, 2, 3 ;
+	coord hl, 9, 3 ;
+	call DFSStaticize ;
+
+	ld a, $7D
+	lb bc, 2, 1 ;
+	coord hl, $11, 3 ;
+	call DFSStaticize ;
+
+	pop hl
+	pop de
+	pop bc
+	pop af
+	
 	ld h, b
 	ld l, c
 	push de

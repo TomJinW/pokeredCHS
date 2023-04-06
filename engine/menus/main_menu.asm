@@ -399,7 +399,37 @@ PrintSaveScreenText:
 	
 	ld a, $6E
 	lb bc, 2, 3
-	coord hl, 6, 5
+	coord hl, 10, 5
+	call DFSStaticize
+
+	; ld a, $6C
+	; lb bc, 1, 1
+	; coord hl, 9, 7
+	; call DFSStaticize
+
+	; ld a, $74
+	; lb bc, 1, 1
+	; coord hl, 9, 8
+	; call DFSStaticize
+
+	; ld a, $75
+	; lb bc, 2, 2
+	; coord hl, 10, 7
+	; call DFSStaticize
+
+	ld a, $6C
+	lb bc, 1, 1
+	coord hl, $C, $A
+	call DFSStaticize
+
+	ld a, $74
+	lb bc, 1, 1
+	coord hl, $C, $B
+	call DFSStaticize
+
+	ld a, $75
+	lb bc, 2, 2
+	coord hl, $D, $A
 	call DFSStaticize
 
 	ld a, $1
