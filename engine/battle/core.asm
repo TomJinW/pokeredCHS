@@ -2080,12 +2080,12 @@ DisplayBattleMenu::
 	ld c, 80
 	call DelayFrames
 	ld [hl], " "
-	hlcoord 9, 16
+	hlcoord 15, 14 ; CHS_FIX JP Fixing catching tutorial
 	ld [hl], "▶"
 	ld c, 50
 	call DelayFrames
 	ld [hl], "▷"
-	ld a, $2 ; select the "ITEM" menu
+	ld a, $1 ; select the "ITEM" menu
 	jp .upperLeftMenuItemWasNotSelected
 .oldManName
 	db "OLD MAN@"
