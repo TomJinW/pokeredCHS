@@ -338,7 +338,7 @@ ContCharText::
 	text_end
 
 PlaceDexEnd::
-	ld [hl], "."
+	; ld [hl], "."
 	pop hl
 	ret
 
