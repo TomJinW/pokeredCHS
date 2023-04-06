@@ -306,7 +306,7 @@ def getInstDict(col,sheet,filePath):
     return outputDict
 
 textStarterCommands=[INSTName.text,INSTName.text_start,INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd,'text $4c,','text "<_CONT>@"','vc_patch Change_link_closed_inactivity_message ']
-textStarterCommands2=[INSTName.text,INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd,INSTName.next,INSTName.page]
+textStarterCommands2=[INSTName.text,INSTName.para,INSTName.line,INSTName.cont,INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd,INSTName.next,INSTName.page]
 textEndingCommands=[INSTName.done,INSTName.prompt,INSTName.dex,INSTName.text_end]
 textInstCommands=[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd]
 
