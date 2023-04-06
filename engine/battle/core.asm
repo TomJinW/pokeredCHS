@@ -1413,8 +1413,11 @@ EnemySendOutFirstMon:
 	ld [wCurrentMenuItem], a
 .next7
 	call GBPalWhiteOut
+	call ReloadMonPic
 	call LoadHudTilePatterns
 	call LoadScreenTilesFromBuffer1
+	;CHS_Fix pokemon sprites
+	
 .next4
 	call ClearSprites
 	hlcoord 0, 0
