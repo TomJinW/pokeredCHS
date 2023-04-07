@@ -727,16 +727,16 @@ TradeCenter_Trade:
 	call DelayFrames
 	
 	; something to do
-	push af
-	coord hl, 2, $C
-	ld b, 2
-	ld c, 6
-	call ClearScreenArea
-	coord hl, $C, $C
-	ld b, 2
-	ld c, 6
-	call ClearScreenArea
-	pop af
+	; push af
+	; coord hl, 2, $C
+	; ld b, 2
+	; ld c, 6
+	; call ClearScreenArea
+	; coord hl, $C, $C
+	; ld b, 2
+	; ld c, 6
+	; call ClearScreenArea
+	; pop af
 	
 	xor a
 	ld [wSerialExchangeNybbleSendData + 1], a ; unnecessary
@@ -926,14 +926,14 @@ TradeCenter_Trade:
 	jp CableClub_DoBattleOrTradeAgain
 .tradeCancelled
 	; something to do 2
-	coord hl, $C, 8
-	ld b, 4
-	ld c, 6
-	call ClearScreenArea
-	coord hl, 2, 8
-	ld b, 4
-	ld c, 6
-	call ClearScreenArea
+	; coord hl, $C, 8
+	; ld b, 4
+	; ld c, 6
+	; call ClearScreenArea
+	; coord hl, 2, 8
+	; ld b, 4
+	; ld c, 6
+	; call ClearScreenArea
 
 	ld c, 100
 	call DelayFrames
