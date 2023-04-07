@@ -1413,10 +1413,11 @@ EnemySendOutFirstMon:
 	ld [wCurrentMenuItem], a
 .next7
 	call GBPalWhiteOut
+	;CHS_Fix pokemon sprites
 	call ReloadMonPic
 	call LoadHudTilePatterns
 	call LoadScreenTilesFromBuffer1
-	;CHS_Fix pokemon sprites
+	
 	
 .next4
 	call ClearSprites
@@ -2652,14 +2653,19 @@ MoveSelectionMenu:
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
 	call .loadmoves
-	hlcoord 4, 7
-	ld b, 4
-	ld c, 14
+	; hlcoord 4, 7
+	; ld b, 4
+	; ld c, 14
+	hlcoord 9, 3
+	ld b, 8
+	ld c, 9
 	call TextBoxBorder
-	hlcoord 6, 8
+	hlcoord $0B, 05 ; hlcoord 6, 8
 	call .writemoves
-	ld b, $5
-	ld a, $7
+	; ld b, $5
+	; ld a, $7
+	ld b, $A
+	ld a, $3
 .menuset
 	ld hl, wTopMenuItemY
 	ld [hli], a ; wTopMenuItemY
