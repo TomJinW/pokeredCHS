@@ -2,11 +2,21 @@ from openpyxl import load_workbook
 import sys
 from openpyxl.styles import Color, PatternFill, Font, Border
 import openpyxl
+from datetime import date
+from datetime import datetime
 warningFill = PatternFill(start_color='0000FFFF',
                    end_color='0000FFFF',
                    fill_type='solid')
 noFill = openpyxl.styles.PatternFill(fill_type=None)
 import charmap
+
+def getDate():
+    today = str(date.today())
+    return today
+def getTime():
+    currentDateAndTime = datetime.now()
+    currentTime = currentDateAndTime.strftime("%H:%M:%S")
+    return str(currentTime)
 
 class bcolors:
     HEADER = '\033[95m'
@@ -310,6 +320,7 @@ for sheet in wb._sheets:
         print(sheet.title)
         print('末尾可能有其他符号！\n')
     with open(outputPath, 'w') as f:
+        outputText = outputText.replace('CURR_DATE','build: ' + getDate()).replace('CURR_TIME',getTime()+', beta.')
         f.write(outputText)
 
 # wb.save(xlsxListPath)
