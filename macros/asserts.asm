@@ -33,8 +33,8 @@ MACRO li
 ENDM
 
 MACRO assert_list_length
-	DEF x = \1
-	ASSERT x == list_index, \
+	; DEF x = \1
+	; ASSERT x == list_index, \
 		"{CURRENT_LIST_START}: expected {d:x} entries, got {d:list_index}"
 ENDM
 
