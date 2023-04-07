@@ -1,7 +1,8 @@
 PrintWaitingText::
-	hlcoord 3, 10
-	ld b, 1
-	ld c, 11
+	; hlcoord 3, 10
+	hlcoord 2, 8
+	ld b, 2
+	ld c, 13
 	ld a, [wIsInBattle]
 	and a
 	jr z, .trade
@@ -11,7 +12,7 @@ PrintWaitingText::
 .trade
 	call CableClub_TextBoxBorder
 .border_done
-	hlcoord 4, 11
+	hlcoord 4, 10
 	ld de, WaitingText
 	call PlaceString
 	ld c, 50

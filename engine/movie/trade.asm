@@ -232,9 +232,12 @@ Trade_ShowPlayerMon:
 	ldh [hSCX], a
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	hlcoord 4, 0
+	; hlcoord 4, 0
+	; ld b, 6
+	; ld c, 10
+	hlcoord 3, 0
 	ld b, 6
-	ld c, 10
+	ld c, 12
 	call TextBoxBorder
 	call Trade_PrintPlayerMonInfoText
 	ld b, HIGH(vBGMap0)
@@ -353,9 +356,13 @@ Trade_ShowEnemyMon:
 	ld a, TRADE_BALL_TILT_ANIM
 	call Trade_ShowAnimation
 	call Trade_ShowClearedWindow
-	hlcoord 4, 10
+	; CHS_Fix Linking Text Box
+	; hlcoord 4, 10
+	; ld b, 6
+	; ld c, 10
+	hlcoord 3, 10
 	ld b, 6
-	ld c, 10
+	ld c, 12
 	call TextBoxBorder
 	call Trade_PrintEnemyMonInfoText
 	call Trade_CopyTileMapToVRAM
@@ -370,8 +377,10 @@ Trade_ShowEnemyMon:
 	ld a, [wTradedEnemyMonSpecies]
 	call PlayCry
 	call Trade_Delay100
-	hlcoord 4, 10
-	lb bc, 8, 12
+	; hlcoord 4, 10
+	; lb bc, 8, 12
+	hlcoord 3, 10
+	lb bc, 8, 14
 	call ClearScreenArea
 	jp PrintTradeTakeCareText
 
