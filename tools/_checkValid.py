@@ -10,7 +10,7 @@ warningFill = PatternFill(start_color='0000FFFF',
                    fill_type='solid')
 noFill = openpyxl.styles.PatternFill(fill_type=None)
 textReplacement = {'#MON':'#','#':'宝可梦','&':'训练家'}
-
+placer = {'<PLAYER>':'<玩家>','<RIVAL>':'<劲敌>','<USER>':'<用户>','<TARGET>':'<目标>'}
 def replaceText(text,dict):
     output = removeNone(text)
     for key in dict:
@@ -205,7 +205,7 @@ def ifOverLength(text,maxPixels):
     return pixels > maxPixels
 
 halfNumChars = ['0','1','2','3','4','5','6','7','8','9']
-alphabet = 'abcdefghijklmnopqrstuvwxyz!?'
+alphabet = 'ABCDEFGHIJKLMNOPQSRTUVWXYZ!?:,.'
 def ifTextContains(text,list):
     tmp = removeNone(text)
     for item in list:
@@ -370,8 +370,9 @@ def checkDictValid(instDict,sheet):
             #其他检查
             if ifTextContains(instruction.content,halfNumChars) and not ifTextIsInList(instruction.inst,textPlacerCommands):
                 printLog(InfoType.INFO,sheet,instruction,'发现半角数字！')
-            # if ifTextContains(instruction.content.lower(),alphabet) and not ifTextIsInList(instruction.inst,textPlacerCommands):
-            #     printLog(InfoType.INFO,sheet,instruction,'发现英文符号！')
+            newText = replaceText(instruction.content.upper(),placer)
+            if ifTextContains(newText,alphabet) and not ifTextIsInList(instruction.inst,textPlacerCommands):
+                printLog(InfoType.INFO,sheet,instruction,newText + '\n发现英文符号！')
 
 def getCountInfoFrom(instructions):
     count = [0,0,0,0,0,0,0,0,0,0]
