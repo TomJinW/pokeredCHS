@@ -320,7 +320,7 @@ RocketCharText::  db "@"
 PlacePOKeText::   db "POKé@"
 SixDotsCharText:: db "@"
 EnemyText::       db "Enemy @"
-PlacePKMNText::   db "@"
+PlacePKMNText::   db "@@@@@"
 ContText::
 	push de
 	ld b, h
