@@ -443,7 +443,11 @@ SSAnne6HiddenObjects:
 	db -1 ; end
 
 SSAnne10HiddenObjects:
-	hidden_object  0,  6, HYPER_POTION, HiddenItems ; 3, 1
+	IF DEF(_BLUE)
+		hidden_object  3,  1, HYPER_POTION, HiddenItems ; 3, 1
+	ELSE
+		hidden_object  0,  6, HYPER_POTION, HiddenItems ; 3, 1
+	ENDC
 	db -1 ; end
 
 Route10HiddenObjects:
@@ -486,7 +490,11 @@ SafariZoneWestHiddenObjects:
 	db -1 ; end
 
 SilphCo5FHiddenObjects:
-	hidden_object 11,  3, ELIXER, HiddenItems  ;12 ,3
+	IF DEF(_BLUE)
+		hidden_object 12,  3, ELIXER, HiddenItems  ;12 ,3
+	ELSE
+		hidden_object 11,  3, ELIXER, HiddenItems  ;12 ,3
+	ENDC
 	db -1 ; end
 
 SilphCo9FHiddenObjects:
