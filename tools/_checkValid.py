@@ -69,7 +69,7 @@ class INST(Enum):
     
     cont = INSTFilter(INSTName.cont,
                       [],ListMode.blackList,
-                      [],ListMode.blackList)
+                      [INSTName.text],ListMode.blackList)
     
     next = INSTFilter(INSTName.next,
                       [],ListMode.blackList,
@@ -254,6 +254,7 @@ warnings = 0
 infos = 0
 textOldPlacerCommands=[INSTName.TX_RAM,INSTName.TX_NUM,INSTName.TX_BCD]
 textPlacerCommands=[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd]
+textPlacerLastAllowedCommands=[INSTName.line,INSTName.cont,INSTName.para]
 def getInstDict(col,sheet,filePath):
     outputDict = {}
     id = 2
@@ -357,6 +358,8 @@ def checkDictValid(instDict,sheet):
                     if len(instructions[i - 1].content) > 0:
                         if instructions[i - 1].content[-1] != '@':
                             printLog(InfoType.ERROR,sheet,instruction,'上一条结尾不是 @ 符号！')
+                        # if not ifTextIsInList(instructions[i - 1].inst,textPlacerLastAllowedCommands):
+                        #     printLog(InfoType.ERROR,sheet,instruction,instructions[i - 1].inst +'\n上一条结尾指令有误！')
                     else:
                         printLog(InfoType.ERROR,sheet,instruction,'上一条结尾不是 @ 符号！')
 
