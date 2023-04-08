@@ -65,7 +65,7 @@ class INST(Enum):
     
     para = INSTFilter(INSTName.para,
                       [],ListMode.blackList,
-                      [INSTName.cont],ListMode.blackList)
+                      [INSTName.cont,INSTName.text],ListMode.blackList)
     
     cont = INSTFilter(INSTName.cont,
                       [],ListMode.blackList,
