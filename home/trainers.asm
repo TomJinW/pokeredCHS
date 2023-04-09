@@ -386,13 +386,13 @@ TrainerEndBattleText::
 ; only engage with the trainer if the player is not already
 ; engaged with another trainer
 ; XXX unused?
-CheckIfAlreadyEngaged::
-	ld a, [wFlags_0xcd60]
-	bit 0, a
-	ret nz
-	call EngageMapTrainer
-	xor a
-	ret
+; CheckIfAlreadyEngaged::
+; 	ld a, [wFlags_0xcd60]
+; 	bit 0, a
+; 	ret nz
+; 	call EngageMapTrainer
+; 	xor a
+; 	ret
 
 PlayTrainerMusic::
 	ld a, [wEngagedTrainerClass]
