@@ -12,6 +12,16 @@ DisplayTextIDInit::
 ; Note that the start menu text border is also drawn in the function directly
 ; below this, so this seems unnecessary.
 	; CHS_Fix 16 start menu fix
+IF DEF(_DEBUG) 
+	push af
+	call DebugPressedOrHeldB
+	jr z, .bIsNotPressed
+	ld a,[wSimulatedJoypadStatesIndex]
+	xor a,$FF
+	ld [wSimulatedJoypadStatesIndex],a
+.bIsNotPressed
+	pop af
+ENDC
 	ld a, 7 ;
 	cp a, $6 ;
 	jr c, .normalStartMenu ;
@@ -28,8 +38,8 @@ DisplayTextIDInit::
 	jr .drawTextBoxBorder
 ; if text ID is not 0 (i.e. not the start menu) then do a standard dialogue text box
 .normalStartMenu ; CHS_Fix 16
-	CheckEvent EVENT_GOT_POKEDEX ; CHS_Fix 16
 ; start menu with pokedex ; CHS_Fix 16
+	CheckEvent EVENT_GOT_POKEDEX ; CHS_Fix 16
 	hlcoord 12, 0 ; CHS_Fix 16
 	lb bc, 14, 6 ; CHS_Fix 16
 	jr nz, .drawTextBoxBorder ; CHS_Fix 16
