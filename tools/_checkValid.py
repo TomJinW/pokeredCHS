@@ -254,6 +254,7 @@ warnings = 0
 infos = 0
 textOldPlacerCommands=[INSTName.TX_RAM,INSTName.TX_NUM,INSTName.TX_BCD]
 textPlacerCommands=[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd]
+textFinishCommands=[INSTName.text_end,INSTName.done,INSTName.prompt,INSTName.dex]
 textPlacerLastAllowedCommands=[INSTName.line,INSTName.cont,INSTName.para]
 def getInstDict(col,sheet,filePath):
     outputDict = {}
@@ -346,6 +347,9 @@ def checkDictValid(instDict,sheet):
         for i in range(0,len(instructions)):
             instruction = instructions[i]
 
+            if ifTextIsInList(instruction.inst,textFinishCommands):
+                if removeNone(instruction.content) != '':
+                    printLog(InfoType.ERROR,sheet,instruction,'终止指令有多余文本！')
             # 检查一般文本长度
             if not ifTextIsInList(instruction.inst,textPlacerCommands):
                 lengthchk = replaceText(instruction.content,textReplacement)
