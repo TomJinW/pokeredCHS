@@ -1837,7 +1837,7 @@ DrawPlayerHUDAndHPBar:
 	ld [hl], $73
 	ld de, wBattleMonNick
 	; hlcoord 10, 7
-	hlcoord 9, 8 ; CHS_Fix 02
+	hlcoord 8, 8 ; CHS_Fix 02
 	call CenterMonName
 	call PlaceString
 
@@ -1905,13 +1905,14 @@ DrawEnemyHUDAndHPBar:
 	callfar PlaceEnemyHUDTiles
 	ld de, wEnemyMonNick
 	; hlcoord 1, 0
-	hlcoord 0, 1 ; CHS_Fix 03
+	hlcoord -1, 1 ; CHS_Fix 03
 	call CenterMonName
 	call PlaceString
 	; hlcoord 4, 1 CHS_Fix 03
 	ld h, b ; CHS_Fix 03
 	ld l, c ; CHS_Fix 03
 
+	
 	push hl
 	; inc hl ; CHS_Fix 03
 	ld de, wEnemyMonStatus
