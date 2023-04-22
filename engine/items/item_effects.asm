@@ -1048,7 +1048,8 @@ ItemUseMedicine:
 	sbc b
 	ld [hl], a
 	ld [wHPBarNewHP+1], a
-	hlcoord 4, 1
+	; hlcoord 4, 1
+	hlcoord $D, 1 ; CHS_Fix Recovering HP Bar
 	ld a, [wWhichPokemon]
 	ld bc, 2 * SCREEN_WIDTH
 	call AddNTimes ; calculate coordinates of HP bar of pokemon that used Softboiled
@@ -1059,7 +1060,8 @@ ItemUseMedicine:
 	ldh [hUILayoutFlags], a
 	ld a, $02
 	ld [wHPBarType], a
-	predef UpdateHPBar2 ; animate HP bar decrease of pokemon that used Softboiled
+	; predef UpdateHPBar2 ; animate HP bar decrease of pokemon that used Softboiled
+	predef UpdateShortHPBar ; CHS_Fix recovering HP Bar
 	ldh a, [hUILayoutFlags]
 	res 0, a
 	ldh [hUILayoutFlags], a
@@ -1178,7 +1180,8 @@ ItemUseMedicine:
 	xor a
 	ld [wBattleMonStatus], a ; remove the status ailment in the in-battle pokemon data
 .calculateHPBarCoords
-	ld hl, wShadowOAMSprite36
+	; ld hl, wShadowOAMSprite36
+	hlcoord $D,-1 ; CHS_Fix recovering HP Bar
 	ld bc, 2 * SCREEN_WIDTH
 	inc d
 .calculateHPBarCoordsLoop
@@ -1209,7 +1212,8 @@ ItemUseMedicine:
 	ldh [hUILayoutFlags], a
 	ld a, $02
 	ld [wHPBarType], a
-	predef UpdateHPBar2 ; animate the HP bar lengthening
+	; predef UpdateHPBar2 ; animate the HP bar lengthening
+	predef UpdateShortHPBar ; CHS_Fix recovering HP Bar
 	ldh a, [hUILayoutFlags]
 	res 0, a
 	ldh [hUILayoutFlags], a
