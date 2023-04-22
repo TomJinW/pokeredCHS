@@ -40,7 +40,7 @@ chsReplacement = {'ć':'<PLAYER>','č':'<RIVAL>','犇':'<USER>','骉':'<TARGET>'
 def replaceText(text,dictionary,mode):
     if mode == 2:
         output = replaceStr(text,chsReplacement)
-        return '\"' + output + '\" ;' 
+        return '\"' + output + '\"' 
     else:
         result = ''
         for i in range(len(text)):

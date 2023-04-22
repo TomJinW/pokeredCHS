@@ -131,7 +131,10 @@ for sheet in wb._sheets:
                     newReplacee = sheet.cell(row=id, column = mode + 3).value
                     text2Modify = text2Modify.replace(replacee,newReplacee)
                 else:
-                    text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap,buildMode) + ' from: ' + replacee)
+                    if buildMode != 2:
+                        text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap,buildMode) + '; from: ' + replacee)
+                    else:
+                        text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap,buildMode))
             else:
                 lastRow = sheet.cell(row=id, column = mode + 4).value
                 if sheet.cell(row=id, column = mode + 3).value != None:
