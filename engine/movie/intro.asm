@@ -12,12 +12,6 @@ PlayIntro:
 	ldh [hAutoBGTransferEnabled], a
 	call PlayShootingStar
 	call PlayIntroScene
-; IF DEF(_BLUE) ; jp Red and Green hung on the hit for much longer before fading
-; 	;nothing
-; ELSE
-; 	ld c, 80
-; 	call DelayFrames
-; ENDC
 	call GBFadeOutToWhite
 	xor a
 	ldh [hSCX], a
@@ -149,7 +143,16 @@ ENDC
 	ld a, (FightIntroFrontMon3 - FightIntroFrontMon) / LEN_2BPP_TILE
 	ld [wIntroNidorinoBaseTile], a
 	ld de, IntroNidorinoAnimation7
-	jp AnimateIntroNidorino
+	; jp AnimateIntroNidorino
+
+	call AnimateIntroNidorino
+IF DEF(_BLUE) ; jp Red and Green hung on the hit for much longer before fading
+	;nothing
+ELSE ;
+	ld c, 80 ;
+	call DelayFrames ;
+ENDC ;
+	ret ;
 
 AnimateIntroNidorino:
 	ld a, [de]
