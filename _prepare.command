@@ -24,7 +24,7 @@ read option
 if [ -z "${option}" ]
 then
     echo The Option is not set, using the default one.
-    option=1
+    option=2
 fi
 
 python3 tools/_importText.py xlsx/outdoor.xlsx 5 RGB $option
