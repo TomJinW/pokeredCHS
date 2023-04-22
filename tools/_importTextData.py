@@ -43,7 +43,10 @@ def replaceTextwithCondition(text,replacee,replacer,lastRow):
         line = lines[i]
         lastLine = lines[i - 1]
         if lastRow in lastLine:
-            output += line.replace(replacee,replacer + ' from: ' + replacee) + '\n'
+            if buildMode != 2:
+                output += line.replace(replacee,replacer + ' from: ' + replacee) + '\n'
+            else:
+                output += line.replace(replacee,replacer) + '\n'
         else:
             output += line  + '\n'
     return output
@@ -132,7 +135,7 @@ for sheet in wb._sheets:
                     text2Modify = text2Modify.replace(replacee,newReplacee)
                 else:
                     if buildMode != 2:
-                        text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap,buildMode) + '; from: ' + replacee)
+                        text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap,buildMode) + ' from: ' + replacee)
                     else:
                         text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap,buildMode))
             else:

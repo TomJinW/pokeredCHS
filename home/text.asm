@@ -701,7 +701,7 @@ TextCommand_DOTS::
 	ld l, c
 
 .loop
-	ld a, "…"
+	ld a, $75 ; CHS_FIX 为了避免和中文的 "…" 冲突
 	ld [hli], a
 	push de
 	call Joypad

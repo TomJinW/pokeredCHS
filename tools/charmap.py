@@ -53,7 +53,8 @@ def replaceText(text,dictionary,mode):
             else:
                 print(text)
                 print(char + ' : Code Table Not Found!')
-        return result + ' ; ' + text
+        newText = replaceStr(text,chsReplacement)
+        return result + ' ; ' + newText
 
 def readCharMaps():
     result = {}
