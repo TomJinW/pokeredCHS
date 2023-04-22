@@ -91,7 +91,7 @@ for sheet in wb._sheets:
         descValue = sheet.cell(row=id, column=mode + 4).value
         desc = 'text_far ' + descValue + '\n\ttext_end\n\n'
         if not '_' in descValue:
-            desc = 'db \"コメント　さくせいちゅう@\"'
+            desc = 'db \"コメント さくせいちゅう@\"'
         id += 1
 
         body += label +'\n\t' + 'db ' + category + '\n\t' + height + '\n\t' + weight + '\n\t' + desc 
