@@ -40,7 +40,7 @@ chsReplacement = {'ć':'<PLAYER>','č':'<RIVAL>','犇':'<USER>','骉':'<TARGET>'
 def replaceText(text,dictionary,mode):
     if mode == 2:
         output = replaceStr(text,chsReplacement)
-        return '\"' + output + '\" ;' 
+        return '\"' + output + '\"' 
     else:
         result = ''
         for i in range(len(text)):
@@ -53,7 +53,8 @@ def replaceText(text,dictionary,mode):
             else:
                 print(text)
                 print(char + ' : Code Table Not Found!')
-        return result + ' ; ' + text
+        newText = replaceStr(text,chsReplacement)
+        return result + ' ; ' + newText
 
 def readCharMaps():
     result = {}
