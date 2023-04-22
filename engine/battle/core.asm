@@ -1857,11 +1857,13 @@ DrawPlayerHUDAndHPBar:
 	call CopyData
 	; hlcoord 14, 8 ; CHS_Fix 02
 	pop hl ; CHS_Fix 02
-	push hl
+	; push hl
 	; inc hl ; CHS_Fix 02
+	hlcoord $11, 8 ;
 	ld de, wLoadedMonStatus
 	call PrintStatusConditionNotFainted
-	pop hl
+	; pop hl
+	hlcoord $11, 8
 	jr nz, .doNotPrintLevel
 	call PrintLevel
 .doNotPrintLevel
@@ -1913,11 +1915,13 @@ DrawEnemyHUDAndHPBar:
 	ld l, c ; CHS_Fix 03
 
 	
-	push hl
+	; push hl
 	; inc hl ; CHS_Fix 03
+	hlcoord 8, 1
 	ld de, wEnemyMonStatus
 	call PrintStatusConditionNotFainted
-	pop hl
+	; pop hl
+	hlcoord 8, 1
 	jr nz, .skipPrintLevel ; if the mon has a status condition, skip printing the level
 	ld a, [wEnemyMonLevel]
 	ld [wLoadedMonLevel], a
@@ -2481,10 +2485,15 @@ PartyMenuOrRockOrRun:
 	call LoadHudTilePatterns
 	call LoadScreenTilesFromBuffer1
 	call RunDefaultPaletteCommand
-	call GBPalNormal
+	
 ; fall through to SwitchPlayerMon
 
 SwitchPlayerMon:
+	call DrawPlayerHUDAndHPBar ; CHS_FIX Reload Pokemon name After Switching
+	call DrawEnemyHUDAndHPBar ;
+	call Delay3 ;
+	call GBPalNormal ;
+
 	callfar RetreatMon
 	ld c, 50
 	call DelayFrames
