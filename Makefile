@@ -92,19 +92,19 @@ compare: $(roms) $(patches)
 tools:
 	$(MAKE) -C tools/
 
-
+CHAR_FLAGS = 
 RGBASMFLAGS = -hL -Q8 -P includes.asm -Weverything -Wnumeric-string=2 -Wtruncation=1
 # Create a sym/map for debug purposes if `make` run with `DEBUG=1`
 ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E
 endif
 
-$(pokered_obj):        RGBASMFLAGS += -D _RED
-$(pokeblue_obj):       RGBASMFLAGS += -D _BLUE
-$(pokeblue_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG
-$(pokered_debug_obj): RGBASMFLAGS += -D _RED -D _DEBUG
-$(pokered_vc_obj):     RGBASMFLAGS += -D _RED -D _RED_VC
-$(pokeblue_vc_obj):    RGBASMFLAGS += -D _BLUE -D _BLUE_VC
+$(pokered_obj):        RGBASMFLAGS += -D _RED $(CHAR_FLAGS)
+$(pokeblue_obj):       RGBASMFLAGS += -D _BLUE $(CHAR_FLAGS)
+$(pokeblue_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG $(CHAR_FLAGS)
+$(pokered_debug_obj): RGBASMFLAGS += -D _RED -D _DEBUG $(CHAR_FLAGS)
+$(pokered_vc_obj):     RGBASMFLAGS += -D _RED -D _RED_VC $(CHAR_FLAGS)
+$(pokeblue_vc_obj):    RGBASMFLAGS += -D _BLUE -D _BLUE_VC $(CHAR_FLAGS)
 
 %.patch: vc/%.constants.sym %_vc.gbc %.gbc vc/%.patch.template
 	tools/make_patch $*_vc.sym $^ $@

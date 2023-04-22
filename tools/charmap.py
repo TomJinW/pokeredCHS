@@ -25,23 +25,35 @@ def removeReturn(text):
 def handleTwoBytes(code):
     text = list(code)
     if len(text) > 3:
-        text.insert(3,',')
-        text.insert(4,'$')
+        if text[0] != '"':
+            text.insert(3,',') 
+            text.insert(4,'$')
     return ''.join(text)
 
-def replaceText(text,dictionary):
-    result = ''
-    for i in range(len(text)):
-        char = text[i]
-        if char in dictionary:
-            ending = ','
-            if i == len(text) - 1:
-                ending = ''
-            result += dictionary[char]+ending
-        else:
-            print(text)
-            print(char + ' : Code Table Not Found!')
-    return result + ' ; ' + text
+def replaceStr(text,dict):
+    output = removeNone(text)
+    for key in dict:
+        output = output.replace(key,dict[key])
+    return output
+
+chsReplacement = {'ć':'<PLAYER>','č':'<RIVAL>','犇':'<USER>','骉':'<TARGET>'}
+def replaceText(text,dictionary,mode):
+    if mode == 2:
+        output = replaceStr(text,chsReplacement)
+        return '\"' + output + '\" ;' 
+    else:
+        result = ''
+        for i in range(len(text)):
+            char = text[i]
+            if char in dictionary:
+                ending = ','
+                if i == len(text) - 1:
+                    ending = ''
+                result += dictionary[char]+ending
+            else:
+                print(text)
+                print(char + ' : Code Table Not Found!')
+        return result + ' ; ' + text
 
 def readCharMaps():
     result = {}

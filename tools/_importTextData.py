@@ -68,7 +68,7 @@ tmp = 'tmp/'
 xlsxListPath = sys.argv[1]
 mode = int(sys.argv[2])
 ver = sys.argv[3]
-
+buildMode = int(sys.argv[4])
 # Load Workbook
 wb = load_workbook(filename = xlsxListPath)
 
@@ -131,14 +131,14 @@ for sheet in wb._sheets:
                     newReplacee = sheet.cell(row=id, column = mode + 3).value
                     text2Modify = text2Modify.replace(replacee,newReplacee)
                 else:
-                    text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap) + ' from: ' + replacee)
+                    text2Modify = text2Modify.replace(replacee,charmap.replaceText(replacer,charMap,buildMode) + ' from: ' + replacee)
             else:
                 lastRow = sheet.cell(row=id, column = mode + 4).value
                 if sheet.cell(row=id, column = mode + 3).value != None:
                     newReplacee = sheet.cell(row=id, column = mode + 3).value
                     text2Modify = replaceTextwithCondition(text2Modify,replacee,newReplacee,lastRow)
                 else:
-                    text2Modify = replaceTextwithCondition(text2Modify,replacee,charmap.replaceText(replacer,charMap),lastRow)
+                    text2Modify = replaceTextwithCondition(text2Modify,replacee,charmap.replaceText(replacer,charMap,buildMode),lastRow)
         id += 1
 
     # print(text2Modify)

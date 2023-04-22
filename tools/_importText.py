@@ -32,9 +32,10 @@ class bcolors:
 xlsxListPath = sys.argv[1]
 mode = int(sys.argv[2])
 ver = sys.argv[3]
+buildMode = int(sys.argv[4])
 extraTextPath = ''
-if len(sys.argv) > 4:
-    extraTextPath = sys.argv[4]
+if len(sys.argv) > 5:
+    extraTextPath = sys.argv[5]
 
 wb = load_workbook(filename = xlsxListPath)
 
@@ -268,7 +269,7 @@ for sheet in wb._sheets:
             if instType == 0 or instType == 1:
                 textline = textFormat(content,instType,False)
                 if ifContainsChinese(textline):
-                    textline = charmap.replaceText(textFormat(content,1,True),charMap)
+                    textline = charmap.replaceText(textFormat(content,1,True),charMap,buildMode)
             
                 outputText += '\t' + inst + ' ' + textline.replace('\"\"','') + '\n'
                 lengthchk = replaceText(content,textReplacement)

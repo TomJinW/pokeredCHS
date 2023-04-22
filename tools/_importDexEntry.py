@@ -38,7 +38,7 @@ tmp = 'tmp/'
 xlsxListPath = sys.argv[1]
 mode = int(sys.argv[2])
 hexchar = int(sys.argv[3])
-
+buildMode = int(sys.argv[4])
 # Load Workbook
 wb = load_workbook(filename = xlsxListPath)
 
@@ -83,7 +83,7 @@ for sheet in wb._sheets:
         category = ''
         if hexchar == 1:
             category = sheet.cell(row=id, column=mode + 1).value + '#@'
-            category = charmap.replaceText(category,charMap)
+            category = charmap.replaceText(category,charMap,buildMode)
         else:
             category = '\"' + sheet.cell(row=id, column=mode + 1).value + '@\"'
         height = 'db ' + str(sheet.cell(row=id, column=mode + 2).value).replace('-',',')
