@@ -1,6 +1,14 @@
 filepath=$(cd "$(dirname "$0")"; pwd)
 cd $filepath
-make --always-make RGBDS=rgbds-061/
+
+option=$1
+if [[ $option -eq 1 ]]
+then
+make --always-make RGBDS=rgbds-061/ CHAR_FLAGS=
+else
+make --always-make RGBDS=rgbds-cn/ CHAR_FLAGS="-D RGBDS_WCHAR"
+fi
+
 mkdir roms
 mkdir roms/rgb
 
