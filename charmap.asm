@@ -75,7 +75,7 @@ IF DEF(RGBDS_WCHAR)
 	charmap "♂",	$0146, 2
 	charmap "♀",	$0147, 2
 	charmap "°",	$0148, 2
-	charmap "′",	$0149, 2
+	; charmap "′",	$0149, 2
 	; charmap "″",	$014A, 2
 	charmap "℃",	$0160, 2
 	charmap "＄",	$0161, 2
@@ -290,89 +290,6 @@ IF DEF(RGBDS_WCHAR)
 	charmap "｜",	$023A, 2
 	charmap "｝",	$023B, 2
 	charmap "￣",	$023C, 2
-	; charmap "ぁ",	$023D, 2
-	charmap "あ",	$023E, 2
-	charmap "ぃ",	$0240, 2
-	charmap "い",	$0241, 2
-	charmap "ぅ",	$0242, 2
-	charmap "う",	$0243, 2
-	charmap "ぇ",	$0244, 2
-	charmap "え",	$0245, 2
-	charmap "ぉ",	$0246, 2
-	charmap "お",	$0247, 2
-	charmap "か",	$0248, 2
-	charmap "が",	$0249, 2
-	charmap "き",	$024A, 2
-	charmap "ぎ",	$0260, 2
-	charmap "く",	$0261, 2
-	charmap "ぐ",	$0262, 2
-	charmap "け",	$0263, 2
-	charmap "げ",	$0264, 2
-	charmap "こ",	$0265, 2
-	charmap "ご",	$0266, 2
-	charmap "さ",	$0267, 2
-	charmap "ざ",	$0268, 2
-	charmap "し",	$0269, 2
-	charmap "じ",	$026A, 2
-	charmap "す",	$026B, 2
-	charmap "ず",	$026C, 2
-	charmap "せ",	$026D, 2
-	charmap "ぜ",	$026E, 2
-	charmap "そ",	$026F, 2
-	charmap "ぞ",	$0270, 2
-	charmap "た",	$0271, 2
-	charmap "だ",	$0272, 2
-	charmap "ち",	$0273, 2
-	charmap "ぢ",	$0274, 2
-	charmap "っ",	$0275, 2
-	charmap "つ",	$0276, 2
-	charmap "づ",	$0277, 2
-	charmap "て",	$0278, 2
-	charmap "で",	$0279, 2
-	charmap "と",	$027A, 2
-	charmap "ど",	$027B, 2
-	charmap "な",	$027C, 2
-	charmap "に",	$027D, 2
-	charmap "ぬ",	$027E, 2
-	charmap "ね",	$027F, 2
-	charmap "の",	$0280, 2
-	charmap "は",	$0281, 2
-	charmap "ば",	$0282, 2
-	charmap "ぱ",	$0283, 2
-	charmap "ひ",	$0284, 2
-	charmap "び",	$0285, 2
-	charmap "ぴ",	$0286, 2
-	; charmap "ふ",	$0287, 2
-	charmap "ぶ",	$0288, 2
-	charmap "ぷ",	$0289, 2
-	; charmap "へ",	$028A, 2
-	charmap "べ",	$028B, 2
-	charmap "ぺ",	$028C, 2
-	charmap "ほ",	$028D, 2
-	charmap "ぼ",	$028E, 2
-	charmap "ぽ",	$028F, 2
-	charmap "ま",	$0290, 2
-	charmap "み",	$0291, 2
-	charmap "む",	$0292, 2
-	charmap "め",	$0293, 2
-	charmap "も",	$0294, 2
-	charmap "ゃ",	$0295, 2
-	charmap "や",	$0296, 2
-	charmap "ゅ",	$0297, 2
-	charmap "ゆ",	$0298, 2
-	charmap "ょ",	$0299, 2
-	charmap "よ",	$029A, 2
-	charmap "ら",	$029B, 2
-	charmap "り",	$029C, 2
-	charmap "る",	$029D, 2
-	charmap "れ",	$029E, 2
-	charmap "ろ",	$029F, 2
-	charmap "ゎ",	$02A0, 2
-	charmap "わ",	$02A1, 2
-	charmap "ゐ",	$02A2, 2
-	charmap "ゑ",	$02A3, 2
-	charmap "を",	$02A4, 2
-	charmap "ん",	$02A5, 2
 	charmap "",	$02A6, 2
 	charmap "",	$02A7, 2
 	charmap "",	$02A8, 2
@@ -384,92 +301,6 @@ IF DEF(RGBDS_WCHAR)
 	charmap "",	$02AE, 2
 	charmap "",	$02AF, 2
 	charmap "",	$02B0, 2
-	charmap "ァ",	$02B1, 2
-	charmap "ア",	$02B2, 2
-	charmap "ィ",	$02B3, 2
-	charmap "イ",	$02B4, 2
-	charmap "ゥ",	$02B5, 2
-	charmap "ウ",	$02B6, 2
-	charmap "ェ",	$02B7, 2
-	charmap "エ",	$02B8, 2
-	charmap "ォ",	$02B9, 2
-	charmap "オ",	$02BA, 2
-	charmap "カ",	$02BB, 2
-	charmap "ガ",	$02BC, 2
-	charmap "キ",	$02BD, 2
-	charmap "ギ",	$02BE, 2
-	charmap "ク",	$02BF, 2
-	charmap "グ",	$02C0, 2
-	charmap "ケ",	$02C1, 2
-	charmap "ゲ",	$02C2, 2
-	charmap "コ",	$02C3, 2
-	charmap "ゴ",	$02C4, 2
-	charmap "サ",	$02C5, 2
-	charmap "ザ",	$02C6, 2
-	charmap "シ",	$02C7, 2
-	charmap "ジ",	$02C8, 2
-	charmap "ス",	$02C9, 2
-	charmap "ズ",	$02CA, 2
-	charmap "セ",	$02CB, 2
-	charmap "ゼ",	$02CC, 2
-	charmap "ソ",	$02CD, 2
-	charmap "ゾ",	$02CE, 2
-	charmap "タ",	$02CF, 2
-	charmap "ダ",	$02D0, 2
-	charmap "チ",	$02D1, 2
-	charmap "ヂ",	$02D2, 2
-	charmap "ッ",	$02D3, 2
-	charmap "ツ",	$02D4, 2
-	charmap "ヅ",	$02D5, 2
-	charmap "テ",	$02D6, 2
-	charmap "デ",	$02D7, 2
-	charmap "ト",	$02D8, 2
-	charmap "ド",	$02D9, 2
-	charmap "ナ",	$02DA, 2
-	charmap "ニ",	$02DB, 2
-	charmap "ヌ",	$02DC, 2
-	charmap "ネ",	$02DD, 2
-	charmap "ノ",	$02DE, 2
-	charmap "ハ",	$02DF, 2
-	charmap "バ",	$02E0, 2
-	charmap "パ",	$02E1, 2
-	charmap "ヒ",	$02E2, 2
-	charmap "ビ",	$02E3, 2
-	charmap "ピ",	$02E4, 2
-	charmap "フ",	$02E5, 2
-	charmap "ブ",	$02E6, 2
-	charmap "プ",	$02E7, 2
-	charmap "ヘ",	$02E8, 2
-	charmap "ベ",	$02E9, 2
-	charmap "ペ",	$02EA, 2
-	charmap "ホ",	$02EB, 2
-	charmap "ボ",	$02EC, 2
-	charmap "ポ",	$02ED, 2
-	charmap "マ",	$02EE, 2
-	charmap "ミ",	$02EF, 2
-	charmap "ム",	$02F0, 2
-	charmap "メ",	$02F1, 2
-	charmap "モ",	$02F2, 2
-	charmap "ャ",	$02F3, 2
-	charmap "ヤ",	$02F4, 2
-	charmap "ュ",	$02F5, 2
-	charmap "ユ",	$02F6, 2
-	charmap "ョ",	$02F7, 2
-	charmap "ヨ",	$02F8, 2
-	charmap "ラ",	$02F9, 2
-	charmap "リ",	$02FA, 2
-	charmap "ル",	$02FB, 2
-	charmap "レ",	$02FC, 2
-	charmap "ロ",	$0301, 2
-	charmap "ヮ",	$0302, 2
-	charmap "ワ",	$0303, 2
-	charmap "ヰ",	$0304, 2
-	charmap "ヱ",	$0305, 2
-	charmap "ヲ",	$0306, 2
-	charmap "ン",	$0307, 2
-	charmap "ヴ",	$0308, 2
-	charmap "ヵ",	$0309, 2
-	charmap "ヶ",	$030A, 2
 	charmap "",	$030B, 2
 	charmap "",	$030C, 2
 	charmap "",	$030D, 2
@@ -7623,27 +7454,27 @@ IF DEF(RGBDS_WCHAR)
 	charmap "鼾",	$2EB5, 2
 	charmap "齄",	$2EB6, 2
 ELSE
-	charmap "？", $e6
-	charmap "！", $e7
-	charmap "。", $e8
-	charmap "．", $f2
-	charmap "／", $f3
-	charmap "０", $f6
-	charmap "１", $f7
-	charmap "２", $f8
-	charmap "３", $f9
-	charmap "４", $fa
-	charmap "５", $fb
-	charmap "６", $fc
-	charmap "７", $fd
-	charmap "８", $fe 
-	charmap "９", $ff
-	charmap "‘",         $70 ; opening single quote
-	charmap "’",         $71 ; closing single quote
-	charmap "“",         $72 ; opening quote
-	charmap "”",         $73 ; closing quote
-	charmap "·",         $74 ; middle dot, unused
-	charmap "…",         $75 ; ellipsis
+	; charmap "？", $e6
+	; charmap "！", $e7
+	; charmap "。", $e8
+	; charmap "．", $f2
+	; charmap "／", $f3
+	; charmap "０", $f6
+	; charmap "１", $f7
+	; charmap "２", $f8
+	; charmap "３", $f9
+	; charmap "４", $fa
+	; charmap "５", $fb
+	; charmap "６", $fc
+	; charmap "７", $fd
+	; charmap "８", $fe 
+	; charmap "９", $ff
+	; charmap "‘",         $70 ; opening single quote
+	; charmap "’",         $71 ; closing single quote
+	; charmap "“",         $72 ; opening quote
+	; charmap "”",         $73 ; closing quote
+	; charmap "·",         $74 ; middle dot, unused
+	; charmap "…",         $75 ; ellipsis
 ENDC
 	charmap "<NULL>",    $00
 	charmap "<PAGE>",    $49
@@ -7706,7 +7537,7 @@ ENDC
 
 	charmap "<to>",      $70 ; narrow "to"
 
-	charmap "『",         $72 ; Japanese opening quote, unused
+	; charmap "『",         $72 ; Japanese opening quote, unused
 	charmap "<ID>",      $73
 	charmap "№",         $74
 
@@ -7889,12 +7720,12 @@ ENDC
 	charmap "ぺ", $47
 	charmap "ぽ", $48
 
-	charmap "「", $70
-	charmap "」", $71
-	charmap "』", $73
+	; charmap "「", $70
+	; charmap "」", $71
+	; charmap "』", $73
 	charmap "⋯", $75
 
-	charmap "　", $7f
+	; charmap "　", $7f
 
 	charmap "ア", $80
 	charmap "イ", $81

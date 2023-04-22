@@ -53,6 +53,8 @@ def removeNone(text):
 def isChinese(_char):
     if _char == '…' or _char == '　' or _char == '！' or _char == '？' or _char == '：' or _char == '。' or _char == '，':
         return True
+    if _char in '０１２３４５６７８９':
+        return True
     return '\u4e00' <= _char <= '\u9fa5'
 
 def ifContainsChinese(text):
