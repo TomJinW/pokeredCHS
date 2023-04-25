@@ -75,8 +75,8 @@ IF DEF(RGBDS_WCHAR)
 	charmap "♂",	$0146, 2
 	charmap "♀",	$0147, 2
 	charmap "°",	$0148, 2
-	; charmap "′",	$0149, 2
-	; charmap "″",	$014A, 2
+	charmap "′",	$0149, 2
+	charmap "″",	$014A, 2
 	charmap "℃",	$0160, 2
 	charmap "＄",	$0161, 2
 	charmap "¤",	$0162, 2
@@ -7544,8 +7544,8 @@ ENDC
 ; Actual characters (from other graphics files)
 
 	; needed for ShowPokedexDataInternal (see engine/menus/pokedex.asm)
-	charmap "′",         $60 ; gfx/pokedex/pokedex.png
-	charmap "″",         $61 ; gfx/pokedex/pokedex.png
+	; charmap "′",         $60 ; gfx/pokedex/pokedex.png
+	; charmap "″",         $61 ; gfx/pokedex/pokedex.png
 
 	; needed for StatusScreen (see engine/pokemon/status_screen.asm)
 	charmap "<BOLD_P>",  $72 ; gfx/font/P.1bpp
