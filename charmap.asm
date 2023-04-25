@@ -7546,7 +7546,7 @@ ENDC
 	; needed for ShowPokedexDataInternal (see engine/menus/pokedex.asm)
 	; charmap "′",         $60 ; gfx/pokedex/pokedex.png
 	; charmap "″",         $61 ; gfx/pokedex/pokedex.png
-
+	charmap "ï", 		 $61
 	; needed for StatusScreen (see engine/pokemon/status_screen.asm)
 	charmap "<BOLD_P>",  $72 ; gfx/font/P.1bpp
 
@@ -7649,6 +7649,7 @@ ENDC
 	charmap "¥",         $f0
 	charmap "×",         $f1
 	charmap "<DOT>",     $f2 ; decimal point; same as "." in English
+	charmap "č",     $f2
 	charmap "/",         $f3
 	charmap ",",         $f4
 	charmap "♀",         $f5
