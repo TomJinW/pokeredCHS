@@ -1837,8 +1837,11 @@ DrawPlayerHUDAndHPBar:
 	ld [hl], $73
 	ld de, wBattleMonNick
 	; hlcoord 10, 7
-	hlcoord 8, 8 ; CHS_Fix 02
-	call CenterMonName
+	; Centered Ver
+	; hlcoord 8, 8 ; CHS_Fix 02
+	; call CenterMonName
+	; Fixed Location Ver
+	hlcoord $9, 8 ; CHS_Fix 02
 	call PlaceString
 
 	cp a, LOW(wTileMap + SCREEN_WIDTH * 8 + 18) ; CHS_Fix 02

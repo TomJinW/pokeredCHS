@@ -101,6 +101,16 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
 
+ReloadPKNNName: ;CHS_Fix Reloading pokemon name after using a ball
+	coord hl, 9, 7
+	ld b, 2
+	ld c, 8
+	call ClearScreenArea
+	ld de, wBattleMonNick
+	hlcoord 9, 8 ; CHS_Fix 02 
+	call PlaceString
+	ret 
+
 ItemUseBall:
 
 ; Balls can't be used out of battle.
@@ -143,6 +153,14 @@ ItemUseBall:
 	ld [wPokeBallAnimData], a
 
 	call LoadScreenTilesFromBuffer1
+	ld a, [wBattleType]
+	dec a
+	jr z, .skipReloadingName
+	ld a, [wBattleType]
+	cp BATTLE_TYPE_SAFARI
+	jr z, .skipReloadingName
+	call ReloadPKNNName
+.skipReloadingName
 	ld hl, ItemUseText00
 	call PrintText
 
