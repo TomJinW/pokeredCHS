@@ -339,6 +339,7 @@ ContCharText::
 
 PlaceDexEnd::
 	; ld [hl], "."
+	call DecreaseDFSStack
 	pop hl
 	ret
 
