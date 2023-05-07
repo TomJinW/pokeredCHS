@@ -856,7 +856,7 @@ endr
 .c1
 	ld a, d
 	ld de, sDFSRaw4Font
-	jp FarCopyData
+	jp FarCopyData2
 
 MACRO fontab
 rept _NARG

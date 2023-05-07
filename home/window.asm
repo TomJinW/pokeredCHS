@@ -291,4 +291,7 @@ PrintText::
 	pop hl
 PrintText_NoCreatingTextBox::
 	bccoord 1, 14
-	jp TextCommandProcessor
+	; jp TextCommandProcessor
+	call IncreaseDFSStack ; CHS_Fix Combine string
+	call TextCommandProcessor ; CHS_Fix Combine string
+	jp DecreaseDFSStack ; CHS_Fix Combine string

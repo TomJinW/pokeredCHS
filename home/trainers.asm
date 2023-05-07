@@ -349,9 +349,11 @@ PrintEndBattleText::
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	push hl
+	call IncreaseDFSStack ; CHS_Fix TrainerEndBattleText Combine
 	farcall SaveTrainerName
 	ld hl, TrainerEndBattleText
 	call PrintText
+	call DecreaseDFSStack ; CHS_Fix
 	pop hl
 	pop af
 	ldh [hLoadedROMBank], a
