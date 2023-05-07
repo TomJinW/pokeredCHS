@@ -1125,6 +1125,7 @@ ChooseNextMon:
 	call GBPalWhiteOut
 	call LoadHudTilePatterns
 	call LoadScreenTilesFromBuffer1
+	call DrawEnemyHUDAndHPBar
 	call RunDefaultPaletteCommand
 	call GBPalNormal
 	call SendOutMon
@@ -1417,8 +1418,7 @@ EnemySendOutFirstMon:
 	call ReloadMonPic
 	call LoadHudTilePatterns
 	call LoadScreenTilesFromBuffer1
-	
-	
+	call DrawPlayerHUDAndHPBar ; Recover Player HP Bar after enemy sends a new pokemon CHS_Fix
 .next4
 	call ClearSprites
 	hlcoord 0, 0

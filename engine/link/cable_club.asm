@@ -653,13 +653,18 @@ TradeCenter_DisplayStats:
 TradeCenter_PushPokemonNames:
 	; CHS_Fix Push player pokemon names
 	ld a, 0
-	lb bc, 12, 8
+	lb bc, 6, 6
 	hlcoord 2, 2
 	call DFSStaticize
 
-	ld a, $50
-	lb bc, 2, 8
+	ld a, $24
+	lb bc, 6, 6
 	hlcoord $C, 2
+	call DFSStaticize
+
+	ld a, $48
+	lb bc, 2, 18
+	hlcoord 2, $C
 	call DFSStaticize
 	ret
 
