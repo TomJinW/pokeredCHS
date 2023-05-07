@@ -766,10 +766,12 @@ TradeCenter_Trade:
 	add hl, bc
 	ld a, [hl]
 	ld [wd11e], a
+	call IncreaseDFSStack ;CHS_Fix Combine string
 	call GetMonName
 	ld hl, WillBeTradedText
 	bccoord 1, 14
 	call TextCommandProcessor
+	call DecreaseDFSStack ;
 	call SaveScreenTilesToBuffer1
 	hlcoord 10, 7
 	lb bc, 8, 11
