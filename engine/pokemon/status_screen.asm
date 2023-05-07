@@ -258,6 +258,7 @@ PrintStatusCondition_StatusScreen::
 	or b ; is the pokemon's HP zero?
 	jr nz, .NotFainted
 ; if the pokemon's HP is 0, print "FNT"
+	pop de
 	ld e, 0
 	jr .end
 
