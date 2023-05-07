@@ -2313,6 +2313,7 @@ ItemUseNotYoursToUse:
 ThrowBallAtTrainerMon:
 	call RunDefaultPaletteCommand
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
+	call ReloadPKNNName
 	call Delay3
 	ld a, TOSS_ANIM
 	ld [wAnimationID], a
