@@ -25,7 +25,8 @@ StartMenu_Pokemon::
 	jr nc, .chosePokemon
 .exitMenu
 	call GBPalWhiteOutWithDelay3
-	call ReloadMapData ; CHS_Fix 28 eloadMapData
+	; call ReloadMapData ; CHS_Fix 28 eloadMapData
+	call ReloadTilesetTilePatterns
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
 	jp RedisplayStartMenu
@@ -431,7 +432,8 @@ StartMenu_Item::
 	cp $02
 	jp z, .partyMenuNotDisplayed
 	call GBPalWhiteOutWithDelay3
-	call ReloadMapData ;CHS_FIX 29 for reloading Maps after closing party Menu
+	; call ReloadMapData ;CHS_FIX 29 for reloading Maps after closing party Menu
+	call ReloadTilesetTilePatterns
 	call RestoreScreenTilesAndReloadTilePatterns
 	pop af
 	ld [wUpdateSpritesEnabled], a
