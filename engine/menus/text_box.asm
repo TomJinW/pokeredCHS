@@ -1,14 +1,3 @@
-ClearBuySellMenuCHS:
-	coord hl, 5, 5
-	ld b, 2
-	ld c, 6
-	call ClearScreenArea
-	ld a, $60
-	lb bc, 6, 3
-	coord hl, 2, 1
-	call DFSStaticize
-	ret
-	
 ; function to draw various text boxes
 DisplayTextBoxID_::
 	ld a, [wTextBoxID]
@@ -193,7 +182,7 @@ DoBuySellQuitMenu:
 	ld [wMenuExitMethod], a
 	jr .quit
 .pressedA
-	call ClearBuySellMenuCHS
+	; call ClearBuySellMenuCHS
 	ld a, CHOSE_MENU_ITEM
 	ld [wMenuExitMethod], a
 	ld a, [wCurrentMenuItem]

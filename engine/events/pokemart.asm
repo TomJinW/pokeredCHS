@@ -7,6 +7,20 @@ ClearDialogueCHS:
 	call ClearScreenArea
 	ret
 
+ClearBuySellMenuCHS:
+	coord hl, 5, 5
+	ld b, 2
+	ld c, 6
+	call ClearScreenArea
+	ld a, $60
+	lb bc, 6, 3
+	coord hl, 2, 1
+	call DFSStaticize
+	ret
+
+NothingText:
+	db "QUIT@"
+
 DisplayPokemartDialogue_::
 	ld a, [wListScrollOffset]
 	ld [wSavedListScrollOffset], a
@@ -59,6 +73,7 @@ DisplayPokemartDialogue_::
 	ld hl, PokemonSellingGreetingText
 	call PrintText
 	call ClearDialogueCHS
+	call ClearBuySellMenuCHS
 	call SaveScreenTilesToBuffer1 ; save screen
 .sellMenuLoop
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
@@ -141,6 +156,7 @@ DisplayPokemartDialogue_::
 	ld hl, PokemartBuyingGreetingText
 	call PrintText
 	call ClearDialogueCHS
+	call ClearBuySellMenuCHS ;CHS_Fix
 	call SaveScreenTilesToBuffer1
 .buyMenuLoop
 	call LoadScreenTilesFromBuffer1
@@ -209,6 +225,13 @@ DisplayPokemartDialogue_::
 	jp .buyMenuLoop
 .returnToMainPokemartMenu
 	call LoadScreenTilesFromBuffer1
+	push de
+	; CHS_Fix load “什么也不需要” before menu reloads
+	hlcoord 2, 6
+	ld de, NothingText
+	call PlaceString
+	pop de
+
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID

@@ -1,5 +1,5 @@
 filepath=$(cd "$(dirname "$0")"; pwd)
-cd $filepath
+cd "$filepath"
 mkdir tmp
 
 

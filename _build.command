@@ -1,6 +1,5 @@
 filepath=$(cd "$(dirname "$0")"; pwd)
-cd $filepath
-
+cd "$filepath"
 option=$1
 if [[ $option -eq 1 ]]
 then

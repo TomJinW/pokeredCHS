@@ -374,6 +374,8 @@ Paragraph::
 	hlcoord 1, 13
 	lb bc, 4, 18
 	call ClearScreenArea
+	ld a, "─"
+	ldcoord_a 18, 17
 	ld c, 20
 	call DelayFrames
 	pop de
@@ -404,7 +406,7 @@ _ContText::
 	push de
 	call ManualTextScroll
 	pop de
-	ld a, " "
+	ld a, "─"
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 _ContTextNoPause::
 	push de
@@ -579,7 +581,7 @@ TextCommand_PROMPT_BUTTON::
 	push bc
 	call ManualTextScroll ; blink arrow and wait for A or B to be pressed
 	pop bc
-	ld a, " "
+	ld a, "─"
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16 ; overwrite down arrow with blank space
 	pop hl
 	jp NextTextCommand
@@ -587,8 +589,8 @@ TextCommand_PROMPT_BUTTON::
 TextCommand_SCROLL::
 ; pushes text up two lines and sets the BC cursor to the border tile
 ; below the first character column of the text box.
-	ld a, " "
-	ldcoord_a 18, 16 ; place blank space in lower right corner of dialogue text box
+	ld a, "─"
+	ldcoord_a 18, 17 ; place blank space in lower right corner of dialogue text box
 	call ScrollTextUpOneLine
 	call ScrollTextUpOneLine
 	pop hl
