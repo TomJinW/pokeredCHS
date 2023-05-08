@@ -581,7 +581,12 @@ Find8FontCacheEng:
 .target
 	; call DFSCache2DFSUsed
 	srl h
-	ccf
+	
+	; CHS_Fix for Displaying English
+	ASSERT HIGH(sDFSCache) & 1 == 0, "Error HIGH(sDFSCache) & 1 != 0"
+	; if Error HIGH(sDFSCache) & 1 != 0, uncomment line below
+	; ccf
+
 	rr l
 	push af
 	srl l
