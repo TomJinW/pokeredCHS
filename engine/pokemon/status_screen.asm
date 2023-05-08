@@ -600,27 +600,3 @@ StatusScreen_PrintPP:
 	dec c
 	jr nz, .loop
 	ret
-
-; 	cp a, "-"
-; 	jr z, .dfsprint
-; 	ld [hli], a
-; 	ld [hld], a
-; 	add hl, de
-; 	dec c
-; 	jr nz, StatusScreen_PrintPP
-; 	ret
-
-; .dfsprint
-; 	push bc
-; 	push de
-; 	ld de, .dfschar
-; 	call PlaceString
-; 	pop de
-; 	add hl, de
-; 	pop bc
-; 	dec c
-; 	jr nz, .dfsprint
-; 	ret
-
-; .dfschar:
-; 	db "--@"
