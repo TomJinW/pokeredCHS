@@ -583,26 +583,44 @@ StatusScreen_ClearName:
 
 StatusScreen_PrintPP:
 ; print PP or -- c times, going down two rows each time
-	cp a, "-"
-	jr z, .dfsprint
+	ld [wDFSCode], a
+	ld a, "@"
+	ld [wDFSCode + 1], a
+	push bc
+	push de
+	call PlaceDFSChar
+	pop de
+	pop bc
+	dec hl
+	ld a, [hl]
+.loop
 	ld [hli], a
 	ld [hld], a
 	add hl, de
 	dec c
-	jr nz, StatusScreen_PrintPP
+	jr nz, .loop
 	ret
 
-.dfsprint
-	push bc
-	push de
-	ld de, .dfschar
-	call PlaceString
-	pop de
-	add hl, de
-	pop bc
-	dec c
-	jr nz, .dfsprint
-	ret
+; 	cp a, "-"
+; 	jr z, .dfsprint
+; 	ld [hli], a
+; 	ld [hld], a
+; 	add hl, de
+; 	dec c
+; 	jr nz, StatusScreen_PrintPP
+; 	ret
 
-.dfschar:
-	db "--@"
+; .dfsprint
+; 	push bc
+; 	push de
+; 	ld de, .dfschar
+; 	call PlaceString
+; 	pop de
+; 	add hl, de
+; 	pop bc
+; 	dec c
+; 	jr nz, .dfsprint
+; 	ret
+
+; .dfschar:
+; 	db "--@"
