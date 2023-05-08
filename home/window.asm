@@ -30,7 +30,7 @@ HandleMenuInput_::
 	jr nz, .keyPressed
 	push hl
 	hlcoord 18, 11 ; coordinates of blinking down arrow in some menus
-	ld c, "─"
+	ld c, " "
 	call HandleDownArrowBlinkTiming ; blink down arrow (if any)
 	pop hl
 	ld a, [wMenuJoypadPollCount]
