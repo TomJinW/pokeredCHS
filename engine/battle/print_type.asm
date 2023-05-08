@@ -30,6 +30,7 @@ EraseType2Text: ;CHS_Fix 15
 	add hl, bc
 	ld bc, $3; ld bc, $6
 	call FillMemory
+	ld a, " "
 	ld bc, SCREEN_WIDTH - 3
 	add hl, bc
 	ld bc, $5

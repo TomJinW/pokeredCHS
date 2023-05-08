@@ -91,10 +91,10 @@ DisplayNamingScreen:
 	ld b, SET_PAL_GENERIC
 	call RunPaletteCommand
 	call LoadHpBarAndStatusTilePatterns
-	call LoadEDTile
-	farcall LoadMonPartySpriteGfx
 	call LoadFontTilePatterns ;Fix Naming Screen CHS_Fix
 	farcall DFSSetAlphabetCache
+	call LoadEDTile
+	farcall LoadMonPartySpriteGfx
 	hlcoord 0, 4
 	ld b, 9
 	ld c, 18
@@ -470,9 +470,9 @@ PrintNamingText:
 	call GetMonName
 	hlcoord 4, 1
 	call PlaceString
-	ld hl, $1
-	add hl, bc
-	ld [hl], "の" ; leftover from Japanese version; blank tile $c9 in English
+	; ld hl, $1
+	; add hl, bc
+	; ld [hl], "" ; leftover from Japanese version; blank tile $c9 in English
 	hlcoord 1, 3
 	ld de, NicknameTextString
 	jr .placeString

@@ -318,7 +318,7 @@ TrainerCharText:: db "TRAINER@"
 PCCharText::      db "@"
 RocketCharText::  db "@"
 PlacePOKeText::   db "POKé@"
-SixDotsCharText:: db "@"
+SixDotsCharText:: db "⋯⋯@"
 EnemyText::       db "Enemy @"
 PlacePKMNText::   db "@@@@@"
 ContText::
