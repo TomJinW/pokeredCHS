@@ -1191,6 +1191,45 @@ DoubleCodeDrawMap:
 ; 	inc hl
 ; 	ret
 
+MACRO dfs_alphabet_param
+	ld hl, sDFSCache + ((\1 - $80) / 2) * 4
+	ld de, sDFSUsed  + ((\1 - $80) / 2)
+	lb bc, \1, (\2 / 2)
+ENDM
+
+DFSSetAlphabetCache:
+	ld a, SRAM_ENABLE
+	ld [MBC1SRamEnable], a
+	xor a
+	ld [MBC1SRamBank], a
+
+	dfs_alphabet_param $80, $40
+	call .loop_used
+
+	dfs_alphabet_param $E0, 12
+	call .loop_used
+
+	xor a
+	ld [MBC1SRamEnable], a
+	ret
+
+.loop_used
+	xor a
+	ld [hli], a
+	ld [hl], b
+	inc hl
+	inc b
+	ld [hli], a
+	ld [hl], b
+	inc hl
+	inc b
+	inc a
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .loop_used
+	ret
+	
 ; Gen2:
 ; >b : length (half tile)
 ; >c : start at left / right

@@ -93,6 +93,8 @@ DisplayNamingScreen:
 	call LoadHpBarAndStatusTilePatterns
 	call LoadEDTile
 	farcall LoadMonPartySpriteGfx
+	call LoadFontTilePatterns ;Fix Naming Screen CHS_Fix
+	farcall DFSSetAlphabetCache
 	hlcoord 0, 4
 	ld b, 9
 	ld c, 18
@@ -343,6 +345,7 @@ PrintAlphabet:
 	ld de, LowerCaseAlphabet
 	jr nz, .lowercase
 	ld de, UpperCaseAlphabet
+	
 .lowercase
 	hlcoord 2, 5
 	lb bc, 5, 9 ; 5 rows, 9 columns
