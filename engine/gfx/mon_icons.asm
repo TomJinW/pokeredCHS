@@ -177,11 +177,15 @@ WriteMonPartySpriteOAMByPartyIndex:
 	ld a, [hl]
 	call GetPartyMonSpriteID
 	ld [wOAMBaseTile], a
-	call WriteMonPartySpriteOAM
+	call .coord_x_fix
 	pop bc
 	pop de
 	pop hl
 	ret
+.coord_x_fix
+	push af
+	ld c, $0e
+	jp WriteMonPartySpriteOAM.coord_x_fix
 
 WriteMonPartySpriteOAMBySpecies:
 ; Write OAM blocks for the party sprite of the species in
@@ -235,7 +239,8 @@ WriteMonPartySpriteOAM:
 ; Write the OAM blocks for the first animation frame into the OAM buffer and
 ; make a copy at wMonPartySpritesSavedOAM.
 	push af
-	ld c, $0d ;ld c, $10
+	ld c, $10
+.coord_x_fix
 	ld h, HIGH(wShadowOAM)
 	ldh a, [hPartyMonIndex]
 	swap a
