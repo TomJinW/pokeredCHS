@@ -1424,12 +1424,14 @@ ItemUseMedicine:
 	ld [wd11e], a
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
+	call SaveScreenTilesToBuffer1 ; CHS_Fix load tileset patterns before displaying the status screen
 	call LoadMonData
 	ld d, $01
 	callfar PrintStatsBox ; display new stats text box
 	call WaitForTextScrollButtonPress ; wait for button press
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
+	call LoadScreenTilesFromBuffer1 ; CHS_Fix close the status screen by reloading tileset from buffer
 	predef LearnMoveFromLevelUp ; learn level up move, if any
 	xor a
 	ld [wForceEvolution], a

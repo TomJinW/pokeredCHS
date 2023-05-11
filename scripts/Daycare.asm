@@ -30,6 +30,8 @@ DayCareMText1:
 	call DisplayPartyMenu
 	push af
 	call GBPalWhiteOutWithDelay3
+	; CHS_Fix 20 naming tileset
+	call ReloadTilesetTilePatterns;
 	call RestoreScreenTilesAndReloadTilePatterns
 	call LoadGBPal
 	pop af
