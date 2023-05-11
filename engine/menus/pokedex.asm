@@ -551,25 +551,6 @@ ShowPokedexDataInternal:
 	ld a, [wcf91]
 	ld [wd0b5], a
 	pop de
-
-	push af
-	push bc
-	push de
-	push hl
-
-	call Delay3
-	call GBPalNormal
-	call GetMonHeader ; load pokemon picture location
-	hlcoord 1, 1
-	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
-	ld a, [wcf91]
-	call PlayCry ; play pokemon cry
-
-	pop hl
-	pop de
-	pop bc
-	pop af
-
 	ld a, c
 	and a
 	jp z, .waitForButtonPress ; if the pokemon has not been owned, don't print the height, weight, or description
@@ -631,11 +612,30 @@ ShowPokedexDataInternal:
 	call TextCommandProcessor ; print pokedex description text
 	xor a
 	ldh [hClearLetterPrintingDelayFlags], a
+
+	; push af
+	; push bc
+	; push de
+	; push hl
 .waitForButtonPress
+	call Delay3
+	call GBPalNormal
+	call GetMonHeader ; load pokemon picture location
+	hlcoord 1, 1
+	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
+	ld a, [wcf91]
+	call PlayCry ; play pokemon cry
+
+	; pop hl
+	; pop de
+	; pop bc
+	; pop af
+
+.waitForButtonPress2
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
 	and A_BUTTON | B_BUTTON
-	jr z, .waitForButtonPress
+	jr z, .waitForButtonPress2
 	pop af
 	ldh [hTileAnimations], a
 	call GBPalWhiteOut
