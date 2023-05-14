@@ -232,12 +232,12 @@ Trade_ShowPlayerMon:
 	ldh [hSCX], a
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	; hlcoord 4, 0
-	; ld b, 6
-	; ld c, 10
-	hlcoord 3, 0
+	hlcoord 4, 0
 	ld b, 6
-	ld c, 12
+	ld c, 10
+	; hlcoord 3, 0
+	; ld b, 6
+	; ld c, 12
 	call TextBoxBorder
 	call Trade_PrintPlayerMonInfoText
 	ld b, HIGH(vBGMap0)
