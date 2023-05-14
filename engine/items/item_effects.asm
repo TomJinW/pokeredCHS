@@ -110,7 +110,12 @@ ReloadPKNNName: ;CHS_Fix Reloading pokemon name after using a ball
 	hlcoord 9, 8 ; CHS_Fix 02 
 	call PlaceString
 	ret 
-
+ClearPlayerPKMNLevel:
+	coord hl, $11, 8 
+	ld b, 1
+	ld c, 3
+	call ClearScreenArea
+	ret
 ItemUseBall:
 
 ; Balls can't be used out of battle.
@@ -577,6 +582,17 @@ ItemUseBall:
 .sendToBox
 	call ClearSprites
 	call SendNewMonToBox
+	call ReloadPKNNName
+	hlcoord $11, 8 ;
+	ld de, wLoadedMonStatus
+	call PrintStatusConditionNotFainted
+	; pop hl
+	hlcoord $11, 8
+	jr nz, .doNotPrintLevel
+	call PrintLevel
+.doNotPrintLevel
+	; call ClearPlayerPKMNLevel
+	
 	ld hl, ItemUseBallText07
 	CheckEvent EVENT_MET_BILL
 	jr nz, .printTransferredToPCText
