@@ -101,14 +101,50 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
 
+;CHS_FIX p43
+ReloadPKNNNameWithEnemyHUD: ;
+	coord hl, 0, 0 ;
+	ld b, 4 ;
+	ld c, 11 ;
+	call ClearScreenArea ;
+	; ld de, wEnemyMonNick
+	; hlcoord 0, 1 ; CHS_Fix 02 
+	; call PlaceString
+	; push af
+	; push bc
+	; push de
+	; push hl
+	; farcall DrawEnemyHUDAndHPBar
+	; pop af
+	; pop bc
+	; pop de
+	; pop hl
 ReloadPKNNName: ;CHS_Fix Reloading pokemon name after using a ball
-	coord hl, 9, 7
-	ld b, 2
+	; farcall DrawPlayerHUDAndHPBar 
+	ld a, [wBattleType]
+	cp BATTLE_TYPE_SAFARI
+	jr z, .skipReloadingPlayerPKMNName
+	coord hl, 9, 7 
+	ld b, 2 
 	ld c, 8
 	call ClearScreenArea
 	ld de, wBattleMonNick
 	hlcoord 9, 8 ; CHS_Fix 02 
 	call PlaceString
+.skipReloadingPlayerPKMNName
+	ret 
+ReloadPlayerPKMNLevel:
+	hlcoord $11, 8 ;
+	ld de, wLoadedMonStatus
+	call PrintStatusConditionNotFainted
+	; pop hl
+	jr nz, .doNotPrintLevel
+	ld a, [wBattleType]
+	cp BATTLE_TYPE_SAFARI
+	jr z, .doNotPrintLevel
+	hlcoord $11, 8
+	call PrintLevel
+.doNotPrintLevel
 	ret 
 
 ItemUseBall:
@@ -159,7 +195,15 @@ ItemUseBall:
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
 	jr z, .skipReloadingName
+	push af
+	push bc
+	push de
+	push hl
 	call ReloadPKNNName
+	pop af
+	pop bc
+	pop de
+	pop hl
 .skipReloadingName
 	ld hl, ItemUseText00
 	call PrintText
@@ -577,6 +621,9 @@ ItemUseBall:
 .sendToBox
 	call ClearSprites
 	call SendNewMonToBox
+	call ReloadPKNNNameWithEnemyHUD
+	call ReloadPlayerPKMNLevel
+	; call ClearPlayerPKMNLevel
 	ld hl, ItemUseBallText07
 	CheckEvent EVENT_MET_BILL
 	jr nz, .printTransferredToPCText
@@ -845,8 +892,8 @@ ItemUseMedicine:
 	ld [wActionResultOrTookBattleTurn], a ; item use failed
 	jp PrintText
 .emptyPartyText
-	text "You don't have"
-	line "any #MON!"
+	text "你没有可用的"
+	line "#！"
 	prompt
 .notUsingSoftboiled
 	ld a, 1 ;CHS_FIX 20 for opening party menu using items

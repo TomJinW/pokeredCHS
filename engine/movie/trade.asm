@@ -222,22 +222,24 @@ Trade_Cleanup:
 	res 6, [hl] ; turn off instant text printing
 	ret
 
+DEF TRADE_SLIDE_POS_ADJ EQU 8
+
 Trade_ShowPlayerMon:
 	ld a, %10101011
 	ldh [rLCDC], a
 	ld a, $50
 	ldh [hWY], a
-	ld a, $86
+	ld a, $86 + TRADE_SLIDE_POS_ADJ
 	ldh [rWX], a
 	ldh [hSCX], a
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	; hlcoord 4, 0
-	; ld b, 6
-	; ld c, 10
 	hlcoord 3, 0
 	ld b, 6
-	ld c, 12
+	ld c, 13
+	; hlcoord 3, 0
+	; ld b, 6
+	; ld c, 12
 	call TextBoxBorder
 	call Trade_PrintPlayerMonInfoText
 	ld b, HIGH(vBGMap0)
@@ -245,7 +247,7 @@ Trade_ShowPlayerMon:
 	call ClearScreen
 	ld a, [wTradedPlayerMonSpecies]
 	call Trade_LoadMonSprite
-	ld a, $7e
+	ld a, $7e + TRADE_SLIDE_POS_ADJ / 2
 .slideScreenLoop
 	push af
 	call DelayFrame
@@ -256,7 +258,9 @@ Trade_ShowPlayerMon:
 	dec a
 	and a
 	jr nz, .slideScreenLoop
-	call Trade_Delay80
+	; call Trade_Delay80
+	ld c, 80 - TRADE_SLIDE_POS_ADJ / 2
+	call DelayFrames
 	ld a, TRADE_BALL_POOF_ANIM
 	call Trade_ShowAnimation
 	ld a, TRADE_BALL_DROP_ANIM
@@ -362,7 +366,7 @@ Trade_ShowEnemyMon:
 	; ld c, 10
 	hlcoord 3, 10
 	ld b, 6
-	ld c, 12
+	ld c, 13
 	call TextBoxBorder
 	call Trade_PrintEnemyMonInfoText
 	call Trade_CopyTileMapToVRAM
@@ -380,7 +384,7 @@ Trade_ShowEnemyMon:
 	; hlcoord 4, 10
 	; lb bc, 8, 12
 	hlcoord 3, 10
-	lb bc, 8, 14
+	lb bc, 8, 15
 	call ClearScreenArea
 	jp PrintTradeTakeCareText
 
