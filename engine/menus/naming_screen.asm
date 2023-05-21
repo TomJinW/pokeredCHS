@@ -163,6 +163,11 @@ DisplayNamingScreen:
 	ld bc, NAME_LENGTH
 	call CopyData
 	call GBPalWhiteOutWithDelay3
+	;CHS_FIX p43
+	coord hl, 1, $D ;
+	ld b, 4 ;
+	ld c, 18 ;
+	call ClearScreenArea
 	call ClearScreen
 	call ClearSprites
 	call RunDefaultPaletteCommand
