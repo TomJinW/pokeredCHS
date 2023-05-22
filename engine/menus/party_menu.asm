@@ -1,13 +1,9 @@
 SaveLearnToTiles: ;
-	ld a,[wMarkSave]
-	cp 1
-	jr nz, .doNothing
 	ld bc, -SCREEN_WIDTH ;
 	add hl, bc ;
 	lb bc, 2,6 ;
 	ld a, $60 ;
 	call DFSStaticize ;
-.doNothing
 	ret ;
 
 InitLearnMark:
@@ -15,11 +11,17 @@ InitLearnMark:
 	ld [wPartyIndex], a
 	ld a, 0
 	ld [wCanLearnMark], a
-	ld a, 0
-	ld [wCannotLearnMark], a
 	ret 
 
 DisplayLearnText:
+	ld bc, 0 + 11 ;ld bc, 20 + 9 ; down 1 row and right 9 columns
+	push hl
+	add hl, bc
+	call PlaceString
+	pop hl
+	ret
+
+DisplayLearnTextWithSave:
 	ld bc, 0 + 11 ;ld bc, 20 + 9 ; down 1 row and right 9 columns
 	push hl
 	add hl, bc
@@ -30,50 +32,22 @@ DisplayLearnText:
 
 HandleDFS:
 	ld a, [wPartyIndex]
-	cp 2
-	jr nc, .last5
+	cp 1
+	jr nz, .last5
 	; first 1 pokemon
-	ld a, 0
-	ld [wMarkSave], a
 	call DisplayLearnText
 	ld a, [wIfDexSeen]
-	cp 1
-	jr nz, .markCannotLearn
-	ld a, 1
 	ld [wCanLearnMark], a
 	ret
-.markCannotLearn
-	ld a, 1
-	ld [wCannotLearnMark], a
-	ret
 .last5
-	ld a, [wCannotLearnMark]
+	ld a, [wCanLearnMark]
 	ld b, a
-	ld a, [wCanLearnMark]
-	and b
-	jr nz, .doNothing
-	ld a, [wCanLearnMark]
-	cp 1
-	jr nz, .onlyCannotLearn
-	; onlyCanLearn
 	ld a, [wIfDexSeen]
-	cp 0
-	jr nz, .doNothing
-	ld a, 1
-	ld [wMarkSave], a
-	call DisplayLearnText
-	ret
-.onlyCannotLearn
-	ld a, [wIfDexSeen]
-	cp 1
-	jr nz, .doNothing
-	ld a, 1
-	ld [wMarkSave], a
-	call DisplayLearnText
+	xor b
+	jr z, .doNothing
+	call DisplayLearnTextWithSave
 	ret
 .doNothing
-	ld a, 0
-	ld [wMarkSave], a
 	call DisplayLearnText
 	ret
 
