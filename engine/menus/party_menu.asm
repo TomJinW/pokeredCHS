@@ -30,9 +30,9 @@ DisplayLearnText:
 
 HandleDFS:
 	ld a, [wPartyIndex]
-	cp 4
-	jr nc, .last3
-	; first 3 pokemon
+	cp 2
+	jr nc, .last5
+	; first 1 pokemon
 	ld a, 0
 	ld [wMarkSave], a
 	call DisplayLearnText
@@ -46,7 +46,7 @@ HandleDFS:
 	ld a, 1
 	ld [wCannotLearnMark], a
 	ret
-.last3
+.last5
 	ld a, [wCannotLearnMark]
 	ld b, a
 	ld a, [wCanLearnMark]
