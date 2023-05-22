@@ -19,6 +19,25 @@ ClearBillPCMenuSub_CHS: ;CHS_Fix 24 for refreshing the screen after looking at s
 	call ClearScreenArea ;
 	ret ;
 
+ClearListView_CHS:
+	hlcoord 1, $D ;
+	ld b, 4 ;
+	ld c, 18 ;
+	call ClearScreenArea ;
+	hlcoord 6, 3 ;
+	ld b, 7 ;
+	ld c, 11 ;
+	call ClearScreenArea ;
+	hlcoord 6, $A ;
+	ld b, 1 ;
+	ld c, 3 ;
+	call ClearScreenArea ;
+	hlcoord $B, $B ;
+	ld b, 1 ;
+	ld c, 3 ;
+	call ClearScreenArea ;
+	call Delay3
+	ret ;
 
 DisplayPCMainMenu::
 	xor a
@@ -187,10 +206,10 @@ BillsPCMenu:
 	add "1"
 .next
 	ld [wTempSpace],a
-	ld a, $01 ; CHS_Fix 24 push text to stack
-	lb bc, 2, 8 ;
-	hlcoord 2, 1 ;
-	call DFSStaticize ;
+	; ld a, $01 ; CHS_Fix 24 push text to stack
+	; lb bc, 2, 8 ;
+	; hlcoord 2, 1 ;
+	; call DFSStaticize ;
 	ld a,[wTempSpace]
 
 	ldcoord_a 18, 16
@@ -282,6 +301,7 @@ BillsPCDeposit:
 	ld [hl], "@"
 	ld hl, MonWasStoredText
 	call PrintText
+	call ClearListView_CHS ;CHS_FIX 37
 	jp BillsPCMenu
 
 BillsPCWithdraw:
@@ -321,10 +341,10 @@ BillsPCWithdraw:
 	call WaitForSoundToFinish
 	ld hl, MonIsTakenOutText
 	call PrintText
+	call ClearListView_CHS ;CHS_FIX 37
 	jp BillsPCMenu
 
 BillsPCRelease:
-	call ClearBillPCMenuMain_CHS
 	ld a, [wBoxCount]
 	and a
 	jr nz, .loop
@@ -350,6 +370,7 @@ BillsPCRelease:
 	call PlayCry
 	ld hl, MonWasReleasedText
 	call PrintText
+	call ClearListView_CHS ;CHS_Fix 37
 	jp BillsPCMenu
 
 BillsPCChangeBox:

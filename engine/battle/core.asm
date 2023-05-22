@@ -1125,7 +1125,12 @@ ChooseNextMon:
 	call GBPalWhiteOut
 	call LoadHudTilePatterns
 	call LoadScreenTilesFromBuffer1
-	call DrawEnemyHUDAndHPBar
+	ld hl, wEnemyMonHP ; CHS_Fix not reloading enemy HP when hits zero, used when both died from self destruct
+	ld a, [hli] ;
+	or [hl] ; is enemy mon HP zero?
+	jp z, .skipDrawingEnemyHUDAndHPBar ; if HP is zero, skip drawing the HUD and HP bar
+	call DrawEnemyHUDAndHPBar ; CHS_Fix for enemy name
+.skipDrawingEnemyHUDAndHPBar
 	call RunDefaultPaletteCommand
 	call GBPalNormal
 	call SendOutMon
@@ -2634,7 +2639,7 @@ MoveSelectionMenu:
 	di ; out of pure coincidence, it is possible for vblank to occur between the di and ei
 	   ; so it is necessary to put the di ei block to not cause tearing
 	call TextBoxBorder
-	; hlcoord 4, 12
+	; hlcoord 4, 12 ;CHS_Fix p36
 	; ld [hl], $7a
 	; hlcoord 10, 12
 	; ld [hl], $7e

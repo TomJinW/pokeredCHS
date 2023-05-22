@@ -1,15 +1,94 @@
+SaveLearnToTiles: ;
+	ld a,[wMarkSave]
+	cp 1
+	jr nz, .doNothing
+	ld bc, -SCREEN_WIDTH ;
+	add hl, bc ;
+	lb bc, 2,6 ;
+	ld a, $60 ;
+	call DFSStaticize ;
+.doNothing
+	ret ;
+
+InitLearnMark:
+	ld a, 0
+	ld [wPartyIndex], a
+	ld a, 0
+	ld [wCanLearnMark], a
+	ld a, 0
+	ld [wCannotLearnMark], a
+	ret 
+
+DisplayLearnText:
+	ld bc, 0 + 11 ;ld bc, 20 + 9 ; down 1 row and right 9 columns
+	push hl
+	add hl, bc
+	call PlaceString
+	call SaveLearnToTiles
+	pop hl
+	ret
+
+HandleDFS:
+	ld a, [wPartyIndex]
+	cp 4
+	jr nc, .last3
+	; first 3 pokemon
+	ld a, 0
+	ld [wMarkSave], a
+	call DisplayLearnText
+	ld a, [wIfDexSeen]
+	cp 1
+	jr nz, .markCannotLearn
+	ld a, 1
+	ld [wCanLearnMark], a
+	ret
+.markCannotLearn
+	ld a, 1
+	ld [wCannotLearnMark], a
+	ret
+.last3
+	ld a, [wCannotLearnMark]
+	ld b, a
+	ld a, [wCanLearnMark]
+	and b
+	jr nz, .doNothing
+	ld a, [wCanLearnMark]
+	cp 1
+	jr nz, .onlyCannotLearn
+	; onlyCanLearn
+	ld a, [wIfDexSeen]
+	cp 0
+	jr nz, .doNothing
+	ld a, 1
+	ld [wMarkSave], a
+	call DisplayLearnText
+	ret
+.onlyCannotLearn
+	ld a, [wIfDexSeen]
+	cp 1
+	jr nz, .doNothing
+	ld a, 1
+	ld [wMarkSave], a
+	call DisplayLearnText
+	ret
+.doNothing
+	ld a, 0
+	ld [wMarkSave], a
+	call DisplayLearnText
+	ret
+
 DrawPartyMenu_::
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	call ClearScreen
 	call UpdateSprites
 	farcall LoadMonPartySpriteGfxWithLCDDisabled ; load pokemon icon graphics
-
 RedrawPartyMenu_::
 	ld a, [wPartyMenuTypeOrMessageID]
 	cp SWAP_MONS_PARTY_MENU
 	jp z, .printMessage
 	call ErasePartyMenuCursors
+	call InitLearnMark
 	farcall InitPartyMenuBlkPacket
 	hlcoord 3, 1 ;hlcoord 3, 0
 	ld de, wPartySpecies
@@ -19,6 +98,9 @@ RedrawPartyMenu_::
 	ld [wWhichPartyMenuHPBar], a
 	ld b, a ; DFSStaticize First Char
 .loop
+	ld a, [wPartyIndex]
+	add 1
+	ld [wPartyIndex], a 
 	ld a, [de]
 	cp $FF ; reached the terminator?
 	jp z, .afterDrawingMonEntries
@@ -105,16 +187,17 @@ RedrawPartyMenu_::
 	predef CanLearnTM ; check if the pokemon can learn the move
 	pop hl
 	ld de, .ableToLearnMoveText
+	ld a, 1
+	ld [wIfDexSeen], a
 	ld a, c
 	and a
 	jr nz, .placeMoveLearnabilityString
 	ld de, .notAbleToLearnMoveText
+	ld a, 0
+	ld [wIfDexSeen], a
 .placeMoveLearnabilityString
-	ld bc, 0 + 11 ;ld bc, 20 + 9 ; down 1 row and right 9 columns
-	push hl
-	add hl, bc
-	call PlaceString
-	pop hl
+	call HandleDFS
+
 .printLevel
 	ld bc, 10 ; move 10 columns to the right
 	ld bc, 7
