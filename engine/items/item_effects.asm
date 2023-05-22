@@ -102,7 +102,7 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; MAX_ELIXER
 
 ;CHS_FIX p43
-ReloadPKNNNameWithEnemyHUD: ;
+ReloadPKMNNameWithEnemyHUD: ;
 	coord hl, 0, 0 ;
 	ld b, 4 ;
 	ld c, 11 ;
@@ -119,8 +119,11 @@ ReloadPKNNNameWithEnemyHUD: ;
 	; pop bc
 	; pop de
 	; pop hl
-ReloadPKNNName: ;CHS_Fix Reloading pokemon name after using a ball
-	; farcall DrawPlayerHUDAndHPBar 
+ReloadPKMNName: ;CHS_Fix Reloading pokemon name after using a ball
+	; farcall DrawPlayerHUDAndHPBar
+	ld a,[wIfDexSeen]
+	cp 0
+	jr z, .skipReloadingPlayerPKMNName
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
 	jr z, .skipReloadingPlayerPKMNName
@@ -133,15 +136,18 @@ ReloadPKNNName: ;CHS_Fix Reloading pokemon name after using a ball
 	call PlaceString
 .skipReloadingPlayerPKMNName
 	ret 
+
 ReloadPlayerPKMNLevel:
-	hlcoord $11, 8 ;
-	ld de, wLoadedMonStatus
-	call PrintStatusConditionNotFainted
-	; pop hl
-	jr nz, .doNotPrintLevel
+	ld a,[wIfDexSeen]
+	cp 0
+	jr z, .doNotPrintLevel
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
 	jr z, .doNotPrintLevel
+	hlcoord $11, 8 ;
+	ld de, wLoadedMonStatus
+	call PrintStatusConditionNotFainted
+	jr nz, .doNotPrintLevel
 	hlcoord $11, 8
 	call PrintLevel
 .doNotPrintLevel
@@ -199,7 +205,11 @@ ItemUseBall:
 	push bc
 	push de
 	push hl
-	call ReloadPKNNName
+	ld a, 1
+	ld [wIfDexSeen], a
+	call ReloadPKMNName
+	ld a, 0
+	ld [wIfDexSeen], a
 	pop af
 	pop bc
 	pop de
@@ -599,6 +609,7 @@ ItemUseBall:
 	pop af
 
 	and a ; was the Pokémon already in the Pokédex?
+	ld [wIfDexSeen],a
 	jr nz, .skipShowingPokedexData ; if so, don't show the Pokédex data
 
 	ld hl, ItemUseBallText06
@@ -621,7 +632,7 @@ ItemUseBall:
 .sendToBox
 	call ClearSprites
 	call SendNewMonToBox
-	call ReloadPKNNNameWithEnemyHUD
+	call ReloadPKMNNameWithEnemyHUD
 	call ReloadPlayerPKMNLevel
 	; call ClearPlayerPKMNLevel
 	ld hl, ItemUseBallText07
@@ -2362,7 +2373,11 @@ ItemUseNotYoursToUse:
 ThrowBallAtTrainerMon:
 	call RunDefaultPaletteCommand
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
-	call ReloadPKNNName
+	ld a, 1
+	ld [wIfDexSeen], a
+	call ReloadPKMNName
+	ld a, 0
+	ld [wIfDexSeen], a
 	call Delay3
 	ld a, TOSS_ANIM
 	ld [wAnimationID], a
