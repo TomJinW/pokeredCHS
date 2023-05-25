@@ -2307,19 +2307,14 @@ UseBagItem:
 	call CopyToStringBuffer
 	xor a
 	ld [wPseudoItemID], a
-
-	ld a, 0 ; CHS_FIX 00 for opening party menu using items
-	ld [wIfPartyMenuOpenedDuringBattle], a ;
-	ld a, [wPseudoItemID] ;
-
 	call UseItem
-	ld [wTempSpace], a ; CHS_FIX 00 for opening party menu using items
-	ld a,[wIfPartyMenuOpenedDuringBattle] ;
-	cp 1 ;
-	jr nz, .skipResettingMonSprite ;
+	push af
+	ld a, [wIsInBattle]
+	and a
+	jr z, .skipResettingMonSprite ;
 	call ReloadMonPic ;
 .skipResettingMonSprite ;
-	ld a,[wTempSpace] ;
+	pop af
 	call LoadHudTilePatterns
 	call ClearSprites
 	xor a
