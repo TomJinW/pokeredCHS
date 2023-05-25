@@ -435,6 +435,7 @@ StartMenu_Item::
 	; call ReloadMapData ;CHS_FIX 29 for reloading Maps after closing party Menu
 	call ReloadTilesetTilePatterns
 	call RestoreScreenTilesAndReloadTilePatterns
+	call RePrintSafariBallText ; CHS_Fix reloading safari steps
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	jp StartMenu_Item
@@ -458,6 +459,20 @@ StartMenu_Item::
 	call TossItem
 .tossZeroItems
 	jp ItemMenuLoop
+
+SafariBallText2: ;
+	db "BALL×× @" ;
+
+RePrintSafariBallText: ;CHS_Fix reloading safari
+	ld a, [wCurMap]
+	cp SAFARI_ZONE_EAST
+	ret c
+	cp CERULEAN_CAVE_2F
+	ret nc
+	hlcoord 1, 3
+	ld de, SafariBallText2
+	call PlaceString
+	ret
 
 CannotUseItemsHereText:
 	text_far _CannotUseItemsHereText
