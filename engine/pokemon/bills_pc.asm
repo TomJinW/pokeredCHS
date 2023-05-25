@@ -205,12 +205,12 @@ BillsPCMenu:
 .singleDigitBoxNum
 	add "1"
 .next
-	ld [wTempSpace],a
+	; ld [wTempSpace],a
 	; ld a, $01 ; CHS_Fix 24 push text to stack
 	; lb bc, 2, 8 ;
 	; hlcoord 2, 1 ;
 	; call DFSStaticize ;
-	ld a,[wTempSpace]
+	; ld a,[wTempSpace]
 
 	ldcoord_a 18, 16
 	hlcoord 14, 16 ; hlcoord 10, 16

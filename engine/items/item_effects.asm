@@ -134,24 +134,24 @@ ReloadPKMNName: ;CHS_Fix Reloading pokemon name after using a ball
 	ld de, wBattleMonNick
 	hlcoord 9, 8 ; CHS_Fix 02 
 	call PlaceString
+	hlcoord $11, 8 ;
+	ld de, wLoadedMonStatus 
+	call PrintStatusConditionNotFainted
 .skipReloadingPlayerPKMNName
 	ret 
 
-ReloadPlayerPKMNLevel:
-	ld a,[wIfDexSeen]
-	cp 0
-	jr z, .doNotPrintLevel
-	ld a, [wBattleType]
-	cp BATTLE_TYPE_SAFARI
-	jr z, .doNotPrintLevel
-	hlcoord $11, 8 ;
-	ld de, wLoadedMonStatus
-	call PrintStatusConditionNotFainted
-	jr nz, .doNotPrintLevel
-	hlcoord $11, 8
-	call PrintLevel
-.doNotPrintLevel
-	ret 
+; ReloadPlayerPKMNLevel:
+; 	ld a,[wIfDexSeen]
+; 	cp 0
+; 	jr z, .doNotPrintLevel
+; 	ld a, [wBattleType]
+; 	cp BATTLE_TYPE_SAFARI 
+; 	jr z, .doNotPrintLevel
+; 	hlcoord $11, 8 ;
+; 	ld de, wLoadedMonStatus 
+; 	call PrintStatusConditionNotFainted
+; .doNotPrintLevel:
+; 	ret 
 
 ItemUseBall:
 
@@ -195,21 +195,22 @@ ItemUseBall:
 	ld [wPokeBallAnimData], a
 
 	call LoadScreenTilesFromBuffer1
-	ld a, [wBattleType]
-	dec a
-	jr z, .skipReloadingName
-	ld a, [wBattleType]
-	cp BATTLE_TYPE_SAFARI
-	jr z, .skipReloadingName
+	ld a, [wBattleType] ;if old man
+	dec a ;
+	jr z, .skipReloadingName ;
+	ld a, [wBattleType] ;
+	cp BATTLE_TYPE_SAFARI ;
+	jr z, .skipReloadingName ;
 	push af
 	push bc
 	push de
 	push hl
-	ld a, 1
-	ld [wIfDexSeen], a
-	call ReloadPKMNName
-	ld a, 0
-	ld [wIfDexSeen], a
+	ld a, 1 ;
+	ld [wIfDexSeen], a ;
+	call ReloadPKMNName ;
+	; call ReloadPlayerPKMNLevel
+	ld a, 0 ;
+	ld [wIfDexSeen], a ;
 	pop af
 	pop bc
 	pop de
@@ -633,8 +634,7 @@ ItemUseBall:
 	call ClearSprites
 	call SendNewMonToBox
 	call ReloadPKMNNameWithEnemyHUD
-	call ReloadPlayerPKMNLevel
-	; call ClearPlayerPKMNLevel
+	; call ReloadPlayerPKMNLevel
 	ld hl, ItemUseBallText07
 	CheckEvent EVENT_MET_BILL
 	jr nz, .printTransferredToPCText
@@ -907,8 +907,6 @@ ItemUseMedicine:
 	line "#！"
 	prompt
 .notUsingSoftboiled
-	ld a, 1 ;CHS_FIX 20 for opening party menu using items
-	ld [wIfPartyMenuOpenedDuringBattle], a;
 	call DisplayPartyMenu
 .getPartyMonDataAddress
 	jp c, .canceledItemUse
@@ -1804,6 +1802,11 @@ ItemUsePokeflute:
 	and b ; remove Sleep status
 	ld [hl], a
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
+	ld a, 1 ;
+	ld [wIfDexSeen], a ;
+	call ReloadPKMNName ;CHS_Fix p68
+	ld a, 0 ;
+	ld [wIfDexSeen], a ;
 	ld a, [wWereAnyMonsAsleep]
 	and a ; were any pokemon asleep before playing the flute?
 	ld hl, PlayedFluteNoEffectText
@@ -2040,8 +2043,6 @@ ItemUsePPRestore:
 	ld [wUpdateSpritesEnabled], a
 	ld a, USE_ITEM_PARTY_MENU
 	ld [wPartyMenuTypeOrMessageID], a
-	ld a, 1 ;CHS_FIX 20 for opening party menu using items
-	ld [wIfPartyMenuOpenedDuringBattle],a ;
 	call DisplayPartyMenu
 	jr nc, .chooseMove
 	jp .itemNotUsed
@@ -2376,6 +2377,7 @@ ThrowBallAtTrainerMon:
 	ld a, 1
 	ld [wIfDexSeen], a
 	call ReloadPKMNName
+	; call ReloadPlayerPKMNLevel
 	ld a, 0
 	ld [wIfDexSeen], a
 	call Delay3
