@@ -483,9 +483,9 @@ CeladonGameCornerScript_48f1e:
 	ld b, 4
 	ld c, 7
 	call ClearScreenArea
-	; hlcoord 12, 2
-	; ld de, GameCornerMoneyText
-	; call PlaceString
+	hlcoord $E, 0
+	ld de, GameCornerMoneyText
+	call PlaceString
 	hlcoord 12, 1
 	ld de, GameCornerBlankText1
 	call PlaceString
