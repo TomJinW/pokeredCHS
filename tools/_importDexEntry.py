@@ -39,6 +39,16 @@ xlsxListPath = sys.argv[1]
 mode = int(sys.argv[2])
 hexchar = int(sys.argv[3])
 buildMode = int(sys.argv[4])
+buildVer = sys.argv[5]
+
+def getCategoryText(origCategory):
+    category = 'db \"' + origCategory + '@\"'
+    if hexchar == 1:
+        category = origCategory + '#@'
+        category = charmap.replaceText(category,charMap,buildMode)
+        category = 'db ' + category
+    return category
+
 # Load Workbook
 wb = load_workbook(filename = xlsxListPath)
 
@@ -80,12 +90,17 @@ for sheet in wb._sheets:
     while sheet.cell(row=id, column=1).value != 'end':
         
         label = sheet.cell(row=id, column=mode + 0).value
-        category = ''
-        if hexchar == 1:
-            category = sheet.cell(row=id, column=mode + 1).value + '#@'
-            category = charmap.replaceText(category,charMap,buildMode)
-        else:
-            category = '\"' + sheet.cell(row=id, column=mode + 1).value + '@\"'
+        
+        origCategory = sheet.cell(row=id, column=mode + 1).value
+        category = getCategoryText(origCategory)
+        if buildVer == 'RGB' and origCategory == '虚拟':
+            line1 = 'IF DEF(_BLUE)\n'
+            line2 = '\t' + getCategoryText(origCategory) + '\n'
+            line3 = '\tELSE\n'
+            line4 = '\t' + getCategoryText('ＣＧ') + '\n'
+            line5 = '\tENDC'
+            category = line1 + line2 + line3 + line4 + line5
+            
         height = 'db ' + str(sheet.cell(row=id, column=mode + 2).value).replace('-',',')
         weight = 'dw ' + str(sheet.cell(row=id, column=mode + 3).value).replace('-','')
         descValue = sheet.cell(row=id, column=mode + 4).value
@@ -94,7 +109,7 @@ for sheet in wb._sheets:
             desc = 'db \"コメント さくせいちゅう@\"'
         id += 1
 
-        body += label +'\n\t' + 'db ' + category + '\n\t' + height + '\n\t' + weight + '\n\t' + desc 
+        body += label +'\n\t' + category + '\n\t' + height + '\n\t' + weight + '\n\t' + desc 
 
     with open(filePath, 'w') as f:
         f.write(header + body)

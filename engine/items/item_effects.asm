@@ -903,8 +903,8 @@ ItemUseMedicine:
 	ld [wActionResultOrTookBattleTurn], a ; item use failed
 	jp PrintText
 .emptyPartyText
-	text "你没有可用的"
-	line "#！"
+	text "You don't have"
+	line "any #MON!"
 	prompt
 .notUsingSoftboiled
 	ld a, 1 ;CHS_FIX 20 for opening party menu using items
