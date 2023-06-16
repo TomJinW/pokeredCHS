@@ -86,11 +86,23 @@ DisplayPCMainMenu::
 	ld h, b
 	ld de, PlayersPCText
 	call PlaceString
+
+	; push af ;
+	; ld a, $60 ; CHS_Fix 24 push text to stack
+	; lb bc, 4, 3 ;
+	; hlcoord 2, 1 ;
+	; call DFSStaticize ;
+	; pop af
+
 	CheckEvent EVENT_GOT_POKEDEX
 	jr z, .noOaksPC2
 	hlcoord 2, 6
 	ld de, OaksPCText
 	call PlaceString
+	; ld a, $6C ; CHS_Fix 24 push text to stack
+	; lb bc, 2, 3 ;
+	; hlcoord 2, 5 ;
+	; call DFSStaticize ;
 	ld a, [wNumHoFTeams]
 	and a
 	jr z, .noLeaguePC

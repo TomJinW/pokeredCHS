@@ -421,6 +421,19 @@ colTrans = int(sys.argv[3])
 bypassFileCheck = int(sys.argv[4])
 
 
+jsonText = "["
+def exportJSON(dict,filePath):
+    global jsonText
+    for key in dict:
+        instructions = dict[key]
+        header = '{\"Sentence\":{\"note\":\"\",\"state\":\"Unmarked\",\"text\":\"'
+        body = ''
+        for instruction in instructions:
+            if removeNone(instruction.content) != "":
+                body += instruction.content + '\\n'
+        footer = '\",\"tag\":\"'+ instruction.label + '\\n' + filePath.split('/')[-1] +'\"}},'
+        jsonText += header + body + footer
+
 print(xlsxListPath +'：检查 xlsx 合法性...')
 print()
 
@@ -436,8 +449,10 @@ for sheet in wb._sheets:
     TransDict = getInstDict(colTrans,sheet,xlsxListPath)
     checkDictValid(TransDict,sheet)
     compareDicts(origDict,TransDict,sheet)
+    exportJSON(TransDict,xlsxListPath)
 
-
+jsonText += ']'
+# print(jsonText)
 print('检查结束')
 print(bcolors.FAIL)
 print('发现错误：'+ str(errors))
@@ -445,3 +460,5 @@ print(bcolors.WARNING)
 print('发现警告：'+ str(warnings))
 print(bcolors.OKCYAN)
 print('发现提醒：'+ str(infos))
+
+
