@@ -1,4 +1,4 @@
-db "YOUNGSTER@"
+; db "YOUNGSTER@"
 TrainerNames::
 	list_start TrainerNames
 	li "YOUNGSTER"
