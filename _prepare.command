@@ -19,13 +19,13 @@ python3 tools/_backup.py xlsx/xlsxList.txt xlsx/ 0
 clear
 
 echo Which rgbds? Enter number and hit return.
-echo 1. Original RGBDS in rgbds-061/
+echo 1. Original RGBDS installed with the system
 echo 2. Modded RGBDS for CHINESE Characters in rgbds-cn/
 read option
 if [ -z "${option}" ]
 then
     echo The Option is not set, using the default one.
-    option=2
+    option=1
 fi
 python3 tools/_importText.py xlsx/outdoor.xlsx 5 RB $option
 python3 tools/_importText.py xlsx/dex.xlsx 5 RB $option
