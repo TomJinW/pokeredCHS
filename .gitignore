@@ -1,3 +1,4 @@
+.DS_Store
 rgbds-061/*
 rgbds-cn/*
 tmp/
@@ -35,3 +36,8 @@ tools/flips
 *.sn*
 *.sa*
 *.sg1
+roms/.DS_Store
+roms/rb/.DS_Store
+roms/rgb/.DS_Store
+.DS_Store
+rgbds-cn/
