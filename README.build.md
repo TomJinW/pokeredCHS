@@ -10,7 +10,7 @@
 
 ### macOS 和 Linux：
 - git
-- [原版 RGBDS 0.6.1 ](https://rgbds.gbdev.io/install/) 或者 [SnDream 修改的 RGBDS 0.6.1](https://github.com/SnDream/rgbds/)（从源代码编译 RGBDS 需要以下依赖）
+- [原版 RGBDS 0.6.1](https://rgbds.gbdev.io/install/) 或者 [SnDream 修改的 RGBDS 0.6.1](https://github.com/SnDream/rgbds/)（从源代码编译 RGBDS 需要以下依赖）
 	-  libpng
 	-  gcc
 	-  bison
@@ -18,6 +18,7 @@
 -  python3 和 pip3
 -  openpyxl
 
+-  两个 rgbds 版本的区别：原版 rgbds 不支持多字节编码，所以源代码内的汉字必须使用RAW 的 16 进制硬编码，但好处是不需要魔改 rgbds。而改版 rgbds 支持了多字节编码，源代码可以直接嵌入汉字。代价就是需要自行编译改版 rgbds。对于最终编译出来的 ROM 来说，**两种方式没有任何区别**。
 ##步骤一：安装环境
 ### Linux (以 Ubuntu 为例）：
 
