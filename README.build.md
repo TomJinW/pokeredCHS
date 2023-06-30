@@ -192,7 +192,7 @@ pokeredCHS
 │ 	│ 	│ pokeblue_vc.gbc		（精灵宝可梦 蓝 VC修正版）
 │ 	│ 	│ pokeblue_debug.gbc	（精灵宝可梦 蓝 Debug版）
 │ 	│ 	│ pokeblue.patch		（精灵宝可梦 蓝 VC用补丁）
-└─────────────────────────────
+└───────
 ```
 
 - 实际文件名中还有额外的 .1 和 .2 扩展名，代表了编译过程中「Which rgbds? Enter number and hit return.」使用的选项。比如 pokeblue.1.gbc 使用的是  Original RGBDS installed with the system。
