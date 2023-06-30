@@ -165,7 +165,7 @@
 
 - 编译好的ROM的文件存档如图所示：
 
-	```
+```
 pokeredCHS
 │   README.md
 │   ...    
