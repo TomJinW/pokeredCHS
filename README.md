@@ -34,11 +34,11 @@
 
 - 关于 要打补丁的原文件的信息：
 
-|**英文版**|**红：Pokemon - Gold Version (UE) [C][!].gbc**|**蓝：Pokemon - Silver Version (UE) [C][!].gbc**|
+|**英文版**|**红：Pokemon Red.gb**|**蓝：Pokemon Blue.gb**|
 |:---:|:----:|:----:|
 |MD5| 3d45c1ee9abd5738df46d2bdda8b57dc | 50927e843568814f7ed45ec4f944bd8b |
 |用于| 「宝可梦版 / 精灵宝可梦版」红 | 「宝可梦版」蓝 / 「精灵宝可梦版」蓝 & 绿|
-|可以使用| rb-pokered.ips <br> rgb-pokered.ips | rgb-pokered.ips <br> rgb-pokegreen.ips <br> rgb-pokeblue.ips|
+|可以使用| rb-pokered.ips <br> rgb-pokered.ips | rb-pokeblue.ips <br> rgb-pokegreen.ips <br> rgb-pokeblue.ips|
 
 
 
