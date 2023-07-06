@@ -19,6 +19,7 @@
 -  openpyxl
 
 -  两个 rgbds 版本的区别：原版 rgbds 不支持多字节编码，所以源代码内的汉字必须使用RAW 的 16 进制硬编码，但好处是不需要魔改 rgbds。而改版 rgbds 支持了多字节编码，源代码可以直接嵌入汉字。代价就是需要自行编译改版 rgbds。对于最终编译出来的 ROM 来说，**两种方式没有任何区别**。
+
 ##步骤一：安装环境
 ### Linux (以 Ubuntu 为例）：
 
@@ -109,6 +110,7 @@
 			- 由于 macOS 自带的 bison 无法用于编译 rgbds，为了保证不破坏其他 macOS App 的编译兼容性，编译 rgbds 时需要指定使用 Homebrew 安装的 bison ，根据 Mac 处理器种类的不同，Homebrew 安装的 bison 文件位置也会有所不同。
 
 		- 编译完成之后保存好整个rgbds文件夹，将其重命名为rgbds-cn以便稍后使用。
+
 
 ##步骤二：编译ROM
 
