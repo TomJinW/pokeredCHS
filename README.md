@@ -12,6 +12,8 @@
 	- 出于技术需要，五个版本**底层均为英文版。**这五个版本之间可以互相联机，使用英文版对战框架，共用英文版金手指和部分Bug，也可以和包括英文版在内的国际版联机。但五个版本**都不支持和日文版联机**，敬请注意。
 - 五个版本的具体区别可以参考下表：
 
+	![avatar](verdiff.png)
+	
 ## 如何使用补丁
 - 在 Github 上面的 Release 板块下面下载补丁并解压，其中 .ips 是ROM补丁，用于把原版游戏变成汉化版。而 .patch 是 3DS Virtual Console 修正补丁，用于在 3DS 上启用无线联机等功能。
 - 前往 [https://www.marcrobledo.com/RomPatcher.js/](https://www.marcrobledo.com/RomPatcher.js/) 在网页上打补丁。
@@ -20,9 +22,9 @@
 ## 关于补丁的使用范围
 
 - 本项目仅提供 ips 补丁。打上补丁之后原版会变成汉化版。
-- 关于原版 ROM 文件的信息：
+- 关于 ips 补丁文件的信息：
 
-|**补丁文件名**|**补丁说明**|**需要原始文件**|
+|**补丁文件名**|**补丁版本说明**|**需要原始文件**|
 |:---:|:----:|:----:|
 |rb-pokered.ips| 「宝可梦版 红」 | 英文版「宝可梦 红」|
 |rb-pokeblue.ips| 「宝可梦版 蓝」 | 英文版「宝可梦 蓝」|
@@ -30,11 +32,13 @@
 |rgb-pokegreen.ips|「精灵宝可梦版 绿」 | 英文版「宝可梦 蓝」 |
 |rgb-pokeblue.ips| 「精灵宝可梦版 蓝」 | 英文版「宝可梦 蓝」 |
 
+- 关于 要打补丁的原文件的信息：
+
 |**英文版**|**红：Pokemon - Gold Version (UE) [C][!].gbc**|**蓝：Pokemon - Silver Version (UE) [C][!].gbc**|
 |:---:|:----:|:----:|
-|MD5| xxxx | xxxx |
+|MD5| 3d45c1ee9abd5738df46d2bdda8b57dc | 50927e843568814f7ed45ec4f944bd8b |
 |用于| 「宝可梦版 / 精灵宝可梦版」红 | 「宝可梦版」蓝 / 「精灵宝可梦版」蓝 & 绿|
-
+|可以使用| rb-pokered.ips <br> rgb-pokered.ips | rgb-pokered.ips <br> rgb-pokegreen.ips <br> rgb-pokeblue.ips|
 
 
 
