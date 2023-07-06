@@ -178,7 +178,7 @@ pokeredCHS
 │ 	│ 	│ pokered.patch			（宝可梦 红 VC用补丁）
 │ 	│ 	│ pokeblue.gbc 			（宝可梦 蓝）
 │ 	│ 	│ pokeblue_vc.gbc		（宝可梦 蓝 VC修正版）
-│ 	│ 	│ pokeblue_debug.gbc	（宝可梦 蓝 Debug版）
+│ 	│ 	│ pokeblue_debug.gbc		（宝可梦 蓝 Debug版）
 │ 	│ 	│ pokeblue.patch		（宝可梦 蓝 VC用补丁）
 │   └───rgb （精灵宝可梦版 红·绿·蓝）
 │ 	│ 	│ pokered.gbc			（精灵宝可梦 红）
@@ -187,11 +187,11 @@ pokeredCHS
 │ 	│ 	│ pokered.patch			（精灵宝可梦 红 VC用补丁）
 │ 	│ 	│ pokegreen.gbc			（精灵宝可梦 绿）
 │ 	│ 	│ pokegreen_vc.gbc		（精灵宝可梦 绿 VC修正版）
-│ 	│ 	│ pokegreen_debug.gbc	（精灵宝可梦 绿 Debug版）
+│ 	│ 	│ pokegreen_debug.gbc		（精灵宝可梦 绿 Debug版）
 │ 	│ 	│ pokegreen.patch		（精灵宝可梦 绿 VC用补丁）
 │ 	│ 	│ pokeblue.gbc			（精灵宝可梦 蓝）
 │ 	│ 	│ pokeblue_vc.gbc		（精灵宝可梦 蓝 VC修正版）
-│ 	│ 	│ pokeblue_debug.gbc	（精灵宝可梦 蓝 Debug版）
+│ 	│ 	│ pokeblue_debug.gbc		（精灵宝可梦 蓝 Debug版）
 │ 	│ 	│ pokeblue.patch		（精灵宝可梦 蓝 VC用补丁）
 └───────
 ```
