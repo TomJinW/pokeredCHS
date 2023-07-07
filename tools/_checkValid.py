@@ -254,7 +254,7 @@ warnings = 0
 infos = 0
 textOldPlacerCommands=[INSTName.TX_RAM,INSTName.TX_NUM,INSTName.TX_BCD]
 textPlacerCommands=[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd]
-textFinishCommands=[INSTName.text_end,INSTName.done,INSTName.prompt,INSTName.dex]
+textFinishCommands=[INSTName.text_start,INSTName.text_end,INSTName.done,INSTName.prompt,INSTName.dex]
 textPlacerLastAllowedCommands=[INSTName.line,INSTName.cont,INSTName.para]
 def getInstDict(col,sheet,filePath):
     outputDict = {}
