@@ -341,7 +341,9 @@ def checkDictValid(instDict,sheet):
             # 检查战斗后文本长度
             if 'EndBattleText' in instructions[0].label:
                 lengthchk = replaceText(instructions[0].content,textReplacement)
-                if ifOverLength(lengthchk,8*8):
+                if not ifOverLength(lengthchk,1*8):
+                    printLog(InfoType.WARNING,sheet,instructions[0],'战斗后文本可能太短！')
+                if ifOverLength(lengthchk,12*8):
                     printLog(InfoType.WARNING,sheet,instructions[0],'战斗后文本可能太长！')
         
         for i in range(0,len(instructions)):
