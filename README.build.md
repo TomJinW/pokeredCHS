@@ -19,7 +19,8 @@
 -  openpyxl
 
 -  两个 rgbds 版本的区别：原版 rgbds 不支持多字节编码，所以源代码内的汉字必须使用RAW 的 16 进制硬编码，但好处是不需要魔改 rgbds。而改版 rgbds 支持了多字节编码，源代码可以直接嵌入汉字。代价就是需要自行编译改版 rgbds。对于最终编译出来的 ROM 来说，**两种方式没有任何区别**。
-##步骤一：安装环境
+
+## 步骤一：安装环境
 ### Linux (以 Ubuntu 为例）：
 - 更新源：
 
@@ -121,7 +122,8 @@
 
 		- 编译完成之后保存好整个rgbds文件夹，将其重命名为rgbds-cn以便稍后使用。
 
-##步骤二：编译ROM
+
+## 步骤二：编译ROM
 
 ### macOS 和 Linux
 
@@ -189,7 +191,7 @@ pokeredCHS
 │ 	│ 	│ pokered.patch			（宝可梦 红 VC用补丁）
 │ 	│ 	│ pokeblue.gbc 			（宝可梦 蓝）
 │ 	│ 	│ pokeblue_vc.gbc		（宝可梦 蓝 VC修正版）
-│ 	│ 	│ pokeblue_debug.gbc	（宝可梦 蓝 Debug版）
+│ 	│ 	│ pokeblue_debug.gbc		（宝可梦 蓝 Debug版）
 │ 	│ 	│ pokeblue.patch		（宝可梦 蓝 VC用补丁）
 │   └───rgb （精灵宝可梦版 红·绿·蓝）
 │ 	│ 	│ pokered.gbc			（精灵宝可梦 红）
@@ -198,11 +200,11 @@ pokeredCHS
 │ 	│ 	│ pokered.patch			（精灵宝可梦 红 VC用补丁）
 │ 	│ 	│ pokegreen.gbc			（精灵宝可梦 绿）
 │ 	│ 	│ pokegreen_vc.gbc		（精灵宝可梦 绿 VC修正版）
-│ 	│ 	│ pokegreen_debug.gbc	（精灵宝可梦 绿 Debug版）
+│ 	│ 	│ pokegreen_debug.gbc		（精灵宝可梦 绿 Debug版）
 │ 	│ 	│ pokegreen.patch		（精灵宝可梦 绿 VC用补丁）
 │ 	│ 	│ pokeblue.gbc			（精灵宝可梦 蓝）
 │ 	│ 	│ pokeblue_vc.gbc		（精灵宝可梦 蓝 VC修正版）
-│ 	│ 	│ pokeblue_debug.gbc	（精灵宝可梦 蓝 Debug版）
+│ 	│ 	│ pokeblue_debug.gbc		（精灵宝可梦 蓝 Debug版）
 │ 	│ 	│ pokeblue.patch		（精灵宝可梦 蓝 VC用补丁）
 └───────
 ```

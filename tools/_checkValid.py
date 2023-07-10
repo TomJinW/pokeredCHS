@@ -254,7 +254,7 @@ warnings = 0
 infos = 0
 textOldPlacerCommands=[INSTName.TX_RAM,INSTName.TX_NUM,INSTName.TX_BCD]
 textPlacerCommands=[INSTName.text_ram,INSTName.text_decimal,INSTName.text_bcd]
-textFinishCommands=[INSTName.text_end,INSTName.done,INSTName.prompt,INSTName.dex]
+textFinishCommands=[INSTName.text_start,INSTName.text_end,INSTName.done,INSTName.prompt,INSTName.dex]
 textPlacerLastAllowedCommands=[INSTName.line,INSTName.cont,INSTName.para]
 def getInstDict(col,sheet,filePath):
     outputDict = {}
@@ -341,7 +341,9 @@ def checkDictValid(instDict,sheet):
             # 检查战斗后文本长度
             if 'EndBattleText' in instructions[0].label:
                 lengthchk = replaceText(instructions[0].content,textReplacement)
-                if ifOverLength(lengthchk,8*8):
+                if not ifOverLength(lengthchk,1*8):
+                    printLog(InfoType.WARNING,sheet,instructions[0],'战斗后文本可能太短！')
+                if ifOverLength(lengthchk,12*8):
                     printLog(InfoType.WARNING,sheet,instructions[0],'战斗后文本可能太长！')
         
         for i in range(0,len(instructions)):
