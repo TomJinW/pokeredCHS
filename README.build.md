@@ -21,7 +21,12 @@
 -  两个 rgbds 版本的区别：原版 rgbds 不支持多字节编码，所以源代码内的汉字必须使用RAW 的 16 进制硬编码，但好处是不需要魔改 rgbds。而改版 rgbds 支持了多字节编码，源代码可以直接嵌入汉字。代价就是需要自行编译改版 rgbds。对于最终编译出来的 ROM 来说，**两种方式没有任何区别**。
 ##步骤一：安装环境
 ### Linux (以 Ubuntu 为例）：
+- 更新源：
 
+	```
+	sudo apt update
+	```
+	
 - 安装所需依赖：
 
 	```
@@ -39,14 +44,14 @@
  	
  		```
 		git clone https://github.com/gbdev/rgbds && cd rgbds
-		sudo make install
+		sudo make install && cd ..
 		```
 		
 	2. 编译 [SnDream 修改的 RGBDS 0.6.1](https://github.com/SnDream/rgbds/)
  		
  		```
 		git clone https://github.com/SnDream/rgbds && cd rgbds
-		make
+		make && cd ..
 		```
 		对于修改版rgbds，编译完成之后保存好整个rgbds文件夹，将其重命名为rgbds-cn以便稍后使用。
 		
@@ -62,6 +67,12 @@
 	```
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 	```
+
+	- 如果已经安装过 [Homebrew](https://brew.sh) 包管理器，更新源。
+	
+		```
+		brew update
+		```
 
 - 如果系统低于 macOS Ventura，还需要安装 python3。此操作会自动安装 pip3。
 	
@@ -97,13 +108,13 @@
 			- （二选一）Intel 版本 Homebrew：
 			
 	 			```
-				make BISON=/usr/local/opt/bison/bin/bison
+				make BISON=/usr/local/opt/bison/bin/bison && cd ..
 				```
 				
 			- （二选一）Apple Silicon 版本 Homebrew：
 			
 	 			```
-				make BISON=/opt/homebrew/opt/bison/bin/bison
+				make BISON=/opt/homebrew/opt/bison/bin/bison & cd ..
 				```
 				
 			- 由于 macOS 自带的 bison 无法用于编译 rgbds，为了保证不破坏其他 macOS App 的编译兼容性，编译 rgbds 时需要指定使用 Homebrew 安装的 bison ，根据 Mac 处理器种类的不同，Homebrew 安装的 bison 文件位置也会有所不同。
