@@ -352,7 +352,7 @@ PromptText::
 .ok
 	call ProtectedDelay3
 	call ManualTextScroll
-	ld a, " "
+	ld a, "─"
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 
 DoneText::
