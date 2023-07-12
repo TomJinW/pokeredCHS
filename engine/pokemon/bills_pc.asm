@@ -199,7 +199,7 @@ BillsPCMenu:
 	ld [wPlayerMonNumber], a
 	ld hl, WhatText
 	call PrintText
-	hlcoord 9, 14
+	; hlcoord 9, 14
 	hlcoord $0D, 14
 	ld b, 2
 	ld c, 5 ;ld c, 9 ;; CHS_Fix 22

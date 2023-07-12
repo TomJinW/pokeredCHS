@@ -86,7 +86,7 @@ print('Importing db Data...')
 def getIfSkipped(inputVer):
     if inputVer == '':
         return False
-    return inputVer != ver
+    return not (ver in inputVer)
 
 for sheet in wb._sheets:
     replacees = []

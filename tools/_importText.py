@@ -205,7 +205,7 @@ for sheet in wb._sheets:
         if mode - 1 > 0:
             verValue = sheet.cell(row=id, column=mode - 1).value
             if verValue != None:
-                if ver != verValue:
+                if not (ver in verValue):
                     id += 1
                     continue
 
