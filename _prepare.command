@@ -11,6 +11,7 @@ cp indoor.xlsx $filepath/xlsx/indoor.xlsx
 cp outdoor.xlsx $filepath/xlsx/outdoor.xlsx
 cp routes.xlsx $filepath/xlsx/routes.xlsx
 cp dex.xlsx $filepath/xlsx/dex.xlsx
+cp dexEntry.xlsx $filepath/xlsx/dexEntry.xlsx
 cp dexRGB.xlsx $filepath/xlsx/dexRGB.xlsx
 
 cd $filepath
