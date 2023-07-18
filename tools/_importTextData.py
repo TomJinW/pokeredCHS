@@ -79,9 +79,8 @@ filePaths = []
 
 charMap = charmap.readCharMaps()
 
-print()
 print(bcolors.OKGREEN)
-print('Importing db Data...')
+print('Importing db Data... ' + xlsxListPath)
 
 def getIfSkipped(inputVer):
     if inputVer == '':
@@ -125,7 +124,7 @@ for sheet in wb._sheets:
             for currentsReplacee in replacees:
                 if replacee in currentsReplacee:
                     repetitive = True
-                    print(bcolors.OKBLUE + "Warning! Duplicate: " + replacee)
+                    # print(bcolors.OKBLUE + "Warning! Duplicate: " + replacee)
             if not repetitive:
                 replacees.append(replacee)    
 
