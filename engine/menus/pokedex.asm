@@ -185,27 +185,61 @@ HandlePokedexListMenu:
 	hlcoord 16, 6
 	lb bc, 1, 3
 	call PrintNumber ; print number of owned pokemon
+
 	hlcoord 16, 2
 	ld de, PokedexSeenText
 	call PlaceString
-	hlcoord 16, 5
-	ld de, PokedexOwnText
-	call PlaceString
-	hlcoord 1, 1
-	ld de, PokedexContentsText
-	call PlaceString
-	hlcoord 16, 10
-	ld de, PokedexMenuItemsText
-	call PlaceString
-
-	ld a, $49
-	lb bc, 6, 3
+	ld a, $31
+	lb bc, 2, 3
 	coord hl, 16, 1
 	call DFSStaticize
 
-	ld a, $31
-	lb bc, 8, 3
+	hlcoord 16, 5
+	ld de, PokedexOwnText
+	call PlaceString
+	ld a, $37
+	lb bc, 2, 3
+	coord hl, 16, 4
+	call DFSStaticize
+
+	hlcoord 1, 1
+	ld de, PokedexContentsText
+	call PlaceString
+	ld a, $3D
+	lb bc, 2, 3
+	coord hl, 1, 0
+	call DFSStaticize
+
+	hlcoord 16, 10
+	ld de, PokedexMenuItemsText1
+	call PlaceString
+	ld a, $43
+	lb bc, 2, 3
 	coord hl, 16, 9
+	call DFSStaticize
+
+	hlcoord 16, 12
+	ld de, PokedexMenuItemsText2
+	call PlaceString
+	ld a, $49
+	lb bc, 2, 3
+	coord hl, 16, 11
+	call DFSStaticize
+
+	hlcoord 16, 14
+	ld de, PokedexMenuItemsText3
+	call PlaceString
+	ld a, $4F
+	lb bc, 2, 3
+	coord hl, 16, 13
+	call DFSStaticize
+
+	hlcoord 16, 16
+	ld de, PokedexMenuItemsText4
+	call PlaceString
+	ld a, $55
+	lb bc, 2, 3
+	coord hl, 16, 15
 	call DFSStaticize
 
 	; ld a, $31
@@ -386,11 +420,14 @@ PokedexOwnText:
 PokedexContentsText:
 	db "CONTENTS@"
 
-PokedexMenuItemsText:
-	db   "DATA"
-	next "CRY"
-	next "AREA"
-	next "QUIT@"
+PokedexMenuItemsText1:
+	db "DATA@"
+PokedexMenuItemsText2:
+	db "CRY@"
+PokedexMenuItemsText3:
+	db "AREA@"
+PokedexMenuItemsText4:
+	db "QUIT@"
 
 ; tests if a pokemon's bit is set in the seen or owned pokemon bit fields
 ; INPUT:
