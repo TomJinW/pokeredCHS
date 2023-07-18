@@ -128,6 +128,9 @@ for sheet in wb._sheets:
             if not repetitive:
                 replacees.append(replacee)    
 
+            if not replacee in text2Modify:
+                print(bcolors.OKBLUE + "Warning! Not Found: " + replacee + ' with ' + replacer)
+                
             if sheet.cell(row=id, column = mode + 4).value == None:
                 if sheet.cell(row=id, column = mode + 3).value != None:
                     newReplacee = sheet.cell(row=id, column = mode + 3).value
