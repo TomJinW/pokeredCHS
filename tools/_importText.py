@@ -37,6 +37,8 @@ extraTextPath = ''
 if len(sys.argv) > 5:
     extraTextPath = sys.argv[5]
 
+print(bcolors.OKGREEN)
+print('Importing text Data... ' + xlsxListPath)
 wb = load_workbook(filename = xlsxListPath)
 
 def readLines(filename):
@@ -220,14 +222,14 @@ for sheet in wb._sheets:
             outputText += label + '\n'
             if 'EndBattleText'.upper() in label.upper():
                 text = sheet.cell(row=id+1, column=mode + 2).value
-                if ifOverLength(text,8*8):
-                    sheet.cell(row=id+1, column=mode + 2).fill = warningFill
-                    print(bcolors.WARNING + '警告！战斗结束文本 in')
-                    print(sheet.title)
-                    print(xlsxListPath)
-                    print(label)
-                    print(text)
-                    print('可能过长！\n')
+                # if ifOverLength(text,8*8):
+                #     sheet.cell(row=id+1, column=mode + 2).fill = warningFill
+                #     print(bcolors.WARNING + '警告！战斗结束文本 in')
+                #     print(sheet.title)
+                #     print(xlsxListPath)
+                #     print(label)
+                #     print(text)
+                #     print('可能过长！\n')
                 # else:
                 #     sheet.cell(row=id+1, column=mode + 2).fill = noFill
 
@@ -258,13 +260,13 @@ for sheet in wb._sheets:
                 sheet.cell(row=id, column=mode + 2).value = content.replace('@@','@')
                 sheet.cell(row=id + 1, column=mode + 1).value = 'text_end'
                 id += 1
-            if inst == 'text' and content == None:
-                print(bcolors.OKBLUE + '提醒：')
-                print(xlsxListPath)
-                print(sheet.title)
-                print(inst)
-                sheet.cell(row=id, column=mode + 1).value = 'text_start'
-                print('有空白 text \n，可能是老文本！\n')
+            # if inst == 'text' and content == None:
+            #     print(bcolors.OKBLUE + '提醒：')
+            #     print(xlsxListPath)
+            #     print(sheet.title)
+            #     print(inst)
+            #     sheet.cell(row=id, column=mode + 1).value = 'text_start'
+            #     print('有空白 text \n，可能是老文本！\n')
             instType = getInstType(inst)
             # print(inst)
             # print(instType)

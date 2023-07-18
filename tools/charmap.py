@@ -55,7 +55,7 @@ def replaceText(text,dictionary,mode):
                 if i == len(text) - 1:
                     ending = ''
                 result += '\"' + char + '\"' + ending
-                if not char.lower() in 'abcdefghijklmnopqsrtuvwxyz!?,.:@ぁ0123456789/♀♂×#¥″ ':
+                if not char.lower() in 'ï-みむめほまabcdefghijklmnopqsrtuvwxyz!?,.:@ぁ0123456789/♀♂×#¥″ ':
                     print(text)
                     print(char + ' : Code Table Not Found!')
         newText = replaceStr(text,chsReplacement)
