@@ -313,7 +313,7 @@ HandlePokedexListMenu:
 	call IsPokemonBitSet
 	jr nz, .getPokemonName ; if the player has seen the pokemon
 	ld a, [wENGNameMark]
-	cp 0
+	cp 1
 	ld de, .dashedLine ; print a dashed line in place of the name if the player hasn't seen the pokemon
 	jr nz, .CHS
 	ld de, .dashedLineENG ; print a dashed line in place of the name if the player hasn't seen the pokemon
