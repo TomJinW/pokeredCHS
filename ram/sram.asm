@@ -31,8 +31,8 @@ sMenuBuffer::
 	ds 6 * 6
 
 SECTION "Save Data", SRAM
-
-	ds $598
+sENGNameMark::ds 1
+	ds $597
 
 sGameData::
 sPlayerName::  ds NAME_LENGTH

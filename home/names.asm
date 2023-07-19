@@ -7,7 +7,14 @@ GetMonName::
 	ld [MBC1RomBank], a
 	ld a, [wd11e]
 	dec a
+	push af
+	ld a,[wENGNameMark]
+	cp 0
 	ld hl, MonsterNames
+	jr nz, .CHS
+	ld hl, MonsterNames2
+.CHS
+	pop af
 	ld c, 10
 	ld b, 0
 	call AddNTimes
