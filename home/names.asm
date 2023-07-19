@@ -9,7 +9,7 @@ GetMonName::
 	dec a
 	push af
 	ld a,[wENGNameMark]
-	cp 0
+	cp 1
 	ld hl, MonsterNames
 	jr nz, .CHS
 	ld hl, MonsterNames2

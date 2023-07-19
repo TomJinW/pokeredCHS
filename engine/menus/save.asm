@@ -61,7 +61,7 @@ LoadSAV0:
 	ld a, [sENGNameMark]
 	cp 2
 	jr c, .hasENGNameMarkValue
-	ld a, 1
+	ld a, 0
 	ld [wENGNameMark], a
 .hasENGNameMarkValue
 	ld [wENGNameMark], a

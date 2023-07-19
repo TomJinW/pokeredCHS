@@ -775,8 +775,9 @@ DisplayName:
 Vertext:
 	db "ver@"
 PMNamesPointerTable:
-	dw EngText
 	dw ChsText
+	dw EngText
+	
 EngText:
 	db "English@"
 ChsText:
