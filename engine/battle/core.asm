@@ -1668,8 +1668,10 @@ LoadBattleMonFromParty:
 	; CHS_Fix 01
 
 	ld de, wEnemyMonNick ;
-	ld c, 15 | (0 << 7) ;
-	callfar FixStrLength_Gen1 ;
+	; ld c, 15 | (0 << 7) ;
+	; ld a, 15 | (0 << 7)
+	; ld [wDummy], a
+	; callfar FixStrLength_Gen1 ;
 
 	ld hl, wBattleMonLevel
 	ld de, wPlayerMonUnmodifiedLevel ; block of memory used for unmodified stats

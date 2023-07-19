@@ -87,7 +87,8 @@ RedrawPartyMenu_::
 	call GetPartyMonName
 
 
-	ld c, 15 | (0 << 7)
+	ld a, 15 | (0 << 7)
+	ld [wDummy], a
 	callfar FixStrLength_Gen1
 	pop hl
 	call IncreaseDFSStack
