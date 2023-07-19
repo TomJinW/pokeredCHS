@@ -5,7 +5,7 @@ IF DEF(RGBDS_WCHAR)
 	charmap "啰",	$2EB8, 2
 	charmap "窸",	$2EBB, 2
 	charmap "窣",	$2EBC, 2
-	charmap "î",	$2EB9, 2
+	charmap "î",	$6162, 2
 	charmap "ñ",	$2EB7, 2
 	charmap "%",	$2EBA, 2
 	charmap "　",	$0101, 2
@@ -7546,7 +7546,7 @@ ENDC
 	; needed for ShowPokedexDataInternal (see engine/menus/pokedex.asm)
 	; charmap "′",         $60 ; gfx/pokedex/pokedex.png
 	; charmap "″",         $61 ; gfx/pokedex/pokedex.png
-	charmap "ï", 		 $61
+	charmap "ï", 		 $60
 	; needed for StatusScreen (see engine/pokemon/status_screen.asm)
 	charmap "<BOLD_P>",  $72 ; gfx/font/P.1bpp
 
