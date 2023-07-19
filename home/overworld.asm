@@ -881,7 +881,7 @@ LoadTilesetTilePatternData::
 	cp 1 ;
 	ld bc, $600 ;
 	jr nz, .finish ;
-	ld bc, $10 ;
+	ld bc, $300 ;
 .finish ;
 	
 	ld a, [wTilesetBank]
