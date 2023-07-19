@@ -1245,7 +1245,8 @@ DFSSetAlphabetCache:
 ; <hl: new straddr end
 ; <[straddr] : fix legnth
 FixStrLength_Gen1::
-	ld a, c
+	ld a, [wDummy]
+	ld c, a
 	and $7F
 	ld b, a
 	rlc c
