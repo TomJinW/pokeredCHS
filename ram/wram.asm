@@ -2348,7 +2348,8 @@ wIfDexSeen:: ds 1
 wPartyIndex:: ds 1
 wCanLearnMark:: ds 1
 wCannotLearnMark:: ds 1
-wMarkSave:: ds 1
+wDummy:: ds 1
+wENGNameMark::ds 1
 
 SECTION "Stack", WRAM0
 

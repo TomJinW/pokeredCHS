@@ -58,6 +58,14 @@ LoadSAV0:
 	jp nz, SAVBadCheckSum
 
 .checkSumsMatched
+	ld a, [sENGNameMark]
+	cp 2
+	jr c, .hasENGNameMarkValue
+	ld a, 1
+	ld [wENGNameMark], a
+.hasENGNameMarkValue
+	ld [wENGNameMark], a
+
 	ld hl, sPlayerName
 	ld de, wPlayerName
 	ld bc, NAME_LENGTH
@@ -204,6 +212,12 @@ SaveSAVtoSRAM0:
 	ld a, $1
 	ld [MBC1SRamBankingMode], a
 	ld [MBC1SRamBank], a
+
+	ld hl, wENGNameMark
+	ld de, sENGNameMark
+	ld bc, 1
+	call CopyData
+	
 	ld hl, wPlayerName
 	ld de, sPlayerName
 	ld bc, NAME_LENGTH

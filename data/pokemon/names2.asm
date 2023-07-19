@@ -1,5 +1,4 @@
-MonsterNames::
-	table_width NAME_LENGTH - 1, MonsterNames
+MonsterNames2::
 	db "RHYDON@@@@"
 	db "KANGASKHAN"
 	db "NIDORAN♂@@"
@@ -190,5 +189,3 @@ MonsterNames::
 	db "BELLSPROUT"
 	db "WEEPINBELL"
 	db "VICTREEBEL"
-	assert_table_length NUM_POKEMON_INDEXES
-INCLUDE "data/pokemon/names2.asm"

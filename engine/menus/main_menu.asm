@@ -486,6 +486,9 @@ DisplayOptionMenu:
 	ld b, 3
 	ld c, 18
 	call TextBoxBorder
+	hlcoord 16, 0
+	ld de, Vertext
+	call PlaceString
 	hlcoord 1, 1
 	ld de, TextSpeedOptionText
 	call PlaceString
@@ -509,6 +512,8 @@ DisplayOptionMenu:
 	call SetCursorPositionsFromOptions
 	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
 	ld [wTopMenuItemX], a
+
+
 	ld a, $01
 	ldh [hAutoBGTransferEnabled], a ; enable auto background transfer
 	call Delay3
@@ -538,6 +543,28 @@ DisplayOptionMenu:
 	ld [wTopMenuItemX], a
 	call EraseMenuCursor
 	jp .loop
+.cursorInExit
+	bit BIT_D_LEFT, b
+	jr nz, .pressedLeftInExit
+	jr .pressedRightInExit
+	jr .dontchange
+.pressedLeftInExit
+.pressedRightInExit
+	push af
+	push bc
+	push de
+	push hl
+	ld a, [wENGNameMark]
+	xor 1
+	ld [wENGNameMark],a
+	call DisplayName
+	pop af
+	pop bc
+	pop de
+	pop hl
+.dontchange
+	jr .loop
+	
 .checkDirectionKeys
 	ld a, [wTopMenuItemY]
 	bit BIT_D_DOWN, b
@@ -549,7 +576,7 @@ DisplayOptionMenu:
 	cp 13 ; cursor in Battle Style section?
 	jr z, .cursorInBattleStyle
 	cp 16 ; cursor on Cancel?
-	jr z, .loop
+	jr z, .cursorInExit
 .cursorInTextSpeed
 	bit BIT_D_LEFT, b
 	jp nz, .pressedLeftInTextSpeed
@@ -708,6 +735,21 @@ SetCursorPositionsFromOptions:
 	hlcoord 0, 13
 	call .placeUnfilledRightArrow
 ; cursor in front of Cancel
+
+	ld a, [wENGNameMark]
+	call DisplayName
+; 	cp 0
+; 	ld a, 14
+; 	ld [wOptionsCancelCursorX], a
+; 	hlcoord 14, 16
+; 	jr nz, .ENG
+; 	hlcoord 17, 16
+; 	ld a, 17
+; 	ld [wOptionsCancelCursorX], a
+; .ENG
+; 	ld a, 0
+; 	call .placeUnfilledRightArrow
+
 	hlcoord 0, 16
 	ld a, 1
 .placeUnfilledRightArrow
@@ -717,6 +759,28 @@ SetCursorPositionsFromOptions:
 	ld [hl], "▷"
 	ret
 
+DisplayName:
+	ld hl, PMNamesPointerTable
+	sla a
+	ld b, 0
+	ld c, a
+	add hl, bc
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	hlcoord 6, 16
+	call PlaceString
+	ret 
+
+Vertext:
+	db "ver@"
+PMNamesPointerTable:
+	dw EngText
+	dw ChsText
+EngText:
+	db "English@"
+ChsText:
+	db "Chinese@"
 ; table that indicates how the 3 text speed options affect frame delays
 ; Format:
 ; 00: X coordinate of menu cursor
