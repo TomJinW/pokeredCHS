@@ -554,8 +554,8 @@ DisplayDepositWithdrawMenu:
 	ld a, [wBillPCTilemapMark]
 	cp 0
 	jr z, .donothing2
-	cp $3B
-	jr nz, .donothing2
+	cp $0B
+	jr z, .donothing2
 	lb bc, 2, 4 ;
 	coord hl, 16, 0 ;
 	call ClearScreenArea ;
