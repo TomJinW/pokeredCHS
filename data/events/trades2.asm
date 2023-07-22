@@ -1,6 +1,6 @@
-TradeMons:
+TradeMons2:
 ; entries correspond to TRADE_FOR_* constants
-	table_width 3 + NAME_LENGTH, TradeMons
+	table_width 3 + NAME_LENGTH, TradeMons2
 	; give mon, get mon, dialog id, nickname
 	; The two instances of TRADE_DIALOGSET_EVOLUTION are a leftover
 	; from the Japanese Blue trades, which used species that evolve.
@@ -17,5 +17,3 @@ TradeMons:
 	db VENONAT,    TANGELA,   TRADE_DIALOGSET_HAPPY,     "CRINKLES@@@"
 	db NIDORAN_M,  NIDORAN_F, TRADE_DIALOGSET_HAPPY,     "SPOT@@@@@@@"
 	assert_table_length NUM_NPC_TRADES
-
-	INCLUDE "data/events/trades2.asm"
