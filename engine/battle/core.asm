@@ -277,12 +277,35 @@ EnemyRanText:
 	text_far _EnemyRanText
 	text_end
 
+IF DEF(_DEBUG) 
+InstantDie:
+	push af
+	push hl
+	; ld a, [wOptions]
+	; and $80 ; mask other bits
+	; cp $80
+	; jr nz, .skipDying
+	call DebugPressedOrHeldUP
+	jr z, .skipDying
+	ld hl, wEnemyMonHP
+	ld a, 0
+	ld [hli],a
+	ld [hl],a
+.skipDying
+	pop af
+	pop hl
+	ret
+ENDC
+
 MainInBattleLoop:
 	call ReadPlayerMonCurHPAndStatus
 	ld hl, wBattleMonHP
 	ld a, [hli]
 	or [hl] ; is battle mon HP 0?
 	jp z, HandlePlayerMonFainted  ; if battle mon HP is 0, jump
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	or [hl] ; is enemy mon HP 0?
@@ -423,8 +446,14 @@ MainInBattleLoop:
 	and a
 	jp z, HandlePlayerMonFainted
 .AIActionUsedEnemyFirst
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	call DrawHUDsAndHPBars
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
@@ -439,6 +468,9 @@ MainInBattleLoop:
 	call CheckNumAttacksLeft
 	jp MainInBattleLoop
 .playerMovesFirst
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
 	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
@@ -461,6 +493,9 @@ MainInBattleLoop:
 	and a
 	jp z, HandlePlayerMonFainted
 .AIActionUsedPlayerFirst
+	IF DEF(_DEBUG)
+	call InstantDie
+	ENDC
 	call HandlePoisonBurnLeechSeed
 	jp z, HandleEnemyMonFainted
 	call DrawHUDsAndHPBars
