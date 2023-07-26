@@ -1203,7 +1203,7 @@ DFSSetAlphabetCache:
 	xor a
 	ld [MBC1SRamBank], a
 
-	dfs_alphabet_param $80, 26 ;$40
+	dfs_alphabet_param $80, $40 ;$40
 	call .loop_used
 
 	; dfs_alphabet_param $E0, 12

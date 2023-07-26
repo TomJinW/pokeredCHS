@@ -14,6 +14,7 @@ HallOfFamePC:
 	ld bc, 1 tiles
 	ld a, $ff ; solid black
 	call FillMemory
+	call CreditsLoadFont
 	hlcoord 0, 0
 	call FillFourRowsWithBlack
 	hlcoord 0, 14
@@ -23,6 +24,8 @@ HallOfFamePC:
 	call EnableLCD
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySoundWaitForCurrent
+	; call LoadFontTilePatterns ; CHS_FIX Load Credit font
+	; farcall DFSSetAlphabetCache ;
 	ld c, BANK(Music_Credits)
 	ld a, MUSIC_CREDITS
 	call PlayMusic
@@ -32,7 +35,25 @@ HallOfFamePC:
 	ld [wUnusedCD3D], a ; not read
 	ld [wNumCreditsMonsDisplayed], a
 	jp Credits
+	
+CreditsLoadFont:
+	call LoadFontTilePatterns
+	ld hl, vChars1
+	ld bc,  ($80 tiles) / 2
+	call ZeroMemory
 
+	call LoadTextBoxTilePatterns
+	ld hl, vChars2 tile $60
+	ld bc, ($20 tiles) / 2
+	call ZeroMemory
+
+	ld hl, vChars2 tile $7e
+	ld bc, 1 tiles
+	ld a, $ff ; solid black
+	call FillMemory
+	farcall DFSSetAlphabetCache ; CHS_FIX Load Credit font
+	ret
+	
 FadeInCreditsText:
 	ld hl, HoFGBPalettes
 	ld b, 4
