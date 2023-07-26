@@ -28,7 +28,7 @@ ChangeCharacterSet:
 	ld hl, wIMEBuffer
 	ld a, $50
 	ld [hl], a
-	farcall ModifyBuffer
+	farcall ModifyBufferWithReprintPage
 	call DisplayPinyinLetter
 	
 	pop af

@@ -150,6 +150,30 @@ LookupPinyinTable:
     call DisplayPinyinOptions
     ret
 
+PrintPageNumbers:
+	ld a, [wIMEMaxPage]
+	cp 0
+	jr nz, .continue
+	hlcoord 9,8
+	ld a, $7F
+	ld [hli], a
+	ld [hli], a
+	ld [hli], a
+.continue
+	ld a, [wIMECurrentPage]
+	hlcoord 9,8
+	add "0"
+	ld [hl], a
+
+	hlcoord $A,8
+	ld a, $F3
+	ld [hl], a
+
+	ld a, [wIMEMaxPage]
+	hlcoord $B,8
+	add "0"
+	ld [hl], a
+	ret
 
 UpdatePinyinOptions:
     farcall CopyIMECharacters
@@ -204,6 +228,11 @@ CopySingleIMEChar:
     ld [wIMETmpVarEnding], a
     ret
 
+ModifyBufferWithReprintPage:
+	ld a, 1
+	ld [wIMECurrentPage], a
+	ld [wIMEMaxPage], a
+	call PrintPageNumbers
 ModifyBuffer:
     ld hl, wIMEBuffer
     ld c, 25
@@ -226,11 +255,15 @@ ModifyBuffer:
     jr .copyRest
 
 
+	
+
+
 DisplayPinyinOptions:
     hlcoord 1, 10
 	lb bc, 4, 18
 	call ClearScreenArea
     call ModifyBuffer
+	call PrintPageNumbers
     call Delay3
     ld hl, wIMEBuffer
     call CopySingleIMEChar
