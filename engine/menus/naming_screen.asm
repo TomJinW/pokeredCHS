@@ -748,7 +748,12 @@ PrintNamingText:
 	pop af
 	ld [wd11e], a
 	call GetMonName
+	ld a, [wENGNameMark]
+	cp 1
 	hlcoord 3, 1
+	jr nz, .notENG
+	hlcoord 3, 0
+.notENG
 	call PlaceString
 	; ld hl, $1
 	; add hl, bc
