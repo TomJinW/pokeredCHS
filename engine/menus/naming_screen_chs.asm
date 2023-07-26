@@ -166,6 +166,7 @@ AddPinyinLetter:
 	ld a, b
 	ld [hli], a
 	ld [hl], "@"
+	call ResetPinyinBuffer
 	ld a, SFX_PRESS_AB
 	call PlaySound
 .done
