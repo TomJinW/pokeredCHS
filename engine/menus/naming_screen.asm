@@ -174,7 +174,7 @@ DisplayNamingScreen:
 	call CopyData
 	call GBPalWhiteOutWithDelay3
 	;CHS_FIX p43
-	call ResetAlphabet
+	farcall ResetAlphabet
 	coord hl, 1, $D ;
 	ld b, 4 ;
 	ld c, 18 ;

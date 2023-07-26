@@ -254,8 +254,26 @@ ModifyBuffer:
     jr z, .done
     jr .copyRest
 
+ResetAlphabet:
+	ld a, 0
+	ld [wIMECurrentPage], a
+	ld [wIMEAlphabetCase], a
+	call ResetPinyinBuffer2
+	ld hl, wIMEBuffer
+	ld a, $50
+	ld [hl], a
+	call ModifyBuffer
+	ret
 
-	
+ResetPinyinBuffer2:
+	ld hl, wIMEPinyin
+	ld c, 7
+.loop
+	ld a, "@"
+	ld [hli], a
+	dec c
+	jr nz, .loop
+	ret
 
 
 DisplayPinyinOptions:
