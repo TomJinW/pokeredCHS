@@ -519,3 +519,8 @@ DFS_C_2E_L::
 INCBIN "dfs/ChineseFonts_2E_L.bin"
 DFS_C_2E_H::
 INCBIN "dfs/ChineseFonts_2E_H.bin"
+
+SECTION "MISC", ROMX
+INCLUDE "engine/menus/naming_screen_util.asm"
+SECTION "IMECodeTable", ROMX
+INCLUDE "dfs/IMECodeTable.asm"
