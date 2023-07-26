@@ -639,7 +639,8 @@ PrintAlphabet:
 INCLUDE "data/text/alphabets.asm"
 
 PrintNicknameAndUnderscores:
-	call CalcStringLength
+	ld hl, wStringBuffer
+	call CalcStringLengthAtHL
 	ld a, c
 	ld [wNamingScreenNameLength], a
 	hlcoord 10, 2
@@ -720,16 +721,16 @@ CalcStringLengthAtHL:
 	jr .loop
 
 ; calculates the length of the string at wStringBuffer and stores it in c
-CalcStringLength:
-	ld hl, wStringBuffer
-	ld c, $0
-.loop
-	ld a, [hl]
-	cp "@"
-	ret z
-	inc hl
-	inc c
-	jr .loop
+; CalcStringLength:
+; 	ld hl, wStringBuffer
+; 	ld c, $0
+; .loop
+; 	ld a, [hl]
+; 	cp "@"
+; 	ret z
+; 	inc hl
+; 	inc c
+; 	jr .loop
 
 PrintNamingText:
 	hlcoord 0, 1
