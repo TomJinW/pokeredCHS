@@ -33,6 +33,7 @@ AskName:
 	and a
 	jr nz, .inBattle
 	call ReloadMapSpriteTilePatterns
+	call ReloadTilesetTilePatterns
 .inBattle
 	call LoadScreenTilesFromBuffer1
 	pop hl
@@ -61,6 +62,7 @@ DisplayNameRaterScreen::
 	call DisplayNamingScreen
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
+	call ReloadTilesetTilePatterns
 	call LoadGBPal
 	ld a, [wStringBuffer]
 	cp "@"
@@ -99,17 +101,10 @@ DisplayNamingScreen:
 	farcall DFSSetAlphabetCache 
 	call ResetPinyinBuffer
 	call LoadEDTile
-	; ld a, $A0 ;XX
-	; ld [wIMEAddr], a
-	; ld a, $89 ;XX
-	; ld [wIMEAddr], a
 	ld a, 0
 	ld [wIMECurrentPage], a
 	call PrintNamingText
-	; ld a, $63
-	; hlcoord 0,0
-	; lb bc, 2, 12
-	; call DFSStaticize
+
 
 	
 
