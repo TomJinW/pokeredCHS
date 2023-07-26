@@ -5,8 +5,7 @@ AskName:
 	ld a, [wIsInBattle]
 	dec a
 	hlcoord 0, 0
-	ld b, 4
-	ld c, 11
+	lb bc, 4, 11
 	call z, ClearScreenArea ; only if in wild battle
 	ld a, [wcf91]
 	ld [wd11e], a
@@ -91,16 +90,32 @@ DisplayNamingScreen:
 	ld b, SET_PAL_GENERIC
 	call RunPaletteCommand
 	call LoadHpBarAndStatusTilePatterns
-	call LoadFontTilePatterns ;Fix Naming Screen CHS_Fix
-	farcall DFSSetAlphabetCache
-	call LoadEDTile
+	
 	farcall LoadMonPartySpriteGfx
 	hlcoord 0, 4
-	ld b, 9
-	ld c, 18
+	lb bc, 9, 18
 	call TextBoxBorder
+	call LoadFontTilePatterns ;Fix Naming Screen CHS_Fix
+	farcall DFSSetAlphabetCache 
+	call ResetPinyinBuffer
+	call LoadEDTile
+	; ld a, $A0 ;XX
+	; ld [wIMEAddr], a
+	; ld a, $89 ;XX
+	; ld [wIMEAddr], a
+	ld a, 0
+	ld [wIMECurrentPage], a
 	call PrintNamingText
-	ld a, 3
+	; ld a, $63
+	; hlcoord 0,0
+	; lb bc, 2, 12
+	; call DFSStaticize
+
+	
+
+	
+	
+	ld a, 4 ;ld a, 3
 	ld [wTopMenuItemY], a
 	ld a, 1
 	ld [wTopMenuItemX], a
@@ -117,8 +132,8 @@ DisplayNamingScreen:
 	ld [hli], a
 	ld [hli], a
 	ld [wAnimCounter], a
-.selectReturnPoint
 	call PrintAlphabet
+.selectReturnPoint
 	call GBPalNormal
 .ABStartReturnPoint
 	ld a, [wNamingScreenSubmitName]
@@ -164,10 +179,14 @@ DisplayNamingScreen:
 	call CopyData
 	call GBPalWhiteOutWithDelay3
 	;CHS_FIX p43
+	call ResetAlphabet
 	coord hl, 1, $D ;
 	ld b, 4 ;
 	ld c, 18 ;
 	call ClearScreenArea
+	ldh a, [hUILayoutFlags]
+	res 1, a
+	ldh [hUILayoutFlags],a
 	call ClearScreen
 	call ClearSprites
 	call RunDefaultPaletteCommand
@@ -204,9 +223,10 @@ DisplayNamingScreen:
 	ld de, .selectReturnPoint
 	push de
 .pressedSelect
-	ld a, [wAlphabetCase]
-	xor $1
-	ld [wAlphabetCase], a
+	ld a, [wIMEAlphabetCase]
+	; xor $1
+	; ld [wIMEAlphabetCase], a
+	call ChangeCharacterSet
 	ret
 
 .pressedStart
@@ -216,18 +236,22 @@ DisplayNamingScreen:
 
 .pressedA
 	ld a, [wCurrentMenuItem]
-	cp $5 ; "ED" row
+	cp $3 ;cp $5 ; "ED" row
 	jr nz, .didNotPressED
 	ld a, [wTopMenuItemX]
 	cp $11 ; "ED" column
 	jr z, .pressedStart
 .didNotPressED
 	ld a, [wCurrentMenuItem]
-	cp $6 ; case switch row
+	cp $5 ;cp $6 ; case switch row
 	jr nz, .didNotPressCaseSwtich
 	ld a, [wTopMenuItemX]
 	cp $1 ; case switch column
 	jr z, .pressedA_changedCase
+	cp 11
+	jp z, PressedChangePageUP
+	cp 15
+	jp z, PressedChangePageDOWN
 .didNotPressCaseSwtich
 	ld hl, wMenuCursorLocation
 	ld a, [hli]
@@ -236,14 +260,28 @@ DisplayNamingScreen:
 	inc hl
 	ld a, [hl]
 	ld [wNamingScreenLetter], a
-	call CalcStringLength
-	ld a, [wNamingScreenLetter]
-	cp "ﾞ"
-	ld de, Dakutens
-	jr z, .dakutensAndHandakutens
-	cp "ﾟ"
-	ld de, Handakutens
-	jr z, .dakutensAndHandakutens
+
+	ld hl, wStringBuffer
+	call CalcStringLengthAtHL
+
+	; cp "ﾞ"
+	; ld de, Dakutens
+	; jr z, .dakutensAndHandakutens
+	; cp "ﾟ"
+	; ld de, Handakutens
+	; jr z, .dakutensAndHandakutens
+	ld a, [wIMEAlphabetCase]
+	cp 0
+	jr nz, .notPinyinMode
+	ld a, [wCurrentMenuItem]
+	cp 7
+	jr nc, .notPinyinMode
+	ld hl, wIMEPinyin
+	call CalcStringLengthAtHL
+	ld a, c
+	cp $6
+	jr .checkNameLength
+.notPinyinMode
 	ld a, [wNamingScreenType]
 	cp NAME_MON_SCREEN
 	jr nc, .checkMonNameLength
@@ -257,78 +295,184 @@ DisplayNamingScreen:
 	jr c, .addLetter
 	ret
 
-.dakutensAndHandakutens
-	push hl
-	call DakutensAndHandakutens
-	pop hl
-	ret nc
-	dec hl
+; .dakutensAndHandakutens
+; 	push hl
+; 	call DakutensAndHandakutens
+; 	pop hl
+; 	ret nc
+; 	dec hl
 .addLetter
-	ld a, [wNamingScreenLetter]
-	ld [hli], a
-	ld [hl], "@"
-	ld a, SFX_PRESS_AB
-	call PlaySound
+	call AddPinyinLetter
+	; ld a, [wNamingScreenLetter]
+	; ld [hli], a
+	; ld [hl], "@"
+	; ld a, SFX_PRESS_AB
+	; call PlaySound
 	ret
 .pressedB
-	ld a, [wNamingScreenNameLength]
-	and a
-	ret z
-	call CalcStringLength
-	dec hl
-	ld [hl], "@"
+	call RemoveCharacter
 	ret
 .pressedRight
-	ld a, [wCurrentMenuItem]
-	cp $6
-	ret z ; can't scroll right on bottom row
+	; ld a, [wCurrentMenuItem]
+	; cp $6
+	; ret z ; can't scroll right on bottom row
 	ld a, [wTopMenuItemX]
-	cp $11 ; max
-	jp z, .wrapToFirstColumn
 	inc a
 	inc a
+
+
+	push af
+	ld a, [wCurrentMenuItem]
+	cp 5
+	jr nz, .notLine5R
+	pop af
+	add 4
+	jp .notLine5R2
+.notLine5R
+	pop af
+.notLine5R2
+	push af
+	ld a, [wCurrentMenuItem]
+	cp 7
+	jr c, .noExtraTileR
+	pop af
+	inc a
+	cp $12 ; max
+	jp nc, .wrapToFirstColumn
+	jr .done
+.noExtraTileR
+	pop af
+	cp $12 ; max
+	jp nc, .wrapToFirstColumn
 	jr .done
 .wrapToFirstColumn
 	ld a, $1
 	jr .done
 .pressedLeft
-	ld a, [wCurrentMenuItem]
-	cp $6
-	ret z ; can't scroll right on bottom row
+	; ld a, [wCurrentMenuItem]
+	; cp $6
+	; ret z ; can't scroll right on bottom row
 	ld a, [wTopMenuItemX]
 	dec a
 	jp z, .wrapToLastColumn
 	dec a
+
+	push af
+	ld a, [wCurrentMenuItem]
+	cp 5
+	jr nz, .notLine5L
+	pop af
+	sub 4
+	jr .done
+.notLine5L
+	pop af
+
+	push af
+	ld a, [wCurrentMenuItem]
+	cp 7
+	jr c, .noExtraTileL
+	pop af
+	dec a
+	jr .done
+.noExtraTileL
+	pop af
 	jr .done
 .wrapToLastColumn
+	ld a, [wCurrentMenuItem]
+	cp 7
 	ld a, $11 ; max
+	jr c, .first5Rows
+	ld a, $10 ; max
+.first5Rows
 	jr .done
 .pressedUp
 	ld a, [wCurrentMenuItem]
+	cp 4
+	jr c, .skipReducingExtra
+	dec a
+.skipReducingExtra
 	dec a
 	ld [wCurrentMenuItem], a
+	cp 5
+	ld a, [wTopMenuItemX]
+	jr z, .done
+	ld a, [wCurrentMenuItem]
 	and a
 	ret nz
-	ld a, $6 ; wrap to bottom row
+	ld a, $1 ;ld a, $6 ; wrap to bottom row
 	ld [wCurrentMenuItem], a
-	ld a, $1 ; force left column
+	ld a, [wTopMenuItemX]
 	jr .done
 .pressedDown
 	ld a, [wCurrentMenuItem]
+	cp 3
+	jr c, .skipAddingExtra
 	inc a
-	ld [wCurrentMenuItem], a
-	cp $7
-	jr nz, .wrapToTopRow
-	ld a, $1
-	ld [wCurrentMenuItem], a
-	jr .done
-.wrapToTopRow
-	cp $6
-	ret nz
-	ld a, $1
+.skipAddingExtra
+	inc a
+	cp 10 ;cp $7
+	jr c, .keepAdding
+	dec a
+	dec a
+.keepAdding
+	ld [wCurrentMenuItem], a ;ld a, $1
+	ld a, [wTopMenuItemX];ld a, $1
 .done
+	call HandleLine7
+	call HandleLine5
+	ld a, [wTempTopMenuItemX]
 	ld [wTopMenuItemX], a
 	jp EraseMenuCursor
+
+HandleLine7:
+	push af
+	ld a, [wCurrentMenuItem]
+	cp 7
+	jr nz, .nochange
+	ld a, [wTempTopMenuItemX]
+	cp 11
+	jr z, .up
+	cp 15
+	jr z, .down
+	pop af
+	jr .done
+.up
+	pop af
+	ld a, 10
+	jr .done
+.down
+	pop af
+	ld a, 16
+.done
+	ld [wTempTopMenuItemX], a
+	ret
+.nochange
+	pop af
+	ret
+
+
+
+HandleLine5:
+	ld [wTempTopMenuItemX], a 
+	ld a, [wCurrentMenuItem]
+	cp 5
+	ret nz
+	ld a, [wTempTopMenuItemX]
+	cp 7
+	jr c, .leftMost
+	cp 15
+	jr c, .mid
+	ld a, 15
+	jr .done
+.leftMost
+	ld a, 1
+	jr .done
+.mid
+	ld a, 11
+.done
+	ld [wTempTopMenuItemX], a
+	ret
+
 
 LoadEDTile:
 	ld de, ED_Tile
@@ -337,41 +481,160 @@ LoadEDTile:
 	; to fix the graphical bug on poor emulators
 	;lb bc, BANK(ED_Tile), (ED_TileEnd - ED_Tile) / $8
 	jp CopyVideoDataDouble
-
+ 
 ED_Tile:
 	INCBIN "gfx/font/ED.1bpp"
 ED_TileEnd:
 
+UpdateInputMethodText:
+	hlcoord 2, 9
+	push hl
+	ld hl, InputPointerTable
+	ld a, [wIMEAlphabetCase]
+	add a
+	ld b, 0 
+	ld c, a
+	add hl, bc
+	ld a, [hli]
+	ld e, a
+	ld a, [hl]
+	ld d, a
+	pop hl
+	call PlaceString
+	ret
+
 PrintAlphabet:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	ld a, [wAlphabetCase]
-	and a
-	ld de, LowerCaseAlphabet
-	jr nz, .lowercase
-	ld de, UpperCaseAlphabet
-	
-.lowercase
-	hlcoord 2, 5
-	lb bc, 5, 9 ; 5 rows, 9 columns
-.outerLoop
+	ldh a, [hUILayoutFlags]
+	set 1, a
+	ldh [hUILayoutFlags],a
+	ld hl, AlphaPointerTable
+	ld a, [wIMEAlphabetCase]
+	add a
+	ld b, 0 
+	ld c, a
+	add hl, bc
+	ld a, [hli]
+	ld e, a
+	ld a, [hl]
+	ld d, a
+	hlcoord 2,5 ;ld hl, $C406
+	ld bc, $0309 ;3行9列
+.newLine
 	push bc
-.innerLoop
+.singleLine
 	ld a, [de]
 	ld [hli], a
 	inc hl
 	inc de
 	dec c
-	jr nz, .innerLoop
-	ld bc, SCREEN_WIDTH + 2
+	jr nz, .singleLine
+	ld bc,$0002
 	add hl, bc
 	pop bc
 	dec b
-	jr nz, .outerLoop
+	jr nz, .newLine
+	; ld bc, $0014
+	; add hl, bc
+	; ld a, $A0 ;XX
+	; ld [wIMEAddr], a
+	; ld a, $8A ;XX
+	; ld [wIMEAddr], a
+
+	call UpdateInputMethodText
+
+	ld hl,$C460 ;XXXX
+	ld de, InputChangePage
+	; ld a,$40
+	; ld [wIMEAddr],a
+	; ld a,$8F
+	; ld [wIMEAddr + 1],a
 	call PlaceString
-	ld a, $1
+
+	ld hl,$C4E2 ;XXXX
+	inc de
+	; ld a,$60
+	; ld [wIMEAddr],a
+	; ld a,$8E
+	; ld [wIMEAddr + 1],a
+	call PlaceString
+; 	ld a, [wIMEAlphabetCase]
+; 	cp 2
+; 	jr z, .lowercase
+; 	cp 3
+; 	jr z, .puntucation
+; 	jr .finish
+; .lowercase
+; 	ld de, LowerCaseAlphabetL1
+; 	hlcoord 2,5
+; 	call PlaceString
+; 	ld de, LowerCaseAlphabetL2
+; 	hlcoord 2,6
+; 	call PlaceString
+; 	ld de, LowerCaseAlphabetL3
+; 	hlcoord 2,7
+; 	call PlaceString
+; 	jr .finish
+; .puntucation
+; 	ld de, PunctuationAlphabetL1
+; 	hlcoord 2,5
+; 	call PlaceString
+; 	ld de, PunctuationAlphabetL2
+; 	hlcoord 2,6
+; 	call PlaceString
+; 	ld de, PunctuationAlphabetL3
+; 	hlcoord 2,7
+; 	call PlaceString
+; 	jr .finish
+; .finish
+	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
 	jp Delay3
+
+
+; LowerCaseAlphabetL1:
+; 	db "a b c d e f g h i@"
+; LowerCaseAlphabetL2:
+; 	db "j k l m n o p q r@"
+; LowerCaseAlphabetL3:
+; 	db "s t u v w x y z <ED>@"
+
+	
+; PunctuationAlphabetL1:
+; 	db "× ( ) : ; [ ] <PK> <MN>@"
+; PunctuationAlphabetL2:
+; 	db "- ? ! ♂ ♀ / <DOT> ,  @"
+; PunctuationAlphabetL3:
+; 	db "                <ED>@"
+
+
+; 	ld a, [wIMEAlphabetCase]
+; 	and a
+; 	ld de, LowerCaseAlphabet
+; 	jr nz, .lowercase
+; 	ld de, UpperCaseAlphabet
+; .lowercase
+; 	hlcoord 2, 5
+; 	lb bc, 5, 9 ; 5 rows, 9 columns
+; .outerLoop
+; 	push bc
+; .innerLoop
+; 	ld a, [de]
+; 	ld [hli], a
+; 	inc hl
+; 	inc de
+; 	dec c
+; 	jr nz, .innerLoop
+; 	ld bc, SCREEN_WIDTH + 2
+; 	add hl, bc
+; 	pop bc
+; 	dec b
+; 	jr nz, .outerLoop
+; 	call PlaceString
+; 	ld a, $1
+; 	ldh [hAutoBGTransferEnabled], a
+; 	jp Delay3
 
 INCLUDE "data/text/alphabets.asm"
 
@@ -385,6 +648,7 @@ PrintNicknameAndUnderscores:
 	hlcoord 10, 2
 	ld de, wStringBuffer
 	call PlaceString
+	call DisplayPinyinLetter
 	hlcoord 10, 3
 	ld a, [wNamingScreenType]
 	cp NAME_MON_SCREEN
@@ -411,10 +675,10 @@ PrintNicknameAndUnderscores:
 	jr nz, .emptySpacesRemaining
 	; when all spaces are filled, force the cursor onto the ED tile
 	call EraseMenuCursor
-	ld a, $11 ; "ED" x coord
-	ld [wTopMenuItemX], a
-	ld a, $5 ; "ED" y coord
-	ld [wCurrentMenuItem], a
+	; ld a, $11 ; "ED" x coord
+	; ld [wTopMenuItemX], a
+	; ld a, $3 ;ld a, $5 ; "ED" y coord
+	; ld [wCurrentMenuItem], a
 	ld a, [wNamingScreenType]
 	cp NAME_MON_SCREEN
 	ld a, 9 ; keep the last underscore raised
@@ -429,21 +693,31 @@ PrintNicknameAndUnderscores:
 	ld [hl], $77 ; raised underscore tile id
 	ret
 
-DakutensAndHandakutens:
-	push de
-	call CalcStringLength
-	dec hl
-	ld a, [hl]
-	pop hl
-	ld de, $2
-	call IsInArray
-	ret nc
-	inc hl
-	ld a, [hl]
-	ld [wNamingScreenLetter], a
-	ret
+; DakutensAndHandakutens:
+; 	push de
+; 	call CalcStringLength
+; 	dec hl
+; 	ld a, [hl]
+; 	pop hl
+; 	ld de, $2
+; 	call IsInArray
+; 	ret nc
+; 	inc hl
+; 	ld a, [hl]
+; 	ld [wNamingScreenLetter], a
+; 	ret
 
-INCLUDE "data/text/dakutens.asm"
+; INCLUDE "data/text/dakutens.asm"
+; calculates the length of the string at wStringBuffer and stores it in c
+CalcStringLengthAtHL:
+	ld c, $0
+.loop
+	ld a, [hl]
+	cp "@"
+	ret z
+	inc hl
+	inc c
+	jr .loop
 
 ; calculates the length of the string at wStringBuffer and stores it in c
 CalcStringLength:
@@ -473,11 +747,11 @@ PrintNamingText:
 	pop af
 	ld [wd11e], a
 	call GetMonName
-	hlcoord 4, 1
+	hlcoord 3, 1
 	call PlaceString
 	; ld hl, $1
 	; add hl, bc
-	; ld [hl], "" ; leftover from Japanese version; blank tile $c9 in English
+	; ld [hl], "の" ; leftover from Japanese version; blank tile $c9 in English
 	hlcoord 1, 3
 	ld de, NicknameTextString
 	jr .placeString
@@ -500,3 +774,5 @@ NameTextString:
 
 NicknameTextString:
 	db "NICKNAME?@"
+
+INCLUDE "engine/menus/naming_screen_chs.asm"

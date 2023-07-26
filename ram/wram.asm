@@ -2328,12 +2328,38 @@ wDFSFontSytle:: ds 1
 wDFSV0Only:: ds 1
 wDFSStack:: ds 1
 wDFSCombineCode:: ds 2
+
 wIMEPinyin:: ds 7
-wIMEChar:: ds 2
-wIMELine:: ds 1
-wIMEMaxLine:: ds 1
-wIMEBank:: ds 1
+; wIMEChar:: ds 2
+; wIMELine:: ds 1
+; wIMEMaxLine:: ds 1
+; wIMEBank:: ds 1
 wIMEAddr:: ds 2
+	;new: 0：拼音 1:符号 
+; orig
+; 0 = upper case
+; 1 = lower case
+wIMEAlphabetCase:: db
+wIMETmpVar:: ds 2
+wIMETmpVarEnding:: ds 1
+wIMECurrentPage:: ds 1
+wIMEMaxPage:: ds 1
+wIMEOddEven:: ds 1
+wIMEBuffer:: ds 2
+wIMEBuffer2:: ds 2
+wIMEBuffer3:: ds 2
+wIMEBuffer4:: ds 2
+wIMEBuffer5:: ds 2
+wIMEBuffer6:: ds 2
+wIMEBuffer7:: ds 2
+wIMEBuffer8:: ds 2
+wIMEBuffer9:: ds 2
+wIMEBuffer10:: ds 2
+wIMEBuffer11:: ds 2
+wIMEBuffer12:: ds 2
+wIMEBufferEND:: ds 1
+
+wTempTopMenuItemX:: ds 1
 wBuffer2:: ds 6
 
 wd47a:: ds 1 ; d479
