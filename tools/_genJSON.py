@@ -433,7 +433,7 @@ def exportJSON(dict,filePath):
         body = ''
         for instruction in instructions:
             if removeNone(instruction.content) != "":
-                body += instruction.content + '\\n'
+                body += instruction.inst.replace(' ','') + ' ' + instruction.content + '\\n'
         footer = '\",\"tag\":\"'+ instruction.label + '\\n' + filePath.split('/')[-1] +'\"}},'
         jsonText += header + body + footer
 
