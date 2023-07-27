@@ -1,4 +1,3 @@
-; fix
 TextBoxBorder::
 ; Draw a c×b text box at hl.
 
