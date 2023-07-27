@@ -429,13 +429,13 @@ def exportJSON(dict,filePath):
     global jsonText
     for key in dict:
         instructions = dict[key]
-        header = '{\"Sentence\":{\"note\":\"\",\"state\":\"Unmarked\",\"text\":\"'
+        header = '{\"Sentence\":{\"text\":\"'
         body = ''
         for instruction in instructions:
             if removeNone(instruction.content) != "":
                 body += instruction.inst.replace(' ','') + ' ' + instruction.content + '\\n'
-        footer = '\",\"tag\":\"'+ instruction.label + '\\n' + filePath.split('/')[-1] +'\"}},'
-        jsonText += header + body + footer
+        footer = '\",\"note\":\"\",\"state\":\"Unmarked\",\"tag\":\"'+ instruction.label + '\\n' + filePath.split('/')[-1] +'\"}},'
+        jsonText += header + body + footer + '\n'
 
 # print(xlsxListPath +'：检查 xlsx 合法性...')
 # print()
