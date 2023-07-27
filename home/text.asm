@@ -1,4 +1,3 @@
-db $50,$50 ;fix missing no for RB
 TextBoxBorder::
 ; Draw a c×b text box at hl.
 
