@@ -1,3 +1,4 @@
+INCLUDE "data/pokemon/names2.asm"
 MonsterNames::
 	table_width NAME_LENGTH - 1, MonsterNames
 	db "RHYDON@@@@"
@@ -191,4 +192,3 @@ MonsterNames::
 	db "WEEPINBELL"
 	db "VICTREEBEL"
 	assert_table_length NUM_POKEMON_INDEXES
-INCLUDE "data/pokemon/names2.asm"
