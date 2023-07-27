@@ -315,12 +315,12 @@ PlaceCommandCharacter::
 
 TMCharText::      db "TM@"
 TrainerCharText:: db "TRAINER@"
-PCCharText::      db "@"
-RocketCharText::  db "@"
+PCCharText::      db "PC@"
+RocketCharText::  db "ROCKET@"
 PlacePOKeText::   db "POKé@"
 SixDotsCharText:: db "⋯⋯@"
 EnemyText::       db "Enemy @"
-PlacePKMNText::   db "@@@@@"
+PlacePKMNText::   db "<PK><MN>@"
 ContText::
 	push de
 	ld b, h
