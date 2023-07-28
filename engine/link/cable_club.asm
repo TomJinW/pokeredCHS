@@ -316,7 +316,7 @@ TradeCenter_SelectMon:
 	call LoadTrainerInfoTextBoxTiles
 	; CHS_Fix draw party list
 	call TradeCenter_DrawPartyLists
-	call TradeCenter_PushPokemonNames
+	; call TradeCenter_PushPokemonNames
 	call TradeCenter_DrawCancelBox
 	xor a
 	ld hl, wSerialSyncAndExchangeNybbleReceiveData
@@ -647,25 +647,20 @@ TradeCenter_DisplayStats:
 	call GBPalNormal
 	call LoadTrainerInfoTextBoxTiles
 	call TradeCenter_DrawPartyLists
-	call TradeCenter_PushPokemonNames
+	; call TradeCenter_PushPokemonNames
 	jp TradeCenter_DrawCancelBox
 
 TradeCenter_PushPokemonNames:
 	; CHS_Fix Push player pokemon names
 	ld a, 0
-	lb bc, 6, 6
+	lb bc, 12, 6
 	hlcoord 2, 2
 	call DFSStaticize
 
-	ld a, $24
-	lb bc, 6, 6
-	hlcoord $C, 2
-	call DFSStaticize
-
-	ld a, $48
-	lb bc, 2, 18
-	hlcoord 2, $C
-	call DFSStaticize
+	; ld a, $35
+	; lb bc, 6, 6
+	; hlcoord 8, $C
+	; call DFSStaticize
 	ret
 
 TradeCenter_DrawPartyLists:
@@ -697,7 +692,7 @@ TradeCenter_DrawPartyLists:
 	ld de, wPartySpecies
 	call TradeCenter_PrintPartyListNames
 	; hlcoord 2, 9
-
+	call TradeCenter_PushPokemonNames
 	hlcoord $0C, 3
 	ld de, wEnemyPartySpecies
 	; fall through
