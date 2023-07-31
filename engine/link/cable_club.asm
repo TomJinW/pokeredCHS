@@ -647,20 +647,21 @@ TradeCenter_DisplayStats:
 	call GBPalNormal
 	call LoadTrainerInfoTextBoxTiles
 	call TradeCenter_DrawPartyLists
-	; call TradeCenter_PushPokemonNames
 	jp TradeCenter_DrawCancelBox
 
 TradeCenter_PushPokemonNames:
 	; CHS_Fix Push player pokemon names
 	ld a, 0
-	lb bc, 12, 6
-	hlcoord 2, 2
+	lb bc, 12, 5
+	hlcoord 3, 2
 	call DFSStaticize
+	ret
 
-	; ld a, $35
-	; lb bc, 6, 6
-	; hlcoord 8, $C
-	; call DFSStaticize
+TradeCenter_PushPokemonNames2:
+	ld a, $3E
+	lb bc, 8, 6
+	hlcoord $C, 2
+	call DFSStaticize
 	ret
 
 TradeCenter_DrawPartyLists:
@@ -720,6 +721,17 @@ TradeCenter_PrintPartyListNames:
 	add hl, bc
 	pop bc
 	inc c
+	push bc
+	push hl
+	push de
+	ld a, c
+	cp 4
+	jr nz, .skip
+	call TradeCenter_PushPokemonNames2
+.skip
+	pop de
+	pop hl
+	pop bc
 	jr .loop
 
 TradeCenter_Trade:
