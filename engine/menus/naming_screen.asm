@@ -739,21 +739,21 @@ PrintNamingText:
 	ld a, [wcf91]
 	ld [wMonPartySpriteSpecies], a
 	push af
-	farcall WriteMonPartySpriteOAMBySpecies
+	farcall WriteMonPartySpriteOAMBySpeciesNamingScreen
 	pop af
 	ld [wd11e], a
 	call GetMonName
 	ld a, [wENGNameMark]
 	cp 1
-	hlcoord 3, 1
+	hlcoord 2, 1
 	jr nz, .notENG
-	hlcoord 3, 0
+	hlcoord 2, 0
 .notENG
 	call PlaceString
 	; ld hl, $1
 	; add hl, bc
 	; ld [hl], "の" ; leftover from Japanese version; blank tile $c9 in English
-	hlcoord 1, 3
+	hlcoord 0, 3
 	ld de, NicknameTextString
 	jr .placeString
 .notNickname

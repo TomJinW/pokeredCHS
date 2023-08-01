@@ -197,6 +197,18 @@ WriteMonPartySpriteOAMBySpecies:
 	ld [wOAMBaseTile], a
 	jr WriteMonPartySpriteOAM
 
+WriteMonPartySpriteOAMBySpeciesNamingScreen:
+; Write OAM blocks for the party sprite of the species in
+; [wMonPartySpriteSpecies].
+	xor a
+	ldh [hPartyMonIndex], a
+	ld a, [wMonPartySpriteSpecies]
+	call GetPartyMonSpriteID
+	ld [wOAMBaseTile], a
+	push af
+	ld c, 8
+	jr WriteMonPartySpriteOAM.coord_x_fix
+
 UnusedPartyMonSpriteFunction:
 ; This function is unused and doesn't appear to do anything useful. It looks
 ; like it may have been intended to load the tile patterns and OAM data for
