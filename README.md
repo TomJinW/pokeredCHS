@@ -1,4 +1,4 @@
-# 宝可梦 Gen 1 红/蓝&绿 汉化版（施工中，未完成）
+# 宝可梦 Gen 1 红/蓝&绿 汉化版 v1.0
 
 
 [pret/pokered 原始 README.md](README.O.md)
@@ -197,7 +197,7 @@
 * 程序：星夜之幻、TomJinW
 * 翻译：吃馍法师、无敌阿尔宙斯、夜灵的天空、TomJinW
 * 汉化工具：robertking、TomJinW
-* 美工：卧看微尘、小光、TomJinW
+* 美工：卧看微尘、小光
 * 测试：无敌阿尔宙斯、小光、NELO、TomJinW、SYLVEON、colorcat。
 
 
