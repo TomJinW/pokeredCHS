@@ -31,14 +31,14 @@ cp roms/rgb/pokeblue.1.patch roms/tmp/rgb-pokeblue.patch
 
 echo
 echo Testing... Applying Patch
-./tools/flips -a roms/tmp/rb-pokered.ips roms/pokered.gbc roms/tmp/US.pRed.gbc
-./tools/flips -a roms/tmp/rb-pokeblue.ips roms/pokeblue.gbc roms/tmp/US.pBlue.gbc
-./tools/flips -a roms/tmp/rgb-pokered.ips roms/pokered.gbc roms/tmp/SJP.pRed.gbc
-./tools/flips -a roms/tmp/rgb-pokegreen.ips roms/pokeblue.gbc roms/tmp/SJP.pGreen.gbc
-./tools/flips -a roms/tmp/rgb-pokeblue.ips roms/pokeblue.gbc roms/tmp/SJP.pBlue.gbc
-cp roms/rb/pokered_debug.1.gbc roms/tmp/US.pRed_debug.gbc
-cp roms/rb/pokeblue_debug.1.gbc roms/tmp/US.pBlue_debug.gbc
-cp roms/rgb/pokered_debug.1.gbc roms/tmp/SJP.pRed_debug.gbc
-cp roms/rgb/pokegreen_debug.1.gbc roms/tmp/SJP.pGreen_debug.gbc
-cp roms/rgb/pokeblue_debug.1.gbc roms/tmp/SJP.pBlue_debug.gbc
+./tools/flips -a roms/tmp/rb-pokered.ips roms/pokered.gbc roms/tmp/rb-pokered.gbc
+./tools/flips -a roms/tmp/rb-pokeblue.ips roms/pokeblue.gbc roms/tmp/rb-pokeblue.gbc
+./tools/flips -a roms/tmp/rgb-pokered.ips roms/pokered.gbc roms/tmp/rgb-pokered.gbc
+./tools/flips -a roms/tmp/rgb-pokegreen.ips roms/pokeblue.gbc roms/tmp/rgb-pokegreen.gbc
+./tools/flips -a roms/tmp/rgb-pokeblue.ips roms/pokeblue.gbc roms/tmp/rgb-pokeblue.gbc
+cp roms/rb/pokered_debug.1.gbc roms/tmp/rb-pokered_debug.gbc
+cp roms/rb/pokeblue_debug.1.gbc roms/tmp/rb-pokeblue_debug.gbc
+cp roms/rgb/pokered_debug.1.gbc roms/tmp/rgb-pokered_debug.gbc
+cp roms/rgb/pokegreen_debug.1.gbc roms/tmp/rgb-pokegreen_debug.gbc
+cp roms/rgb/pokeblue_debug.1.gbc roms/tmp/rgb-pokeblue_debug.gbc
 ./_compareVersion.command
