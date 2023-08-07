@@ -40,3 +40,10 @@ md5 roms/rgb/pokegreen_vc.2.gbc
 echo
 md5 roms/rgb/pokeblue_vc.1.gbc
 md5 roms/rgb/pokeblue_vc.2.gbc
+
+
+md5 roms/tmp/US.pRed.gbc > hash.RGB.txt
+md5 roms/tmp/US.pBlue.gbc >> hash.RGB.txt
+md5 roms/tmp/SJP.pRed.gbc >> hash.RGB.txt
+md5 roms/tmp/SJP.pGreen.gbc >> hash.RGB.txt
+md5 roms/tmp/SJP.pBlue.gbc >> hash.RGB.txt
