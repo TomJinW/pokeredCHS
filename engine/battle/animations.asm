@@ -798,15 +798,27 @@ DoRockSlideSpecialEffects:
 
 FlashScreenEveryEightFrameBlocks:
 	ld a, [wSubAnimCounter]
+
+	; international version
 	and 7 ; is the subanimation counter exactly 8?
 	call z, AnimationFlashScreen ; if so, flash the screen
+
+	; japanese version
+	; srl a ;
+	; call c, AnimationFlashScreen ;
+
 	ret
 
 ; flashes the screen if the subanimation counter is divisible by 4
 FlashScreenEveryFourFrameBlocks:
+
+	; international version
 	ld a, [wSubAnimCounter]
 	and 3
 	call z, AnimationFlashScreen
+
+	; japanese version
+	; jp AnimationFlashScreen ;
 	ret
 
 ; used for Explosion and Selfdestruct
