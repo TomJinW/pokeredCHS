@@ -800,8 +800,8 @@ FlashScreenEveryEightFrameBlocks:
 	ld a, [wSubAnimCounter]
 
 	; international version
-	and 7 ; is the subanimation counter exactly 8?
-	call z, AnimationFlashScreen ; if so, flash the screen
+	and 7 ; international ; is the subanimation counter exactly 8?
+	call z, AnimationFlashScreen ; international ; if so, flash the screen
 
 	; japanese version
 	; srl a ;
