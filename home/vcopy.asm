@@ -430,7 +430,7 @@ IF DEF(_BLUE)
 	and 3
 	cp 2
 ELSE
-	and 2
+	and 1
 	cp 1
 ENDC
 	ld hl, FlowerTile1
