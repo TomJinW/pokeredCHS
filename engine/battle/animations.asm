@@ -812,10 +812,9 @@ FlashScreenEveryEightFrameBlocks:
 ; flashes the screen if the subanimation counter is divisible by 4
 FlashScreenEveryFourFrameBlocks:
 
-	; international version
-	ld a, [wSubAnimCounter]
-	and 3
-	call z, AnimationFlashScreen
+	ld a, [wSubAnimCounter] ; international version
+	and 3 ; international version
+	call z, AnimationFlashScreen ; international version
 
 	; japanese version
 	; jp AnimationFlashScreen ;
