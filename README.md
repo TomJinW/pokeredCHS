@@ -88,6 +88,8 @@
 
 -  因内部编码不同，从CKN·口袋群星汉化版「精灵宝可梦 皮卡丘」v1.0/v1.1 迁移存档时，**需要使用额外存档转换工具将编码转换成新版游戏编码**。工具会包含在 Release 板块内的补丁中，也可以[前往这里](https://github.com/TomJinW/CKNSaveConverter)另行下载。
 
+- 若需要迁移日文版存档，请参考[https://github.com/TomJinW/PKMNGen1JPUSSavConverter](https://github.com/TomJinW/PKMNGen1JPUSSavConverter)
+
 <br>
 
 ### 游戏内联机相关： 
@@ -206,6 +208,8 @@
 - [任天堂](https://www.nintendo.co.jp)、[Game Freak](https://www.gamefreak.co.jp)、[Creatures](https://www.creatures.co.jp/)、[The Pokemon Company](https://corporate.pokemon.co.jp)
 
 - [神奇宝贝百科](https://wiki.52poke.com/) [Bulbapedia](bulbapedia.bulbagarden.net) [tcrf.net](https://tcrf.net/Pokémon_Red_and_Blue)
+
+- [pocketrgb-en](https://github.com/Dracrius/pocketrgb-en)
 
 ## 开源协议声明
 - 本项目使用来自[神奇宝贝百科](https://wiki.52poke.com/)的部分文本，并有部分修改。遵守[创作共用：署名-非商业性使用-相同方式共享协议](https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh)（https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh）。
