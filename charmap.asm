@@ -5,7 +5,7 @@ IF DEF(RGBDS_WCHAR)
 	charmap "啰",	$2EB8, 2
 	charmap "窸",	$2EBB, 2
 	charmap "窣",	$2EBC, 2
-	charmap "î",	$6162, 2
+	charmap "î",	$DF62, 2
 	charmap "ñ",	$2EB7, 2
 	charmap "%",	$2EBA, 2
 	charmap "　",	$0101, 2
