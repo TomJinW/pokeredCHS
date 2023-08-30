@@ -10,7 +10,11 @@ HiddenItemCoords:
 	hidden_item ROUTE_25,                      38,   3
 	hidden_item ROUTE_9,                       14,   7
 	hidden_item SS_ANNE_KITCHEN,               13,   9
+	IF DEF(_BLUE)
 	hidden_item SS_ANNE_B1F_ROOMS,              3,   1
+	ELSE
+	hidden_item SS_ANNE_B1F_ROOMS,              0,   6
+	ENDC
 	hidden_item ROUTE_10,                       9,  17
 	hidden_item ROUTE_10,                      16,  53
 	hidden_item ROCKET_HIDEOUT_B1F,            21,  15
@@ -22,7 +26,11 @@ HiddenItemCoords:
 	hidden_item POKEMON_MANSION_B1F,            1,   9
 	hidden_item SAFARI_ZONE_GATE,              10,   1 ; inaccessible
 	hidden_item SAFARI_ZONE_WEST,               6,   5
+	IF DEF(_BLUE)
 	hidden_item SILPH_CO_5F,                   12,   3
+	ELSE
+	hidden_item SILPH_CO_5F,                   11,   3
+	ENDC
 	hidden_item SILPH_CO_9F,                    2,  15
 	hidden_item COPYCATS_HOUSE_2F,              1,   1
 	hidden_item CERULEAN_CAVE_1F,              14,  11
