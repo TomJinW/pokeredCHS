@@ -522,12 +522,12 @@ ShowPokedexDataInternal:
 	coord hl, 9, 1 ;
 	call DFSStaticize ;
 
-	; ld a, $43
-	; lb bc, 2, 2 ;
-	; coord hl, 17, 7 ;
-	; call DFSStaticize ;
+	ld a, $43
+	lb bc, 1, 1 ;
+	coord hl, 17, 8 ;
+	call DFSStaticize ;
 
-	ld a, $7D
+	ld a, $44
 	lb bc, 1, 2 ;
 	coord hl, $C + $5, 2 ;
 	call DFSStaticize ;
@@ -536,6 +536,21 @@ ShowPokedexDataInternal:
 	lb bc, 2, 5 ;
 	coord hl, $C, 1 ;
 	call DFSStaticize ;
+	
+	; ld a, $43
+	; lb bc, 2, 2 ;
+	; coord hl, 17, 7 ;
+	; call DFSStaticize ;
+
+	; ld a, $7D
+	; lb bc, 1, 2 ;
+	; coord hl, $C + $5, 2 ;
+	; call DFSStaticize ;
+
+	; ld a, $51
+	; lb bc, 2, 5 ;
+	; coord hl, $C, 1 ;
+	; call DFSStaticize ;
 
 
 	ld hl, PokedexEntryPointers
@@ -557,20 +572,35 @@ ShowPokedexDataInternal:
 	push de
 	push hl
 
-	ld a, $43
+	ld a, $47
 	lb bc, 2, 5 ;
 	coord hl, $C, 3 ;
 	call DFSStaticize ;
 	
-	ld a, $57
+	ld a, $5B
 	lb bc, 2, 3 ;
 	coord hl, 9, 3 ;
 	call DFSStaticize ;
 
-	ld a, $5D
+	ld a, $45
 	lb bc, 2, 1 ;
 	coord hl, $11, 3 ;
 	call DFSStaticize ;
+	
+	; ld a, $43
+	; lb bc, 2, 5 ;
+	; coord hl, $C, 3 ;
+	; call DFSStaticize ;
+	
+	; ld a, $57
+	; lb bc, 2, 3 ;
+	; coord hl, 9, 3 ;
+	; call DFSStaticize ;
+
+	; ld a, $5D
+	; lb bc, 2, 1 ;
+	; coord hl, $11, 3 ;
+	; call DFSStaticize ;
 
 	pop hl
 	pop de
@@ -615,7 +645,7 @@ ShowPokedexDataInternal:
 	hlcoord 10, 6 ;hlcoord 15, 6
 	lb bc,   1, 1 ;lb bc, LEADING_ZEROES | 1, 2
 	call PrintNumber ; print inches (height)
-	ld a, $60; ld a, "″"
+	ld a, $61; ld a, "″"
 	ld [hl], a
 ; now print the weight (note that weight is stored in tenths of pounds internally)
 	inc de
