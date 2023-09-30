@@ -1466,6 +1466,7 @@ EnemySendOutFirstMon:
 	call ClearScreenArea
 	ld b, SET_PAL_BATTLE
 	call RunPaletteCommand
+	call Delay3 ; CHS_Fix Fix flashing
 	call GBPalNormal
 	ld hl, TrainerSentOutText
 	call PrintText
