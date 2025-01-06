@@ -43,7 +43,7 @@ wb = load_workbook(filename = xlsxListPath)
 
 def readLines(filename):
     fileList = []
-    with open(filename) as f:
+    with open(filename,encoding='utf-8') as f:
         fileList = f.readlines()
         return fileList
     
@@ -324,7 +324,7 @@ for sheet in wb._sheets:
         print(xlsxListPath)
         print(sheet.title)
         print('末尾可能有其他符号！\n')
-    with open(outputPath, 'w') as f:
+    with open(outputPath, 'w', encoding='utf-8') as f:
         outputText = outputText.replace('CURR_DATE','build: ' + getDate()).replace('CURR_TIME',getTime()+', beta.')
         f.write(outputText)
 

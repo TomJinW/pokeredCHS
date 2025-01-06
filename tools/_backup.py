@@ -25,11 +25,11 @@ def addFilePaths(path):
         # shutil.copyfile(path,tmp+path)
 
 def readTextFile(path):
-    file = open(path,"r")
+    file = open(path,"r", encoding='utf-8')
     return file.read()
 
 def readTextFileLines(path):
-    file = open(path,"r")
+    file = open(path,"r", encoding='utf-8')
     return file.readlines()
 
 def removeNone(text):

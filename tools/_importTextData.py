@@ -25,7 +25,7 @@ def addFilePaths(path):
         
 
 def readTextFile(path):
-    file = open(path,"r")
+    file = open(path,"r", encoding='utf-8')
     return file.read()
 
 def removeNone(text):
@@ -104,7 +104,7 @@ for sheet in wb._sheets:
 
         if sheet.cell(row=id, column=mode).value != None:
             if sheet.cell(row=id, column=mode).value != 'end':
-                with open(filePath, 'w') as f:
+                with open(filePath, 'w', encoding='utf-8') as f:
                     f.write(text2Modify)
                 replacees = []
                 filePath = sheet.cell(row=id, column=mode).value
@@ -150,7 +150,7 @@ for sheet in wb._sheets:
         id += 1
 
     # print(text2Modify)
-    with open(filePath, 'w') as f:
+    with open(filePath, 'w', encoding='utf-8') as f:
         f.write(text2Modify)
 # input(bcolors.OKGREEN + "Any key..")
 print(bcolors.OKGREEN)

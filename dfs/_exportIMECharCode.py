@@ -7,7 +7,7 @@ from chinese_stroke_sorting import sort_by_stroke
 charNoDict = {}
 
 def readTextFileLines(path):
-    file = open(path,"r")
+    file = open(path,"r", encoding='utf-8')
     return file.readlines()
 
 def genCharTable():

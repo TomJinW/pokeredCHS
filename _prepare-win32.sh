@@ -46,6 +46,7 @@ python3 tools/_importText.py xlsx/core.xlsx 5 RB $option
 python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option RB
 python3 tools/_importTextData.py xlsx/data.xlsx 1 RB $option
 
+patch -p1 < tcc_winport.diff
 chmod +x _build.command
 ./_build.command $option
 
