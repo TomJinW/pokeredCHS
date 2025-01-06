@@ -30,21 +30,22 @@ clear
 # echo 1. Original RGBDS installed with the system
 # echo 2. Modded RGBDS for CHINESE Characters in rgbds-cn/
 # read option
+
 if [ -z "${option}" ]
 then
     echo The Option is not set, using the default one.
     option=1
 fi
-python3 tools/_importText.py xlsx/outdoor.xlsx 5 RB $option
-python3 tools/_importText.py xlsx/dex.xlsx 5 RB $option
-python3 tools/_importText.py xlsx/buildingsA.xlsx 5 RB $option
-python3 tools/_importText.py xlsx/buildingsB.xlsx 5 RB $option
-python3 tools/_importText.py xlsx/indoor.xlsx 5 RB $option
-python3 tools/_importText.py xlsx/routes.xlsx 5 RB $option
-python3 tools/_importText.py xlsx/core.xlsx 5 RB $option
 
-python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option RB
-python3 tools/_importTextData.py xlsx/data.xlsx 1 RB $option
+python3 tools/_importText.py xlsx/outdoor.xlsx 5 RGB $option
+python3 tools/_importText.py xlsx/dexRGB.xlsx 5 RGB $option
+python3 tools/_importText.py xlsx/buildingsA.xlsx 5 RGB $option
+python3 tools/_importText.py xlsx/buildingsB.xlsx 5 RGB $option
+python3 tools/_importText.py xlsx/indoor.xlsx 5 RGB $option
+python3 tools/_importText.py xlsx/routes.xlsx 5 RGB $option
+python3 tools/_importText.py xlsx/core.xlsx 5 RGB $option
+python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option RGB
+python3 tools/_importTextData.py xlsx/data.xlsx 1 RGB $option
 
 patch -p1 < tcc_winport.diff
 chmod +x _build.command
