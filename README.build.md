@@ -194,8 +194,8 @@ pokeredCHS/buildRGB (精灵宝可梦红·绿·蓝)
 │ 	│ 	  pokered.patch			（精灵宝可梦 红 VC用补丁）
 │ 	│ 	  pokegreen.gbc			（精灵宝可梦 绿）
 │ 	│ 	  pokegreen_vc.gbc		（精灵宝可梦 绿 VC修正版）
-│ 	│ 	  pokegreen_debug.gbc	（精灵宝可梦 绿 Debug版）
-│ 	│ 	  pokegreen.patch			（精灵宝可梦 绿 VC用补丁）
+│ 	│ 	  pokegreen_debug.gbc		（精灵宝可梦 绿 Debug版）
+│ 	│ 	  pokegreen.patch		（精灵宝可梦 绿 VC用补丁）
 │ 	│ 	  pokeblue.gbc			（精灵宝可梦 蓝）
 │ 	│ 	  pokeblue_vc.gbc		（精灵宝可梦 蓝 VC修正版）
 │ 	│ 	  pokeblue_debug.gbc		（精灵宝可梦 蓝 Debug版）
