@@ -1,9 +1,10 @@
 roms := \
-	pokered.gbc \
-	pokeblue.gbc \
-	pokeblue_debug.gbc \
-	pokered.patch \
-	pokeblue.patch
+	red \
+	blue \
+	red_debug \
+	blue_debug \
+	red_vc \
+	blue_vc
 
 patches := \
 	pokered.patch \
@@ -53,11 +54,11 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDARY:
 .PHONY: all red blue blue_debug red_debug clean tidy compare tools
 
-all: $(patches)
+all: $(roms)
 red:        pokered.gbc
 blue:       pokeblue.gbc
-blue_debug: pokeblue_debug.gbc
 red_debug: pokered_debug.gbc
+blue_debug: pokeblue_debug.gbc
 red_vc:     pokered.patch
 blue_vc:    pokeblue.patch
 
