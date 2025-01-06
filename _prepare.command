@@ -5,7 +5,7 @@ cd "$filepath"
 
 mkdir buildRGB
 echo Creating build folder...
-rsync -a --exclude='buildRGB' ./* ./buildRGB/
+rsync -a --exclude='buildRGB' src/* ./buildRGB/
 
 cd buildRGB
 
