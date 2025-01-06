@@ -4,10 +4,10 @@ cd "$filepath"
 # mkdir tmp
 
 echo Creating build directory...
-rm -r buildRB
-mkdir buildRB
-cp -r src/* buildRB
-cd buildRB
+rm -r buildRGB
+mkdir buildRGB
+cp -r src/* buildRGB
+cd buildRGB
 
 # cd /Users/tom/Library/CloudStorage/OneDrive-Personal/Office/pokeredCHS
 # cp buildingsA.xlsx $filepath/xlsx/buildingsA.xlsx

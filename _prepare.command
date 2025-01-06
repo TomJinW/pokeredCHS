@@ -3,10 +3,10 @@ filepath=$(cd "$(dirname "$0")"; pwd)
 cd "$filepath"
 # mkdir tmp
 
+echo Creating build directory...
+rm -r buildRGB
 mkdir buildRGB
-echo Creating build folder...
-rsync -a --exclude='buildRGB' src/* ./buildRGB/
-
+cp -r src/* buildRGB
 cd buildRGB
 
 # cd /Users/tom/Library/CloudStorage/OneDrive-Personal/Office/pokeredCHS
