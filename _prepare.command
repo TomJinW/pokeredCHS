@@ -1,7 +1,13 @@
 #!/bin/bash
 filepath=$(cd "$(dirname "$0")"; pwd)
 cd "$filepath"
-mkdir tmp
+# mkdir tmp
+
+mkdir build
+echo Creating build folder...
+rsync -a --exclude='build' ./* ./build/
+
+cd build
 
 # cd /Users/tom/Library/CloudStorage/OneDrive-Personal/Office/pokeredCHS
 # cp buildingsA.xlsx $filepath/xlsx/buildingsA.xlsx
@@ -17,13 +23,13 @@ mkdir tmp
 
 # cd $filepath
 
-python3 tools/_backup.py xlsx/xlsxList.txt xlsx/ 0
+# python3 tools/_backup.py xlsx/xlsxList.txt xlsx/ 0
 clear
 
-echo Which rgbds? Enter number and hit return.
-echo 1. Original RGBDS installed with the system
-echo 2. Modded RGBDS for CHINESE Characters in rgbds-cn/
-read option
+# echo Which rgbds? Enter number and hit return.
+# echo 1. Original RGBDS installed with the system
+# echo 2. Modded RGBDS for CHINESE Characters in rgbds-cn/
+# read option
 if [ -z "${option}" ]
 then
     echo The Option is not set, using the default one.
@@ -43,21 +49,21 @@ python3 tools/_importTextData.py xlsx/data.xlsx 1 RB $option
 
 ./_build.command $option
 
-echo Restore Backup?
-echo 1.Yes
-echo 2.No
-read restoreOption
-if [ -z "${restoreOption}" ]
-then
-    echo The Option is not set, using the default one.
-    restoreOption=1
-fi
+# echo Restore Backup?
+# echo 1.Yes
+# echo 2.No
+# read restoreOption
+# if [ -z "${restoreOption}" ]
+# then
+#     echo The Option is not set, using the default one.
+#     restoreOption=1
+# fi
 
-if [[ $restoreOption -eq 2 ]]
-then
+# if [[ $restoreOption -eq 2 ]]
+# then
+# echo done!
+# else
+# python3 tools/_backup.py xlsx/xlsxList.txt xlsx/ 1
 echo done!
-else
-python3 tools/_backup.py xlsx/xlsxList.txt xlsx/ 1
-echo done!
-fi
+# fi
 

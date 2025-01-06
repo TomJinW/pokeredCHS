@@ -156,7 +156,7 @@ for sheet in wb._sheets:
 print(bcolors.OKGREEN)
 print()
 print('db Data Import complete.')
-input("Press Return to proceed..")
+# input("Press Return to proceed..")
 
 
 
