@@ -47,6 +47,7 @@ python3 tools/_importText.py xlsx/core.xlsx 5 RGB $option
 python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option RGB
 python3 tools/_importTextData.py xlsx/data.xlsx 1 RGB $option
 
+chmod +x _build.command
 ./_build.command $option
 
 # echo Restore Backup?
