@@ -5,12 +5,11 @@
 这里记载了编译汉化版 ROM 需要的依赖环境，有经验的用户可以自行安装相关依赖。
 
 ### Windows：
-- 需要一个 Linux 环境。Windows 10 或以上推荐使用 WSL（Windows Subsystem for Linux）。
-- 不提供纯 Windows 环境下的编译方式，敬请见谅。
+- 需要一个 Linux 环境。Windows 10 或以上推荐使用 [WSL](https://learn.microsoft.com/zh-cn/windows/wsl/install)（Windows Subsystem for Linux）。使用 WSL 的情况下，步骤和 Linux 环境下相同。
+- 纯 Windows 环境下亦可以使用 [SnDream/rgbds-ws](https://github.com/SnDream/rgbds-ws) ，将完整的本仓库克隆到该环境中的 home 目录，再配合本仓库内的 _prepare-win32.sh 进行编译。该环境具体使用方法请参考 [SnDream/rgbds-ws](https://github.com/SnDream/rgbds-ws) 提供的使用教程。arm64 版 Windows 在该环境下为 x86_64 转译运行。
 
 ### macOS 和 Linux：
 - git
-- rsync
 - [原版 RGBDS 0.6.1 - 0.7.0](https://rgbds.gbdev.io/install/) （从源代码编译 RGBDS 需要以下依赖）
 	-  libpng
 	-  gcc

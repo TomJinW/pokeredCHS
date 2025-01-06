@@ -231,4 +231,4 @@
 ## 开源协议声明
 - 本项目使用来自[神奇宝贝百科](https://wiki.52poke.com/)的部分文本，并有部分修改。遵守[创作共用：署名-非商业性使用-相同方式共享协议](https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh)（https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh）。
 
-
+- [第三方开源项目原始协议](Third-Party-License.txt)
