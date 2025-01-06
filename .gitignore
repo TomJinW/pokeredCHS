@@ -1,11 +1,11 @@
 buildRB/*
 buildRGB/*
 .DS_Store
-rgbds-061/*
-rgbds-cn/*
-tmp/
-_copy.command
-tools/flips
+src/rgbds-061/*
+src/rgbds-cn/*
+src/tmp/
+src/_copy.command
+src/tools/flips
 *.ips
 # compiled objects
 *.o
@@ -38,8 +38,8 @@ tools/flips
 *.sn*
 *.sa*
 *.sg1
-roms/.DS_Store
-roms/rb/.DS_Store
-roms/rgb/.DS_Store
+src/roms/.DS_Store
+src/roms/rb/.DS_Store
+src/roms/rgb/.DS_Store
 .DS_Store
-rgbds-cn/
+src/rgbds-cn/

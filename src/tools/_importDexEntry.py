@@ -25,7 +25,7 @@ def addFilePaths(path):
         shutil.copyfile(path,tmp+path)
 
 def readTextFileLines(path):
-    file = open(path,"r")
+    file = open(path,"r", encoding='utf-8')
     return file.readlines()
 
 def removeNone(text):
@@ -111,7 +111,7 @@ for sheet in wb._sheets:
 
         body += label +'\n\t' + category + '\n\t' + height + '\n\t' + weight + '\n\t' + desc 
 
-    with open(filePath, 'w') as f:
+    with open(filePath, 'w', encoding='utf-8') as f:
         f.write(header + body)
 
 
