@@ -154,6 +154,16 @@
 
 	- 最后看到「done」说明一切完成。
 
+### 首次编译完成之后：
+
+- 可以直接在 buildRB/buildRGB 文件夹里修改需要的部分并运行 make 来重新编译游戏，汉化版的修改已经应用于 buildRB/buildRGB 文件夹，所以可以不需要再运行 _prepare.command：
+
+	```
+	cd buildRB # 宝可梦 红·蓝
+	cd buildRGB # 精灵宝可梦红·绿·蓝
+	make
+	```
+
 ## 查看编译 ROM
 
 - 编译好的ROM的文件存档如图所示：
@@ -170,7 +180,7 @@ pokeredCHS/buildRB (宝可梦红·蓝)
 │ 	│ 	  pokered.patch			（宝可梦 红 VC用补丁）
 │ 	│ 	  pokeblue.gbc 			（宝可梦 蓝）
 │ 	│ 	  pokeblue_vc.gbc		（宝可梦 蓝 VC修正版）
-│ 	│ 	  pokeblue_debug.gbc	（宝可梦 蓝 Debug版）
+│ 	│ 	  pokeblue_debug.gbc		（宝可梦 蓝 Debug版）
 │ 	│ 	  pokeblue.patch		（宝可梦 蓝 VC用补丁）
 
 pokeredCHS/buildRGB (精灵宝可梦红·绿·蓝)
@@ -185,10 +195,10 @@ pokeredCHS/buildRGB (精灵宝可梦红·绿·蓝)
 │ 	│ 	  pokegreen.gbc			（精灵宝可梦 绿）
 │ 	│ 	  pokegreen_vc.gbc		（精灵宝可梦 绿 VC修正版）
 │ 	│ 	  pokegreen_debug.gbc	（精灵宝可梦 绿 Debug版）
-│ 	│ 	  pokegreen.patch		（精灵宝可梦 绿 VC用补丁）
+│ 	│ 	  pokegreen.patch			（精灵宝可梦 绿 VC用补丁）
 │ 	│ 	  pokeblue.gbc			（精灵宝可梦 蓝）
 │ 	│ 	  pokeblue_vc.gbc		（精灵宝可梦 蓝 VC修正版）
-│ 	│ 	  pokeblue_debug.gbc	（精灵宝可梦 蓝 Debug版）
+│ 	│ 	  pokeblue_debug.gbc		（精灵宝可梦 蓝 Debug版）
 │ 	│ 	  pokeblue.patch		（精灵宝可梦 蓝 VC用补丁）
 └───────
 ```
