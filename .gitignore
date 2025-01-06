@@ -1,4 +1,5 @@
-build/*
+buildRB/*
+buildRGB/*
 .DS_Store
 rgbds-061/*
 rgbds-cn/*
