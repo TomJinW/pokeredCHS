@@ -46,7 +46,7 @@ python3 tools/_importText.py xlsx/core.xlsx 5 RB $option
 python3 tools/_importDexEntry.py xlsx/dexEntry.xlsx 13 1 $option RB
 python3 tools/_importTextData.py xlsx/data.xlsx 1 RB $option
 
-
+chmod +x _build.command
 ./_build.command $option
 
 # echo Restore Backup?
