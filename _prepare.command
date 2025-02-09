@@ -4,7 +4,7 @@ cd "$filepath"
 # mkdir tmp
 
 echo Creating build directory...
-rm -r buildRGB
+# rm -r buildRGB
 mkdir buildRGB
 cp -r src/* buildRGB
 cd buildRGB
