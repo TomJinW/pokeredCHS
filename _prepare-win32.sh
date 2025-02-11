@@ -4,7 +4,7 @@ cd "$filepath"
 # mkdir tmp
 
 echo Creating build directory...
-rm -r buildRB
+# rm -r buildRB
 mkdir buildRB
 cp -r src/* buildRB
 cd buildRB
