@@ -13,7 +13,7 @@ DisplayTownMap:
 	push af
 	ld b, $0
 	call DrawPlayerOrBirdSprite ; player sprite
-	hlcoord 1, 0
+	hlcoord 1, 1 ;hlcoord 1, 0
 	ld de, wcd6d
 	call PlaceString
 	ld hl, wShadowOAM
@@ -31,7 +31,7 @@ DisplayTownMap:
 
 .townMapLoop
 	hlcoord 0, 0
-	lb bc, 1, 20
+	lb bc, 2, 11 ;lb bc, 1, 20
 	call ClearScreenArea
 	ld hl, TownMapOrder
 	ld a, [wWhichTownMapLocation]
@@ -57,7 +57,7 @@ DisplayTownMap:
 	inc de
 	cp $50
 	jr nz, .copyMapName
-	hlcoord 1, 0
+	hlcoord 1, 1 ;hlcoord 1, 0
 	ld de, wcd6d
 	call PlaceString
 	ld hl, wShadowOAMSprite04
@@ -120,12 +120,21 @@ LoadTownMap_Nest:
 	push hl
 	call DisplayWildLocations
 	call GetMonName
-	hlcoord 1, 0
+	call IncreaseDFSStack
+	hlcoord 0, 1
 	call PlaceString
 	ld h, b
 	ld l, c
+	ld de, MonsNestText2
+	ld a, [wd11e]
+	cp OMASTAR ; 多刺菊石兽
+	jr z, .shortnest
+	cp MAGNETON ; 三合一磁怪
+	jr z, .shortnest
 	ld de, MonsNestText
+.shortnest
 	call PlaceString
+	call DecreaseDFSStack
 	call WaitForTextScrollButtonPress
 	call ExitTownMap
 	pop hl
@@ -134,7 +143,10 @@ LoadTownMap_Nest:
 	ret
 
 MonsNestText:
-	db "'s NEST@"
+	db "'s"
+	; FALL THROUGH
+MonsNestText2:
+	db " nest@"
 
 LoadTownMap_Fly::
 	call ClearSprites
@@ -155,34 +167,34 @@ LoadTownMap_Fly::
 	push af
 	ld [hl], $ff
 	push hl
-	hlcoord 0, 0
+	hlcoord 0, 1 ;hlcoord 0, 0
 	ld de, ToText
 	call PlaceString
 	ld a, [wCurMap]
 	ld b, $0
 	call DrawPlayerOrBirdSprite
 	ld hl, wFlyLocationsList
-	decoord 18, 0
+	decoord 10, 0 ;decoord 18, 0
 .townMapFlyLoop
 	ld a, " "
 	ld [de], a
 	push hl
 	push hl
-	hlcoord 3, 0
-	lb bc, 1, 15
+	hlcoord 4, 0 ;hlcoord 3, 0
+	lb bc, 2, 6 ;lb bc, 1, 15
 	call ClearScreenArea
 	pop hl
 	ld a, [hl]
 	ld b, $4
 	call DrawPlayerOrBirdSprite ; draw bird sprite
-	hlcoord 3, 0
+	hlcoord 4, 1 ;hlcoord 3, 0
 	ld de, wcd6d
 	call PlaceString
 	ld c, 15
 	call DelayFrames
-	hlcoord 18, 0
+	hlcoord 10, 0 ;hlcoord 18, 0
 	ld [hl], "▲"
-	hlcoord 19, 0
+	hlcoord 10, 1 ;hlcoord 19, 0
 	ld [hl], "▼"
 	pop hl
 .inputLoop
@@ -221,7 +233,7 @@ LoadTownMap_Fly::
 	ld [hl], a
 	ret
 .pressedUp
-	decoord 18, 0
+	decoord 10, 0 ;decoord 18, 0
 	inc hl
 	ld a, [hl]
 	cp $ff
@@ -233,7 +245,7 @@ LoadTownMap_Fly::
 	ld hl, wFlyLocationsList
 	jp .townMapFlyLoop
 .pressedDown
-	decoord 19, 0
+	decoord 10, 1 ;decoord 19, 0
 	dec hl
 	ld a, [hl]
 	cp $ff

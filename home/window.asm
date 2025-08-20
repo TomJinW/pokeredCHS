@@ -30,6 +30,7 @@ HandleMenuInput_::
 	jr nz, .keyPressed
 	push hl
 	hlcoord 18, 11 ; coordinates of blinking down arrow in some menus
+	ld c, " "
 	call HandleDownArrowBlinkTiming ; blink down arrow (if any)
 	pop hl
 	ld a, [wMenuJoypadPollCount]
@@ -237,7 +238,7 @@ HandleDownArrowBlinkTiming::
 	dec a
 	ldh [hDownArrowBlinkCount2], a
 	ret nz
-	ld a, " "
+	ld a, c ;ld a, " "
 	ld [hl], a
 	ld a, $ff
 	ldh [hDownArrowBlinkCount1], a
@@ -291,4 +292,7 @@ PrintText::
 	pop hl
 PrintText_NoCreatingTextBox::
 	bccoord 1, 14
-	jp TextCommandProcessor
+	; jp TextCommandProcessor
+	call IncreaseDFSStack ; CHS_Fix Combine string
+	call TextCommandProcessor ; CHS_Fix Combine string
+	jp DecreaseDFSStack ; CHS_Fix Combine string

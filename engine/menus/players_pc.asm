@@ -1,3 +1,26 @@
+ClearPlayerPCMenuMain_CHS:
+	ld a, $60
+	lb bc, 8, 2
+	coord hl, 2, 1
+	call DFSStaticize
+	ld a, $70
+	lb bc, 1, 4
+	coord hl, 4, 1
+	call DFSStaticize
+	; coord hl, 2, 1
+	; ld b, 8
+	; ld c, 6
+	; call ClearScreenArea
+	; coord hl, 1, 1
+	; ld b, 1
+	; ld c, 7
+	; call ClearScreenArea
+	; coord hl, 2, 2
+	; ld b, 7
+	; ld c, 2
+	; call ClearScreenArea
+	ret
+
 PlayerPC::
 	ld hl, wd730
 	set 6, [hl]
@@ -24,7 +47,7 @@ PlayerPCMenu:
 	call LoadScreenTilesFromBuffer2
 	hlcoord 0, 0
 	ld b, $8
-	ld c, $e
+	ld c, $7 ;ld c, $e
 	call TextBoxBorder
 	call UpdateSprites
 	hlcoord 2, 2
@@ -84,6 +107,7 @@ ExitPlayerPC:
 	ret
 
 PlayerPCDeposit:
+	call ClearPlayerPCMenuMain_CHS
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wListScrollOffset], a
@@ -138,6 +162,7 @@ PlayerPCDeposit:
 	jp .loop
 
 PlayerPCWithdraw:
+	call ClearPlayerPCMenuMain_CHS
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wListScrollOffset], a
@@ -192,6 +217,7 @@ PlayerPCWithdraw:
 	jp .loop
 
 PlayerPCToss:
+	call ClearPlayerPCMenuMain_CHS
 	xor a
 	ld [wCurrentMenuItem], a
 	ld [wListScrollOffset], a

@@ -19,7 +19,7 @@ DisplayDiploma::
 	predef Diploma_TextBoxBorder
 
 	ld hl, DiplomaTextPointersAndCoords
-	ld c, $5
+	ld c, $6
 .placeTextLoop
 	push bc
 	ld a, [hli]
@@ -31,11 +31,23 @@ DisplayDiploma::
 	ld h, [hl]
 	ld l, a
 	call PlaceString
+ 
+	push af
+	ld a, 0
+	lb bc, 6, 15
+	hlcoord 2, 5
+	call DFSStaticize
+	pop af
+
 	pop hl
 	inc hl
 	pop bc
 	dec c
 	jr nz, .placeTextLoop
+
+
+
+	
 	hlcoord 10, 4
 	ld de, wPlayerName
 	call PlaceString
@@ -47,7 +59,11 @@ DisplayDiploma::
 	lb bc, $80, $28
 .adjustPlayerGfxLoop
 	ld a, [hl] ; X
+	IF DEF(_BLUE)
 	add 33
+	ELSE
+	add 74
+	ENDC
 	ld [hli], a
 	inc hl
 	ld a, b
@@ -68,7 +84,10 @@ DisplayDiploma::
 	ld hl, wd730
 	res 6, [hl]
 	call GBPalWhiteOutWithDelay3
+
 	call RestoreScreenTilesAndReloadTilePatterns
+	;CHS_FIX 30 Reload Map Data
+	call ReloadMapData
 	call Delay3
 	jp GBPalNormal
 
@@ -95,6 +114,7 @@ DiplomaTextPointersAndCoords:
 	diploma_text  3,  4, DiplomaPlayer
 	diploma_text 15,  4, DiplomaEmptyText
 	diploma_text  2,  6, DiplomaCongrats
+	diploma_text  2,  12, DiplomaCongrats2
 	diploma_text  9, 16, DiplomaGameFreak
 
 DiplomaText:
@@ -109,8 +129,10 @@ DiplomaEmptyText:
 DiplomaCongrats:
 	db   "Congrats! This"
 	next "diploma certifies"
-	next "that you have"
-	next "completed your"
+	next "that you have@"
+
+DiplomaCongrats2:
+	db "completed your"
 	next "#DEX.@"
 
 DiplomaGameFreak:

@@ -20,6 +20,7 @@ PlayIntro:
 	call DelayFrame
 	ret
 
+
 PlayIntroScene:
 	ld b, SET_PAL_NIDORINO_INTRO
 	call RunPaletteCommand
@@ -31,7 +32,11 @@ PlayIntroScene:
 	ldh [hSCX], a
 	ld b, TILEMAP_GENGAR_INTRO_1
 	call IntroCopyTiles
+IF DEF(_BLUE)
 	ld a, 0
+ELSE ; Nidorino is 8px further over then Jiggly Puff in the JP Red and Green
+	ld a, 8
+ENDC
 	ld [wBaseCoordX], a
 	ld a, 80
 	ld [wBaseCoordY], a
@@ -138,7 +143,16 @@ PlayIntroScene:
 	ld a, (FightIntroFrontMon3 - FightIntroFrontMon) / LEN_2BPP_TILE
 	ld [wIntroNidorinoBaseTile], a
 	ld de, IntroNidorinoAnimation7
-	jp AnimateIntroNidorino
+	; jp AnimateIntroNidorino
+
+	call AnimateIntroNidorino
+IF DEF(_BLUE) ; jp Red and Green hung on the hit for much longer before fading
+	;nothing
+ELSE ;
+	ld c, 80 ;
+	call DelayFrames ;
+ENDC ;
+	ret ;
 
 AnimateIntroNidorino:
 	ld a, [de]
@@ -327,6 +341,14 @@ PlayShootingStar:
 	push af
 	pop af
 	jr c, .next ; skip the delay if the user interrupted the animation
+	hlcoord 7, 11
+	ld c, 6
+	ld a, $67
+.loop
+    ld [hli], a
+    inc a
+    dec c
+    jr nz, .loop
 	ld c, 40
 	call DelayFrames
 .next
@@ -444,6 +466,15 @@ FightIntroBackMon:
 FightIntroBackMonEnd:
 
 IF DEF(_RED)
+FightIntroFrontMon:
+	INCBIN "gfx/intro/red_nidorino_1.2bpp"
+FightIntroFrontMon2:
+	INCBIN "gfx/intro/red_nidorino_2.2bpp"
+FightIntroFrontMon3:
+	INCBIN "gfx/intro/red_nidorino_3.2bpp"
+ENDC
+
+IF DEF(_GREEN)
 FightIntroFrontMon:
 	INCBIN "gfx/intro/red_nidorino_1.2bpp"
 FightIntroFrontMon2:

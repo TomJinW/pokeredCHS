@@ -35,7 +35,7 @@ MainMenu:
 ; there's a save file
 	hlcoord 0, 0
 	ld b, 6
-	ld c, 13
+	ld c, 9 ; ld c, 13 CHS_Fix 25 save dialog
 	call TextBoxBorder
 	hlcoord 2, 2
 	ld de, ContinueText
@@ -44,7 +44,7 @@ MainMenu:
 .noSaveFile
 	hlcoord 0, 0
 	ld b, 4
-	ld c, 13
+	ld c, 9 ; ld c, 13
 	call TextBoxBorder
 	hlcoord 2, 2
 	ld de, NewGameText
@@ -351,19 +351,19 @@ DisplayContinueGameInfo:
 	ldh [hAutoBGTransferEnabled], a
 	hlcoord 4, 7
 	ld b, 8
-	ld c, 14
+	ld c, 13 ;ld c, 14 CHS_Fix 25
 	call TextBoxBorder
 	hlcoord 5, 9
 	ld de, SaveScreenInfoText
 	call PlaceString
-	hlcoord 12, 9
+	hlcoord 11, 9 ;hlcoord 12, 9
 	ld de, wPlayerName
 	call PlaceString
-	hlcoord 17, 11
+	hlcoord 14, 11 ;hlcoord 17, 11
 	call PrintNumBadges
-	hlcoord 16, 13
+	hlcoord 13, 13 ;hlcoord 16, 13
 	call PrintNumOwnedMons
-	hlcoord 13, 15
+	hlcoord 12, 15 ;hlcoord 13, 15
 	call PrintPlayTime
 	ld a, 1
 	ldh [hAutoBGTransferEnabled], a
@@ -373,24 +373,65 @@ DisplayContinueGameInfo:
 PrintSaveScreenText:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
-	hlcoord 4, 0
+	hlcoord 5, 0 ;hlcoord 4, 0
 	ld b, $8
-	ld c, $e
+	ld c, $d ;ld c, $e
 	call TextBoxBorder
 	call LoadTextBoxTilePatterns
 	call UpdateSprites
-	hlcoord 5, 2
+	hlcoord 6, 2 ;hlcoord 5, 2
 	ld de, SaveScreenInfoText
 	call PlaceString
-	hlcoord 12, 2
+	hlcoord 11, 2;hlcoord 12, 2
 	ld de, wPlayerName
 	call PlaceString
-	hlcoord 17, 4
+	hlcoord 15, 4;hlcoord 17, 4
 	call PrintNumBadges
-	hlcoord 16, 6
+	hlcoord 14, 6;hlcoord 16, 6
 	call PrintNumOwnedMons
 	hlcoord 13, 8
 	call PrintPlayTime
+
+	ld a, $60
+	lb bc, 4, 3
+	coord hl, 6, 1
+	call DFSStaticize
+	
+	ld a, $6E
+	lb bc, 2, 3
+	coord hl, 10, 5
+	call DFSStaticize
+
+	; ld a, $6C
+	; lb bc, 1, 1
+	; coord hl, 9, 7
+	; call DFSStaticize
+
+	; ld a, $74
+	; lb bc, 1, 1
+	; coord hl, 9, 8
+	; call DFSStaticize
+
+	; ld a, $75
+	; lb bc, 2, 2
+	; coord hl, 10, 7
+	; call DFSStaticize
+
+	ld a, $6C
+	lb bc, 1, 1
+	coord hl, $C, $A
+	call DFSStaticize
+
+	ld a, $74
+	lb bc, 1, 1
+	coord hl, $C, $B
+	call DFSStaticize
+
+	ld a, $75
+	lb bc, 2, 2
+	coord hl, $D, $A
+	call DFSStaticize
+
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld c, 30
@@ -445,6 +486,9 @@ DisplayOptionMenu:
 	ld b, 3
 	ld c, 18
 	call TextBoxBorder
+	hlcoord 16, 0
+	ld de, Vertext
+	call PlaceString
 	hlcoord 1, 1
 	ld de, TextSpeedOptionText
 	call PlaceString
@@ -468,6 +512,8 @@ DisplayOptionMenu:
 	call SetCursorPositionsFromOptions
 	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
 	ld [wTopMenuItemX], a
+
+
 	ld a, $01
 	ldh [hAutoBGTransferEnabled], a ; enable auto background transfer
 	call Delay3
@@ -497,6 +543,28 @@ DisplayOptionMenu:
 	ld [wTopMenuItemX], a
 	call EraseMenuCursor
 	jp .loop
+.cursorInExit
+	bit BIT_D_LEFT, b
+	jr nz, .pressedLeftInExit
+	jr .pressedRightInExit
+	jr .dontchange
+.pressedLeftInExit
+.pressedRightInExit
+	push af
+	push bc
+	push de
+	push hl
+	ld a, [wENGNameMark]
+	xor 1
+	ld [wENGNameMark],a
+	call DisplayName
+	pop af
+	pop bc
+	pop de
+	pop hl
+.dontchange
+	jr .loop
+	
 .checkDirectionKeys
 	ld a, [wTopMenuItemY]
 	bit BIT_D_DOWN, b
@@ -508,7 +576,7 @@ DisplayOptionMenu:
 	cp 13 ; cursor in Battle Style section?
 	jr z, .cursorInBattleStyle
 	cp 16 ; cursor on Cancel?
-	jr z, .loop
+	jr z, .cursorInExit
 .cursorInTextSpeed
 	bit BIT_D_LEFT, b
 	jp nz, .pressedLeftInTextSpeed
@@ -667,6 +735,21 @@ SetCursorPositionsFromOptions:
 	hlcoord 0, 13
 	call .placeUnfilledRightArrow
 ; cursor in front of Cancel
+
+	ld a, [wENGNameMark]
+	call DisplayName
+; 	cp 0
+; 	ld a, 14
+; 	ld [wOptionsCancelCursorX], a
+; 	hlcoord 14, 16
+; 	jr nz, .ENG
+; 	hlcoord 17, 16
+; 	ld a, 17
+; 	ld [wOptionsCancelCursorX], a
+; .ENG
+; 	ld a, 0
+; 	call .placeUnfilledRightArrow
+
 	hlcoord 0, 16
 	ld a, 1
 .placeUnfilledRightArrow
@@ -676,6 +759,29 @@ SetCursorPositionsFromOptions:
 	ld [hl], "▷"
 	ret
 
+DisplayName:
+	ld hl, PMNamesPointerTable
+	sla a
+	ld b, 0
+	ld c, a
+	add hl, bc
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	hlcoord 6, 16
+	call PlaceString
+	ret 
+
+Vertext:
+	db "ver@"
+PMNamesPointerTable:
+	dw ChsText
+	dw EngText
+	
+EngText:
+	db "English@"
+ChsText:
+	db "Chinese@"
 ; table that indicates how the 3 text speed options affect frame delays
 ; Format:
 ; 00: X coordinate of menu cursor

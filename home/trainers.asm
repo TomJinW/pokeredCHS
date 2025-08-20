@@ -349,9 +349,11 @@ PrintEndBattleText::
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	push hl
+	call IncreaseDFSStack ; CHS_Fix TrainerEndBattleText Combine
 	farcall SaveTrainerName
 	ld hl, TrainerEndBattleText
 	call PrintText
+	call DecreaseDFSStack ; CHS_Fix
 	pop hl
 	pop af
 	ldh [hLoadedROMBank], a
@@ -386,13 +388,13 @@ TrainerEndBattleText::
 ; only engage with the trainer if the player is not already
 ; engaged with another trainer
 ; XXX unused?
-CheckIfAlreadyEngaged::
-	ld a, [wFlags_0xcd60]
-	bit 0, a
-	ret nz
-	call EngageMapTrainer
-	xor a
-	ret
+; CheckIfAlreadyEngaged::
+; 	ld a, [wFlags_0xcd60]
+; 	bit 0, a
+; 	ret nz
+; 	call EngageMapTrainer
+; 	xor a
+; 	ret
 
 PlayTrainerMusic::
 	ld a, [wEngagedTrainerClass]

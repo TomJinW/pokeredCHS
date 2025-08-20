@@ -26,25 +26,28 @@ UncompressMonSprite::
 	ld a, BANK(FossilKabutopsPic)
 	jr z, .GotBank
 	ld a, b
-	cp TANGELA + 1
-	ld a, BANK("Pics 1")
+	cp PINSIR + 1
+	ld a, BANK(PinsirPicFront)
 	jr c, .GotBank
 	ld a, b
-	cp MOLTRES + 1
-	ld a, BANK("Pics 2")
+	cp POLIWAG + 1
+	ld a, BANK(PoliwagPicFront)
 	jr c, .GotBank
 	ld a, b
-	cp BEEDRILL + 2
-	ld a, BANK("Pics 3")
+	cp POLIWRATH + 1
+	ld a, BANK(PoliwrathPicFront)
 	jr c, .GotBank
 	ld a, b
-	cp STARMIE + 1
-	ld a, BANK("Pics 4")
+	cp HAUNTER + 1
+	ld a, BANK(HaunterPicFront)
 	jr c, .GotBank
-	ld a, BANK("Pics 5")
+	ld a, b
+	cp SQUIRTLE + 1
+	ld a, BANK(SquirtlePicFront)
+	jr c, .GotBank
+	ld a, BANK(VictreebelPicFront)
 .GotBank
 	jp UncompressSpriteData
-
 ; de: destination location
 LoadMonFrontSprite::
 	push de

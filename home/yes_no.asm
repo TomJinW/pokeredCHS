@@ -22,16 +22,16 @@ YesNoChoicePokeCenter::
 	call SaveScreenTilesToBuffer1
 	ld a, HEAL_CANCEL_MENU
 	ld [wTwoOptionMenuID], a
-	hlcoord 11, 6
+	hlcoord 11, 7 ;hlcoord 11, 6
 	lb bc, 8, 12
 	jr DisplayYesNoChoice
 
-WideYesNoChoice:: ; unused
-	call SaveScreenTilesToBuffer1
-	ld a, WIDE_YES_NO_MENU
-	ld [wTwoOptionMenuID], a
-	hlcoord 12, 7
-	lb bc, 8, 13
+; WideYesNoChoice:: ; unused
+	; call SaveScreenTilesToBuffer1
+	; ld a, WIDE_YES_NO_MENU
+	; ld [wTwoOptionMenuID], a
+	; hlcoord 12, 7
+	; lb bc, 8, 13
 
 DisplayYesNoChoice::
 	ld a, TWO_OPTION_MENU

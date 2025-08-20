@@ -120,24 +120,29 @@ TryingToLearn:
 	push hl
 	ld hl, WhichMoveToForgetText
 	call PrintText
-	hlcoord 4, 7
-	ld b, 4
-	ld c, 14
+	; hlcoord 4, 7 ; CHS_Fix 21
+	; ld b, 4 ;
+	; ld c, 14 ;
+	hlcoord 9, 3 ;
+	lb bc, 8, 9 ;
 	call TextBoxBorder
-	hlcoord 6, 8
+	hlcoord 11, 5 ;hlcoord 6, 8 ; CHS_Fix 21
 	ld de, wMovesString
 	ldh a, [hUILayoutFlags]
-	set 2, a
+	set 4, a ; set 2, a ; CHS_Fix 21
 	ldh [hUILayoutFlags], a
 	call PlaceString
 	ldh a, [hUILayoutFlags]
-	res 2, a
+	res 4, a ; res 2, a ; CHS_Fix 21
 	ldh [hUILayoutFlags], a
 	ld hl, wTopMenuItemY
-	ld a, 8
-	ld [hli], a ; wTopMenuItemY
+	; ld a, 8
+	; ld [hli], a ; wTopMenuItemY
 	ld a, 5
 	ld [hli], a ; wTopMenuItemX
+	ld a, 10
+	ld [hli], a ; wTopMenuItemX
+
 	xor a
 	ld [hli], a ; wCurrentMenuItem
 	inc hl
@@ -147,10 +152,10 @@ TryingToLearn:
 	ld [hli], a ; wMenuWatchedKeys
 	ld [hl], 0 ; wLastMenuItem
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	set 2, [hl] ; set 1, [hl] ; CHS_Fix 21
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	res 2, [hl] ; res 1, [hl] ; CHS_Fix 21
 	push af
 	call LoadScreenTilesFromBuffer1
 	pop af

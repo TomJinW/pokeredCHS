@@ -1,4 +1,5 @@
 LoadFontTilePatterns::
+	callfar dfsClearCache ;CHS_Fix call
 	ldh a, [rLCDC]
 	bit 7, a ; is the LCD enabled?
 	jr nz, .on

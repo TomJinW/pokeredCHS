@@ -70,10 +70,11 @@ DrawBadges:
 	and a
 	ld a, [wBadgeNameTile]
 	jr nz, .SkipName
-	call .PlaceTiles
+	call .PlaceNameTiles; call .PlaceTiles
 	jr .PlaceBadge
 
 .SkipName
+	inc a
 	inc a
 	inc a
 	inc hl
@@ -111,7 +112,23 @@ DrawBadges:
 	ld [hl], a
 	inc a
 	ret
-
+	
+.PlaceNameTiles
+	cp a, $75 ; - mark
+	jr z, .PlaceDashTiles
+	ld [hli], a
+	inc a
+	ld [hli], a
+	inc a
+	ld [hld], a
+	inc a
+	ret
+.PlaceDashTiles
+	ld [hli], a
+	ld [hli], a
+	ld [hld], a
+	ret
+	
 .FaceBadgeTiles
 	db $20, $28, $30, $38, $40, $48, $50, $58
 

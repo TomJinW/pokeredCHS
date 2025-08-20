@@ -19,15 +19,21 @@ EvolveTradeMon:
 
 	ld a, [wInGameTradeReceiveMonName]
 
-	; GRAVELER
-	cp "G"
+	; HAUNTER
+	cp $08 ;鬼斯通 鬼 = $08D5
 	jr z, .ok
 
-	; "SPECTRE" (HAUNTER)
-	cp "S"
+	cp "H" ;鬼斯通 HAUNTER
+	jr z, .ok
+
+	cp "G" ;鬼斯通 HAUNTER
+	jr z, .ok
+
+	; GRAVELER
+	cp $0C ; 隆隆石 隆 = $0C39
 	ret nz
 	ld a, [wInGameTradeReceiveMonName + 1]
-	cp "P"
+	cp $39
 	ret nz
 
 .ok

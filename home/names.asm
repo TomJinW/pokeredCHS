@@ -7,7 +7,14 @@ GetMonName::
 	ld [MBC1RomBank], a
 	ld a, [wd11e]
 	dec a
+	push af
+	ld a,[wENGNameMark]
+	cp 1
 	ld hl, MonsterNames
+	jr nz, .CHS
+	ld hl, MonsterNames2
+.CHS
+	pop af
 	ld c, 10
 	ld b, 0
 	call AddNTimes
@@ -63,11 +70,11 @@ GetMachineName::
 	add NUM_HMS
 	ld [wd11e], a
 	ld hl, HiddenPrefix ; points to "HM"
-	ld bc, 2
+	ld bc, 2 ; TM Length
 	jr .WriteMachinePrefix
 .WriteTM
 	ld hl, TechnicalPrefix ; points to "TM"
-	ld bc, 2
+	ld bc, 2 ; TM Length
 .WriteMachinePrefix
 	ld de, wcd6d
 	call CopyData

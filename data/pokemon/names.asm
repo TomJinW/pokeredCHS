@@ -1,3 +1,4 @@
+INCLUDE "data/pokemon/names2.asm"
 MonsterNames::
 	table_width NAME_LENGTH - 1, MonsterNames
 	db "RHYDON@@@@"

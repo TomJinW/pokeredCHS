@@ -9,6 +9,8 @@ CableClub_DoBattleOrTrade:
 	call LoadFontTilePatterns
 	call LoadHpBarAndStatusTilePatterns
 	call LoadTrainerInfoTextBoxTiles
+	; hlcoord 3, 8
+	; ld b, 2
 	hlcoord 3, 8
 	ld b, 2
 	ld c, 12
@@ -312,7 +314,9 @@ CallCurrentTradeCenterFunction:
 TradeCenter_SelectMon:
 	call ClearScreen
 	call LoadTrainerInfoTextBoxTiles
+	; CHS_Fix draw party list
 	call TradeCenter_DrawPartyLists
+	; call TradeCenter_PushPokemonNames
 	call TradeCenter_DrawCancelBox
 	xor a
 	ld hl, wSerialSyncAndExchangeNybbleReceiveData
@@ -336,16 +340,21 @@ TradeCenter_SelectMon:
 	ld [wMenuWatchedKeys], a
 	ld a, [wEnemyPartyCount]
 	ld [wMaxMenuItem], a
-	ld a, 9
+	; CHS_Fix Fix Enemy pokemon cursor
+	; ld a, 9
+	ld a, 3
 	ld [wTopMenuItemY], a
-	ld a, 1
+	; ld a, 1
+	ld a, $0B
 	ld [wTopMenuItemX], a
 .enemyMonMenu_HandleInput
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	; set 1, [hl]
+	set 2, [hl]
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	; res 1, [hl]
+	res 2, [hl]
 	and a
 	jp z, .getNewInput
 	bit BIT_A_BUTTON, a
@@ -398,7 +407,8 @@ TradeCenter_SelectMon:
 	ld [wMenuWatchedKeys], a
 	ld a, [wPartyCount]
 	ld [wMaxMenuItem], a
-	ld a, 1
+	; ld a, 1
+	ld a, 3
 	ld [wTopMenuItemY], a
 	ld a, 1
 	ld [wTopMenuItemX], a
@@ -407,10 +417,10 @@ TradeCenter_SelectMon:
 	call ClearScreenArea
 .playerMonMenu_HandleInput
 	ld hl, hUILayoutFlags
-	set 1, [hl]
+	set 2, [hl] ;set 1, [hl]
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
-	res 1, [hl]
+	res 2, [hl] ;res 1, [hl]
 	and a ; was anything pressed?
 	jr nz, .playerMonMenu_SomethingPressed
 	jp .getNewInput
@@ -518,7 +528,9 @@ TradeCenter_SelectMon:
 	ld [wInitListType], a
 	callfar InitList ; the list isn't used
 	call TradeCenter_DisplayStats
-	call LoadScreenTilesFromBuffer1
+	
+	; call LoadScreenTilesFromBuffer1
+	; something to add
 	jp .playerMonMenu
 .choseTrade
 	call PlaceUnfilledArrowMenuCursor
@@ -551,7 +563,7 @@ TradeCenter_SelectMon:
 	ld [hl], a
 .cancelMenuItem_Loop
 	ld a, "▶" ; filled arrow cursor
-	ldcoord_a 1, 16
+	ldcoord_a 1, 16 ; ldcoord_a 1, 16
 .cancelMenuItem_JoypadLoop
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
@@ -603,8 +615,10 @@ TradeCenter_DrawCancelBox:
 	ld a, $7e
 	ld bc, 2 * SCREEN_WIDTH + 9
 	call FillMemory
-	hlcoord 0, 15
-	ld b, 1
+	hlcoord 0, 14
+	; ld b, 1
+	; ld c, 9
+	ld b, 2
 	ld c, 9
 	call CableClub_TextBoxBorder
 	hlcoord 2, 16
@@ -616,8 +630,11 @@ CancelTextString:
 
 TradeCenter_PlaceSelectedEnemyMonMenuCursor:
 	ld a, [wSerialSyncAndExchangeNybbleReceiveData]
-	hlcoord 1, 9
-	ld bc, SCREEN_WIDTH
+	; hlcoord 1, 9
+	hlcoord $B, 3
+	; ld bc, SCREEN_WIDTH
+	ld bc, SCREEN_WIDTH * 2
+
 	call AddNTimes
 	ld [hl], "▷" ; cursor
 	ret
@@ -632,25 +649,52 @@ TradeCenter_DisplayStats:
 	call TradeCenter_DrawPartyLists
 	jp TradeCenter_DrawCancelBox
 
+TradeCenter_PushPokemonNames:
+	; CHS_Fix Push player pokemon names
+	ld a, 0
+	lb bc, 12, 5
+	hlcoord 3, 2
+	call DFSStaticize
+	ret
+
+TradeCenter_PushPokemonNames2:
+	ld a, $3E
+	lb bc, 8, 6
+	hlcoord $C, 2
+	call DFSStaticize
+	ret
+
 TradeCenter_DrawPartyLists:
-	hlcoord 0, 0
-	ld b, 6
-	ld c, 18
+	; CHS_Fix draw_party list
+	; hlcoord 0, 0
+	; ld b, 6
+	; ld c, 18
+	hlcoord 0, 1
+	ld b, 12
+	ld c, 8
 	call CableClub_TextBoxBorder
-	hlcoord 0, 8
-	ld b, 6
-	ld c, 18
+	; hlcoord 0, 8
+	; ld b, 6
+	; ld c, 18
+	hlcoord $0A, 1
+	ld b, 12
+	ld c, 8
 	call CableClub_TextBoxBorder
-	hlcoord 5, 0
+	; hlcoord 5, 0
+	hlcoord 2, 1
 	ld de, wPlayerName
 	call PlaceString
-	hlcoord 5, 8
+	; hlcoord 5, 8
+	hlcoord $0C, 1
 	ld de, wLinkEnemyTrainerName
 	call PlaceString
-	hlcoord 2, 1
+	; hlcoord 2, 1
+	hlcoord 2, 3
 	ld de, wPartySpecies
 	call TradeCenter_PrintPartyListNames
-	hlcoord 2, 9
+	; hlcoord 2, 9
+	call TradeCenter_PushPokemonNames
+	hlcoord $0C, 3
 	ld de, wEnemyPartySpecies
 	; fall through
 
@@ -673,21 +717,45 @@ TradeCenter_PrintPartyListNames:
 	pop de
 	inc de
 	pop hl
-	ld bc, 20
+	ld bc, 40
 	add hl, bc
 	pop bc
 	inc c
+	push bc
+	push hl
+	push de
+	ld a, c
+	cp 4
+	jr nz, .skip
+	call TradeCenter_PushPokemonNames2
+.skip
+	pop de
+	pop hl
+	pop bc
 	jr .loop
 
 TradeCenter_Trade:
 	ld c, 100
 	call DelayFrames
+	
+	; something to do
+	; push af
+	; coord hl, 2, $C
+	; ld b, 2
+	; ld c, 6
+	; call ClearScreenArea
+	; coord hl, $C, $C
+	; ld b, 2
+	; ld c, 6
+	; call ClearScreenArea
+	; pop af
+	
 	xor a
 	ld [wSerialExchangeNybbleSendData + 1], a ; unnecessary
 	ld [wSerialExchangeNybbleReceiveData], a
 	ld [wMenuWatchMovingOutOfBounds], a
 	ld [wMenuJoypadPollCount], a
-	hlcoord 0, 12
+	hlcoord 0, 12 ;hlcoord 0, 12
 	ld b, 4
 	ld c, 18
 	call CableClub_TextBoxBorder
@@ -710,10 +778,12 @@ TradeCenter_Trade:
 	add hl, bc
 	ld a, [hl]
 	ld [wd11e], a
+	call IncreaseDFSStack ;CHS_Fix Combine string
 	call GetMonName
 	ld hl, WillBeTradedText
 	bccoord 1, 14
 	call TextCommandProcessor
+	call DecreaseDFSStack ;
 	call SaveScreenTilesToBuffer1
 	hlcoord 10, 7
 	lb bc, 8, 11
@@ -869,6 +939,16 @@ TradeCenter_Trade:
 	ld [wTradeCenterPointerTableIndex], a
 	jp CableClub_DoBattleOrTradeAgain
 .tradeCancelled
+	; something to do 2
+	; coord hl, $C, 8
+	; ld b, 4
+	; ld c, 6
+	; call ClearScreenArea
+	; coord hl, 2, 8
+	; ld b, 4
+	; ld c, 6
+	; call ClearScreenArea
+
 	ld c, 100
 	call DelayFrames
 	xor a ; TradeCenter_SelectMon

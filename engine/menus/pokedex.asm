@@ -185,18 +185,70 @@ HandlePokedexListMenu:
 	hlcoord 16, 6
 	lb bc, 1, 3
 	call PrintNumber ; print number of owned pokemon
+
 	hlcoord 16, 2
 	ld de, PokedexSeenText
 	call PlaceString
+	ld a, $31
+	lb bc, 2, 3
+	coord hl, 16, 1
+	call DFSStaticize
+
 	hlcoord 16, 5
 	ld de, PokedexOwnText
 	call PlaceString
+	ld a, $37
+	lb bc, 2, 3
+	coord hl, 16, 4
+	call DFSStaticize
+
 	hlcoord 1, 1
 	ld de, PokedexContentsText
 	call PlaceString
+	ld a, $3D
+	lb bc, 2, 3
+	coord hl, 1, 0
+	call DFSStaticize
+
 	hlcoord 16, 10
-	ld de, PokedexMenuItemsText
+	ld de, PokedexMenuItemsText1
 	call PlaceString
+	ld a, $43
+	lb bc, 2, 3
+	coord hl, 16, 9
+	call DFSStaticize
+
+	hlcoord 16, 12
+	ld de, PokedexMenuItemsText2
+	call PlaceString
+	ld a, $49
+	lb bc, 2, 3
+	coord hl, 16, 11
+	call DFSStaticize
+
+	hlcoord 16, 14
+	ld de, PokedexMenuItemsText3
+	call PlaceString
+	ld a, $4F
+	lb bc, 2, 3
+	coord hl, 16, 13
+	call DFSStaticize
+
+	hlcoord 16, 16
+	ld de, PokedexMenuItemsText4
+	call PlaceString
+	ld a, $55
+	lb bc, 2, 3
+	coord hl, 16, 15
+	call DFSStaticize
+
+	; ld a, $31
+	; lb bc, 10, 3
+	; coord hl, 16, 7
+	; call DFSStaticize
+	; lb bc, 5, 3
+	; coord hl, 15, 0
+	; call DFSStaticize
 ; find the highest pokedex number among the pokemon the player has seen
 	ld hl, wPokedexSeenEnd - 1
 	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
@@ -260,9 +312,16 @@ HandlePokedexListMenu:
 	ld hl, wPokedexSeen
 	call IsPokemonBitSet
 	jr nz, .getPokemonName ; if the player has seen the pokemon
+	ld a, [wENGNameMark]
+	cp 1
 	ld de, .dashedLine ; print a dashed line in place of the name if the player hasn't seen the pokemon
+	jr nz, .CHS
+	ld de, .dashedLineENG ; print a dashed line in place of the name if the player hasn't seen the pokemon
+.CHS
 	jr .skipGettingName
 .dashedLine ; for unseen pokemon in the list
+	db "--@"
+.dashedLineENG ; for unseen pokemon in the list
 	db "----------@"
 .getPokemonName
 	call PokedexToIndex
@@ -368,11 +427,14 @@ PokedexOwnText:
 PokedexContentsText:
 	db "CONTENTS@"
 
-PokedexMenuItemsText:
-	db   "DATA"
-	next "CRY"
-	next "AREA"
-	next "QUIT@"
+PokedexMenuItemsText1:
+	db "DATA@"
+PokedexMenuItemsText2:
+	db "CRY@"
+PokedexMenuItemsText3:
+	db "AREA@"
+PokedexMenuItemsText4:
+	db "QUIT@"
 
 ; tests if a pokemon's bit is set in the seen or owned pokemon bit fields
 ; INPUT:
@@ -454,6 +516,28 @@ ShowPokedexDataInternal:
 	hlcoord 9, 2
 	call PlaceString
 
+	;CHS_Fix 26 Pokedex
+	ld a, $31
+	lb bc, 8, 3 ;
+	coord hl, 9, 1 ;
+	call DFSStaticize ;
+
+	; ld a, $43
+	; lb bc, 2, 2 ;
+	; coord hl, 17, 7 ;
+	; call DFSStaticize ;
+
+	ld a, $7D
+	lb bc, 1, 2 ;
+	coord hl, $C + $5, 2 ;
+	call DFSStaticize ;
+
+	ld a, $51
+	lb bc, 2, 5 ;
+	coord hl, $C, 1 ;
+	call DFSStaticize ;
+
+
 	ld hl, PokedexEntryPointers
 	ld a, [wd11e]
 	dec a
@@ -468,6 +552,31 @@ ShowPokedexDataInternal:
 	hlcoord 9, 4
 	call PlaceString ; print species name
 
+	push af
+	push bc
+	push de
+	push hl
+
+	ld a, $43
+	lb bc, 2, 5 ;
+	coord hl, $C, 3 ;
+	call DFSStaticize ;
+	
+	ld a, $57
+	lb bc, 2, 3 ;
+	coord hl, 9, 3 ;
+	call DFSStaticize ;
+
+	ld a, $5D
+	lb bc, 2, 1 ;
+	coord hl, $11, 3 ;
+	call DFSStaticize ;
+
+	pop hl
+	pop de
+	pop bc
+	pop af
+	
 	ld h, b
 	ld l, c
 	push de
@@ -491,41 +600,22 @@ ShowPokedexDataInternal:
 	ld a, [wcf91]
 	ld [wd0b5], a
 	pop de
-
-	push af
-	push bc
-	push de
-	push hl
-
-	call Delay3
-	call GBPalNormal
-	call GetMonHeader ; load pokemon picture location
-	hlcoord 1, 1
-	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
-	ld a, [wcf91]
-	call PlayCry ; play pokemon cry
-
-	pop hl
-	pop de
-	pop bc
-	pop af
-
 	ld a, c
 	and a
 	jp z, .waitForButtonPress ; if the pokemon has not been owned, don't print the height, weight, or description
 	inc de ; de = address of feet (height)
 	ld a, [de] ; reads feet, but a is overwritten without being used
-	hlcoord 12, 6
+	hlcoord 13, 6 ;hlcoord 12, 6
 	lb bc, 1, 2
 	call PrintNumber ; print feet (height)
-	ld a, "′"
+	ld a, $F2; ld a, "′"
 	ld [hl], a
 	inc de
 	inc de ; de = address of inches (height)
-	hlcoord 15, 6
-	lb bc, LEADING_ZEROES | 1, 2
+	hlcoord 10, 6 ;hlcoord 15, 6
+	lb bc,   1, 1 ;lb bc, LEADING_ZEROES | 1, 2
 	call PrintNumber ; print inches (height)
-	ld a, "″"
+	ld a, $60; ld a, "″"
 	ld [hl], a
 ; now print the weight (note that weight is stored in tenths of pounds internally)
 	inc de
@@ -571,11 +661,30 @@ ShowPokedexDataInternal:
 	call TextCommandProcessor ; print pokedex description text
 	xor a
 	ldh [hClearLetterPrintingDelayFlags], a
+
+	; push af
+	; push bc
+	; push de
+	; push hl
 .waitForButtonPress
+	call Delay3
+	call GBPalNormal
+	call GetMonHeader ; load pokemon picture location
+	hlcoord 1, 1
+	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
+	ld a, [wcf91]
+	call PlayCry ; play pokemon cry
+
+	; pop hl
+	; pop de
+	; pop bc
+	; pop af
+
+.waitForButtonPress2
 	call JoypadLowSensitivity
 	ldh a, [hJoy5]
 	and A_BUTTON | B_BUTTON
-	jr z, .waitForButtonPress
+	jr z, .waitForButtonPress2
 	pop af
 	ldh [hTileAnimations], a
 	call GBPalWhiteOut

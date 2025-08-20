@@ -25,7 +25,7 @@ VendingMachineMenu::
 	hlcoord 2, 5
 	ld de, DrinkText
 	call PlaceString
-	hlcoord 9, 6
+	hlcoord 9, 5 ;hlcoord 9, 6 CHS_Fix 31 soda price place
 	ld de, DrinkPriceText
 	call PlaceString
 	ld hl, wd730

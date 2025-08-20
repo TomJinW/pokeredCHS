@@ -24,11 +24,16 @@ PrintType:
 	jr PrintType_
 
 ; erase "TYPE2/" if the mon only has 1 type
-EraseType2Text:
+EraseType2Text: ;CHS_Fix 15
 	ld a, " "
-	ld bc, $13
+	ld bc, SCREEN_WIDTH - 5 ; ld bc, $13
 	add hl, bc
-	ld bc, $6
+	ld bc, $3; ld bc, $6
+	call FillMemory
+	ld a, " "
+	ld bc, SCREEN_WIDTH - 3
+	add hl, bc
+	ld bc, $5
 	jp FillMemory
 
 PrintMoveType:
