@@ -2135,12 +2135,12 @@ DisplayBattleMenu::
 	ld c, 80
 	call DelayFrames
 	ld [hl], " "
-	hlcoord 9, 16
+	hlcoord 15, 14 ; CHS_FIX JP Fixing catching tutorial
 	ld [hl], "▶"
 	ld c, 50
 	call DelayFrames
 	ld [hl], "▷"
-	ld a, $2 ; select the "ITEM" menu
+	ld a, $1 ; select the "ITEM" menu
 	jp .upperLeftMenuItemWasNotSelected
 .oldManName
 	db "OLD MAN@"
@@ -2161,10 +2161,10 @@ DisplayBattleMenu::
 	jr z, .safariLeftColumn
 ; put cursor in left column for normal battle menu (i.e. when it's not a Safari battle)
 	; CHS_Fix 04
-	; ldcoord_a 15, 14
-	; ldcoord_a 15, 16
-	ldcoord_a 13, 14 ; clear upper cursor position in right column
-	ldcoord_a 13, 16 ; clear lower cursor position in right column
+	ldcoord_a 15, 14
+	ldcoord_a 15, 16
+	; ldcoord_a 13, 14 ; clear upper cursor position in right column
+	; ldcoord_a 13, 16 ; clear lower cursor position in right column
 	ld b, $9 ; top menu item X
 	jr .leftColumn_WaitForInput
 .safariLeftColumn
@@ -2199,8 +2199,8 @@ DisplayBattleMenu::
 ; put cursor in right column for normal battle menu (i.e. when it's not a Safari battle)
 	ldcoord_a 9, 14 ; clear upper cursor position in left column
 	ldcoord_a 9, 16 ; clear lower cursor position in left column
-	; ld b, $f ; top menu item X CHS_Fix 05
-	ld b, $d ; top menu item X
+	ld b, $f ; top menu item X CHS_Fix 05
+	;dld b, $d ; top menu item X
 	jr .rightColumn_WaitForInput
 .safariRightColumn
 	ldcoord_a 1, 14 ; clear upper cursor position in left column
@@ -2266,7 +2266,7 @@ DisplayBattleMenu::
 	jr UseBagItem
 
 .upperLeftMenuItemWasNotSelected ; a menu item other than the upper left item was selected
-	cp $2
+	cp $1
 	jp nz, PartyMenuOrRockOrRun
 
 ; either the bag (normal battle) or bait (safari battle) was selected
@@ -2286,7 +2286,7 @@ DisplayBattleMenu::
 	jr nz, BagWasSelected
 
 ; bait was selected
-	ld a, SAFARI_BAIT
+	ld a, SAFARI_ROCK
 	ld [wcf91], a
 	jr UseBagItem
 
@@ -2410,7 +2410,8 @@ ItemsCantBeUsedHereText:
 	text_end
 
 PartyMenuOrRockOrRun:
-	dec a ; was Run selected?
+	; dec a ; was Run selected?
+	cp 2;
 	jp nz, BattleMenu_RunWasSelected
 ; party menu or rock was selected
 	call SaveScreenTilesToBuffer2
@@ -2418,7 +2419,7 @@ PartyMenuOrRockOrRun:
 	cp BATTLE_TYPE_SAFARI
 	jr nz, .partyMenuWasSelected
 ; safari battle
-	ld a, SAFARI_ROCK
+	ld a, SAFARI_BAIT
 	ld [wcf91], a
 	jp UseBagItem
 .partyMenuWasSelected
@@ -3232,7 +3233,7 @@ LinkBattleExchangeData:
 	jr z, .syncLoop1
 	vc_hook Wireless_end_exchange
 	vc_patch Wireless_net_delay_1
-IF DEF(_RED_VC) || DEF(_BLUE_VC)
+IF DEF(_RED_VC) || DEF(_BLUE_VC) || DEF(_GREEN_VC)
 	ld b, 26
 ELSE
 	ld b, 10
@@ -3245,7 +3246,7 @@ ENDC
 	jr nz, .syncLoop2
 	vc_hook Wireless_start_send_zero_bytes
 	vc_patch Wireless_net_delay_2
-IF DEF(_RED_VC) || DEF(_BLUE_VC)
+IF DEF(_RED_VC) || DEF(_BLUE_VC) || DEF(_GREEN_VC)
 	ld b, 26
 ELSE
 	ld b, 10
@@ -6879,7 +6880,7 @@ BattleRandom:
 	pop hl
 	vc_hook Unknown_BattleRandom_ret_c
 	vc_patch BattleRandom_ret
-IF DEF(_RED_VC) || DEF(_BLUE_VC)
+IF DEF(_RED_VC) || DEF(_BLUE_VC) || DEF(_GREEN_VC)
 	ret
 ELSE
 	ret c

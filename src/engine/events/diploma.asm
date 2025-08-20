@@ -59,7 +59,11 @@ DisplayDiploma::
 	lb bc, $80, $28
 .adjustPlayerGfxLoop
 	ld a, [hl] ; X
+	IF DEF(_BLUE)
 	add 33
+	ELSE
+	add 74
+	ENDC
 	ld [hli], a
 	inc hl
 	ld a, b

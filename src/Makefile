@@ -1,16 +1,21 @@
 roms := \
 	red \
+	green\
 	blue \
 	red_debug \
+	green_debug \
 	blue_debug \
 	red_vc \
-	blue_vc
+	green_vc \
+	blue_vc 
 
 patches := \
 	pokered.patch \
+	pokeblue.patch \
 	pokeblue_debug.gbc \
 	pokered_debug.gbc \
-	pokeblue.patch
+	pokegreen_debug.gbc \
+	pokegreen.patch
 
 rom_obj := \
 	audio.o \
@@ -25,10 +30,13 @@ rom_obj := \
 
 pokered_obj        := $(rom_obj:.o=_red.o)
 pokeblue_obj       := $(rom_obj:.o=_blue.o)
+pokegreen_obj      := $(rom_obj:.o=_green.o)
 pokeblue_debug_obj := $(rom_obj:.o=_blue_debug.o)
 pokered_debug_obj := $(rom_obj:.o=_red_debug.o)
+pokegreen_debug_obj := $(rom_obj:.o=_green_debug.o)
 pokered_vc_obj     := $(rom_obj:.o=_red_vc.o)
 pokeblue_vc_obj    := $(rom_obj:.o=_blue_vc.o)
+pokegreen_vc_obj    := $(rom_obj:.o=_green_vc.o)
 
 
 ### Build tools
@@ -52,15 +60,18 @@ RGBLINK ?= $(RGBDS)rgblink
 .SECONDEXPANSION:
 .PRECIOUS:
 .SECONDARY:
-.PHONY: all red blue blue_debug red_debug clean tidy compare tools
+.PHONY: all red blue green blue_debug red_debug green_debug clean tidy compare tools
 
 all: $(roms)
 red:        pokered.gbc
 blue:       pokeblue.gbc
+green:      pokegreen.gbc
 red_debug: pokered_debug.gbc
 blue_debug: pokeblue_debug.gbc
+green_debug: pokegreen_debug.gbc
 red_vc:     pokered.patch
 blue_vc:    pokeblue.patch
+green_vc:   pokegreen.patch
 
 clean: tidy
 	find gfx \
@@ -80,10 +91,13 @@ tidy:
 	      $(patches:%.patch=vc/%.constants.sym) \
 	      $(pokered_obj) \
 	      $(pokeblue_obj) \
+	      $(pokegreen_obj) \
 	      $(pokered_vc_obj) \
 	      $(pokeblue_vc_obj) \
+	      $(pokegreen_vc_obj) \
 	      $(pokeblue_debug_obj) \
 		  $(pokered_debug_obj) \
+		  $(pokegreen_debug_obj) \
 	      rgbdscheck.o
 	$(MAKE) clean -C tools/
 
@@ -102,10 +116,13 @@ endif
 
 $(pokered_obj):        RGBASMFLAGS += -D _RED $(CHAR_FLAGS)
 $(pokeblue_obj):       RGBASMFLAGS += -D _BLUE $(CHAR_FLAGS)
+$(pokegreen_obj):       RGBASMFLAGS += -D _GREEN $(CHAR_FLAGS)
 $(pokeblue_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG $(CHAR_FLAGS)
 $(pokered_debug_obj): RGBASMFLAGS += -D _RED -D _DEBUG $(CHAR_FLAGS)
+$(pokegreen_debug_obj): RGBASMFLAGS += -D _GREEN -D _DEBUG $(CHAR_FLAGS)
 $(pokered_vc_obj):     RGBASMFLAGS += -D _RED -D _RED_VC $(CHAR_FLAGS)
 $(pokeblue_vc_obj):    RGBASMFLAGS += -D _BLUE -D _BLUE_VC $(CHAR_FLAGS)
+$(pokegreen_vc_obj):    RGBASMFLAGS += -D _GREEN -D _GREEN_VC $(CHAR_FLAGS)
 
 %.patch: vc/%.constants.sym %_vc.gbc %.gbc vc/%.patch.template
 	tools/make_patch $*_vc.sym $^ $@
@@ -131,10 +148,13 @@ endef
 # Dependencies for objects (drop _red and _blue from asm file basenames)
 $(foreach obj, $(pokered_obj), $(eval $(call DEP,$(obj),$(obj:_red.o=.asm))))
 $(foreach obj, $(pokeblue_obj), $(eval $(call DEP,$(obj),$(obj:_blue.o=.asm))))
+$(foreach obj, $(pokegreen_obj), $(eval $(call DEP,$(obj),$(obj:_green.o=.asm))))
 $(foreach obj, $(pokeblue_debug_obj), $(eval $(call DEP,$(obj),$(obj:_blue_debug.o=.asm))))
 $(foreach obj, $(pokered_debug_obj), $(eval $(call DEP,$(obj),$(obj:_red_debug.o=.asm))))
+$(foreach obj, $(pokegreen_debug_obj), $(eval $(call DEP,$(obj),$(obj:_green_debug.o=.asm))))
 $(foreach obj, $(pokered_vc_obj), $(eval $(call DEP,$(obj),$(obj:_red_vc.o=.asm))))
 $(foreach obj, $(pokeblue_vc_obj), $(eval $(call DEP,$(obj),$(obj:_blue_vc.o=.asm))))
+$(foreach obj, $(pokegreen_vc_obj), $(eval $(call DEP,$(obj),$(obj:_green_vc.o=.asm))))
 
 # Dependencies for VC files that need to run scan_includes
 %.constants.sym: %.constants.asm $(shell tools/scan_includes %.constants.asm) $(preinclude_deps) | rgbdscheck.o
@@ -148,17 +168,23 @@ endif
 
 pokered_pad        = 0x00
 pokeblue_pad       = 0x00
+pokegreen_pad      = 0x00
 pokered_vc_pad     = 0x00
 pokeblue_vc_pad    = 0x00
+pokegreen_vc_pad   = 0x00
 pokeblue_debug_pad = 0xff
 pokered_debug_pad = 0xff
+pokegreen_debug_pad = 0xff
 
 pokered_opt        = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON RED"
 pokeblue_opt       = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
+pokegreen_opt       = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON GREEN"
 pokeblue_debug_opt = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
 pokered_debug_opt = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON RED"
+pokegreen_debug_opt = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON GREEN"
 pokered_vc_opt     = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON RED"
 pokeblue_vc_opt    = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
+pokegreen_vc_opt    = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON GREEN"
 
 %.gbc: $$(%_obj) layout.link
 	$(RGBLINK) -p $($*_pad) -d -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
@@ -183,6 +209,7 @@ gfx/credits/the_end.2bpp: tools/gfx += --interleave --png=$<
 
 gfx/slots/red_slots_1.2bpp: tools/gfx += --trim-whitespace
 gfx/slots/blue_slots_1.2bpp: tools/gfx += --trim-whitespace
+gfx/slots/green_slots_1.2bpp: tools/gfx += --trim-whitespace
 
 gfx/tilesets/%.2bpp: tools/gfx += --trim-whitespace
 gfx/tilesets/reds_house.2bpp: tools/gfx += --preserve=0x48

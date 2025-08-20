@@ -395,6 +395,9 @@ SlotMachineTiles2:
 IF DEF(_RED)
 	INCBIN "gfx/slots/red_slots_2.2bpp"
 ENDC
+IF DEF(_GREEN)
+	INCBIN "gfx/slots/green_slots_2.2bpp"
+ENDC
 IF DEF(_BLUE)
 	INCBIN "gfx/slots/blue_slots_2.2bpp"
 ENDC
@@ -795,15 +798,26 @@ DoRockSlideSpecialEffects:
 
 FlashScreenEveryEightFrameBlocks:
 	ld a, [wSubAnimCounter]
-	and 7 ; is the subanimation counter exactly 8?
-	call z, AnimationFlashScreen ; if so, flash the screen
+
+	; international version
+	and 7 ; international ; is the subanimation counter exactly 8?
+	call z, AnimationFlashScreen ; international ; if so, flash the screen
+
+	; japanese version
+	; srl a ;
+	; call c, AnimationFlashScreen ;
+
 	ret
 
 ; flashes the screen if the subanimation counter is divisible by 4
 FlashScreenEveryFourFrameBlocks:
-	ld a, [wSubAnimCounter]
-	and 3
-	call z, AnimationFlashScreen
+
+	ld a, [wSubAnimCounter] ; international version
+	and 3 ; international version
+	call z, AnimationFlashScreen ; international version
+
+	; japanese version
+	; jp AnimationFlashScreen ;
 	ret
 
 ; used for Explosion and Selfdestruct

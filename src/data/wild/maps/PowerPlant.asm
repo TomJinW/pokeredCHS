@@ -11,8 +11,8 @@ PowerPlantWildMons:
 IF DEF(_RED)
 	db 33, ELECTABUZZ
 	db 36, ELECTABUZZ
-ENDC
-IF DEF(_BLUE)
+ELSE
+
 	db 33, RAICHU
 	db 36, RAICHU
 ENDC

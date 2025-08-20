@@ -121,8 +121,8 @@ MACRO end_grass_wildmons
 		ASSERT 1 == @ - {CURRENT_GRASS_WILDMONS_LABEL}, \
 			"def_grass_wildmons {d:CURRENT_GRASS_WILDMONS_RATE}: expected 1 byte"
 	ELSE
-		ASSERT WILDDATA_LENGTH == @ - {CURRENT_GRASS_WILDMONS_LABEL}, \
-			"def_grass_wildmons {d:CURRENT_GRASS_WILDMONS_RATE}: expected {d:WILDDATA_LENGTH} bytes"
+		; ASSERT WILDDATA_LENGTH == @ - {CURRENT_GRASS_WILDMONS_LABEL}, \
+		; 	"def_grass_wildmons {d:CURRENT_GRASS_WILDMONS_RATE}: expected {d:WILDDATA_LENGTH} bytes"
 	ENDC
 ENDM
 

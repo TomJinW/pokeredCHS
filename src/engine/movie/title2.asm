@@ -14,7 +14,12 @@ TitleScroll_Out:
 ; Scroll a TitleMon out to the left.
 ; hi: speed
 ; lo: duration
+IF DEF(_BLUE)
 	db $12, $22, $32, $42, $52, $62, $83, $93, 0
+ELSE
+	db $12, $22, $32, $42, $52, $62, $83, $93, $a3, 0;
+	;added a3 at the end for a bit more scrolling
+ENDC
 
 TitleScroll:
 	ld a, d
@@ -85,7 +90,11 @@ _TitleScroll:
 TitleBallYTable:
 ; OBJ y-positions for the Poke Ball held by Red in the title screen.
 ; This is really two 0-terminated lists. Initiated with an index of 1.
+IF DEF(_BLUE)
 	db 0, $71, $6f, $6e, $6d, $6c, $6d, $6e, $6f, $71, $74, 0
+ELSE
+	db 0, $70, 0
+ENDC
 
 TitleScreenAnimateBallIfStarterOut:
 ; Animate the TitleBall if a starter just got scrolled out.
