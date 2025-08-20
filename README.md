@@ -1,4 +1,4 @@
-# 宝可梦 Gen 1 红/蓝&绿 汉化版 v1.1
+# 宝可梦 Gen 1 红/蓝&绿 汉化版
 
 
 [pret/pokered 原始 README.md](README.O.md)
@@ -19,6 +19,15 @@
 - 在 Github 上面的 Release 板块下面下载补丁并解压，其中 .ips 是ROM补丁，用于把原版游戏变成汉化版。而 .patch 是 3DS Virtual Console 修正补丁，用于在 3DS 上启用无线联机等功能。
 - 前往 [https://www.marcrobledo.com/RomPatcher.js/](https://www.marcrobledo.com/RomPatcher.js/) 在网页上打补丁。
 - 或者使用第三方工具比如 MultiPatch 等对 ROM 使用 ips 补丁。
+
+## 2025.08.19 v1.2.0 版修正内容
+
+- 【宝可梦 红·蓝】【精灵宝可梦 红·绿·蓝】：
+	1. 修复当发现但未捕获宝可梦时，图鉴中m（米）单位无法正确显示的问题。
+	2. 人工干预 MissingNo 数据使其不会因为汉化的原因导致死机，接近原英文版表现。（由于 MissingNo 的特殊性，图像等内容并未完全还原英文版，请谨慎使用与之相关的 Bug）
+	3. 调整个别名词翻译和术语。
+	4. 修复官方部分错误翻译。
+	5. 游戏设置内的版本号改为v120。
 
 ## 2023.10.01 v1.1 版修正内容
 
@@ -159,8 +168,8 @@
 	| Title ID <br> Product Code | 红 | 蓝 | 黄 | 绿 |
 	|:---:|:----:|:----:|:----:|:----:|
 	|英语版|0004000000171000<br>CTR-P-RCQA|0004000000171100<br>CTR-P-RCRA|0004000000171200<br>CTR-P-QBFA|N/A|
-	|法语版|0004000000171300<br>CTR-P-RCSA|0004000000171400<br>CTR-P-RCTA|0004000000171500<br>CTR-P-QBGA|N/A|
-	|德语版|0004000000171600<br>CTR-P-RCUA|0004000000171700<br>CTR-P-RCVA|0004000000171800<br>CTR-P-QBHA|N/A|
+	|德语版|0004000000171300<br>CTR-P-RCSA|0004000000171400<br>CTR-P-RCTA|0004000000171500<br>CTR-P-QBGA|N/A|
+	|法语版|0004000000171600<br>CTR-P-RCUA|0004000000171700<br>CTR-P-RCVA|0004000000171800<br>CTR-P-QBHA|N/A|
 	|西语版|0004000000171900<br>CTR-P-RCWA|0004000000171A00<br>CTR-P-RCXA|0004000000171B00<br>CTR-P-QBJA|N/A|
 	|意语版|0004000000171C00<br>CTR-P-RCYA|0004000000171D00<br>CTR-P-RCZA|0004000000171E00<br>CTR-P-QBKA|N/A|
 	- 不推荐使用日文版 VC 为底，使用日文版 VC，将无法支持「宝可梦虚拟传送」，无法和其他国际版 3DS Virtual Console 进行无线联机。
