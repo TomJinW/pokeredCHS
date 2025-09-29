@@ -52,9 +52,12 @@ EndNPCMovementScript::
 
 DebugPressedOrHeldB::
 IF DEF(_DEBUG)
-	ld a, [wd732]
-	bit 1, a
-	ret z
+	; ld a, [wd732]
+	; bit 1, a
+	; ret z
+	ld hl, wd732
+	set 1, [hl]
+	nop
 	ldh a, [hJoyHeld]
 	bit BIT_B_BUTTON, a
 	ret nz
