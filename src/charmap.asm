@@ -7546,7 +7546,7 @@ ENDC
 	; needed for ShowPokedexDataInternal (see engine/menus/pokedex.asm)
 	; charmap "′",         $60 ; gfx/pokedex/pokedex.png
 	; charmap "″",         $61 ; gfx/pokedex/pokedex.png
-	charmap "ï", 		 $60
+	charmap "ï", 		 $61
 	; needed for StatusScreen (see engine/pokemon/status_screen.asm)
 	charmap "<BOLD_P>",  $72 ; gfx/font/P.1bpp
 

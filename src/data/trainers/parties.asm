@@ -287,6 +287,21 @@ BikerData:
 	db 28, GRIMER, GRIMER, KOFFING, 0
 	db 29, KOFFING, MUK, 0
 
+SECTION "MissingNoData", ROMX
+MissingNoData:
+	db 0
+	db 33, MUK, 0
+	db 29, VOLTORB, VOLTORB, 0
+	db 29, WEEZING, MUK
+	; db $00, $19 ; The Front Sprite Offset
+	; db $37, $8F, ; The Back Sprite Offset
+	db LOW(MissingNoSprite), HIGH(MissingNoSprite)
+	db LOW(MissingNoSprite), HIGH(MissingNoSprite)
+	db KOFFING, KOFFING, WEEZING, 0
+; Route 14
+	db 26, KOFFING, KOFFING, GRIMER, KOFFING, 0
+	db 28, GRIMER, GRIMER
+	
 BurglarData:
 ; Unused
 	db 29, GROWLITHE, VULPIX, 0
