@@ -20,7 +20,7 @@
 - 前往 [https://www.marcrobledo.com/RomPatcher.js/](https://www.marcrobledo.com/RomPatcher.js/) 在网页上打补丁。
 - 或者使用第三方工具比如 MultiPatch 等对 ROM 使用 ips 补丁。
 
-## 2025.08.19 v1.2.0 版修正内容
+## 2025.10.01 v1.2.0 版修正内容
 
 - 【宝可梦 红·蓝】【精灵宝可梦 红·绿·蓝】：
 	1. 修复当发现但未捕获宝可梦时，图鉴中m（米）单位无法正确显示的问题。
