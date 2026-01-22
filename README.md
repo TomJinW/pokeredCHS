@@ -3,6 +3,8 @@
 
 [pret/pokered 原始 README.md](README.O.md)
 
+![avatar](image.jpg)
+
 ## 总结
 
 - 忙完了韩版金银汉化版之后，总算是找到了更多人，大家一起填宝可梦汉化的最后几个坑～
