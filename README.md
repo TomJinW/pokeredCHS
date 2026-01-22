@@ -3,7 +3,7 @@
 
 [pret/pokered 原始 README.md](README.O.md)
 
-![avatar](image.jpg)
+![avatar](image.png)
 
 ## 总结
 
