@@ -1617,7 +1617,7 @@ _AnimationSquishMonPic:
 	call AnimCopyRowRight
 	inc hl
 .next
-	ld [hl], " "
+	ld [hl], CHARVAL(" ")
 	pop hl
 	ld de, SCREEN_WIDTH
 	add hl, de
@@ -1853,7 +1853,7 @@ _AnimationSlideMonOff:
 ; plus one instead.
 	cp $62; cp $61 ;PKMNRB_Fix 01
 	ret c
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ret
 
 .EnemyNextTile
@@ -1863,7 +1863,7 @@ _AnimationSlideMonOff:
 ; the lower right tile is in the first column to slide off the screen.
 	cp $31 ; cp $30 ;PKMNRB_Fix 01
 	ret c
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ret
 
 AnimationSlideMonHalfOff:

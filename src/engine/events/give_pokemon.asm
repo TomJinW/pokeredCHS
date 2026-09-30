@@ -24,15 +24,15 @@ _GivePokemon::
 	cp 9
 	jr c, .singleDigitBoxNum
 	sub 9
-	ld [hl], "1"
+	ld [hl], CHARVAL("1")
 	inc hl
-	add "0"
+	add CHARVAL("0")
 	jr .next
 .singleDigitBoxNum
-	add "1"
+	add CHARVAL("1")
 .next
 	ld [hli], a
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	ld hl, SentToBoxText
 	call PrintText
 	scf

@@ -185,7 +185,7 @@ FillFourRowsWithBlack:
 FillMiddleOfScreenWithWhite:
 	hlcoord 0, 4
 	ld bc, SCREEN_WIDTH * 10
-	ld a, " "
+	ld a, CHARVAL(" ")
 	jp FillMemory
 
 Credits:

@@ -69,7 +69,7 @@ WaitForTextScrollButtonPress::
 	call TownMapSpriteBlinkingAnimation
 .skipAnimation
 	hlcoord 18, 17
-	ld c, "─"
+	ld c, CHARVAL("─")
 	call HandleDownArrowBlinkTiming
 	pop hl
 	call JoypadLowSensitivity

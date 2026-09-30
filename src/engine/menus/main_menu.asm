@@ -222,9 +222,9 @@ LinkMenu:
 	ld a, START_TRANSFER_INTERNAL_CLOCK
 	ldh [rSC], a
 .skipStartingTransfer
-	ld b, " "
-	ld c, " "
-	ld d, "▷"
+	ld b, CHARVAL(" ")
+	ld c, CHARVAL(" ")
+	ld d, CHARVAL("▷")
 	ld a, [wLinkMenuSelectionSendBuffer]
 	and (B_BUTTON << 2) ; was B button pressed?
 	jr nz, .updateCursorPosition
@@ -756,7 +756,7 @@ SetCursorPositionsFromOptions:
 	ld e, a
 	ld d, 0
 	add hl, de
-	ld [hl], "▷"
+	ld [hl], CHARVAL("▷")
 	ret
 
 DisplayName:
@@ -805,7 +805,7 @@ CheckForPlayerNameInSRAM:
 	ld hl, sPlayerName
 .loop
 	ld a, [hli]
-	cp "@"
+	cp CHARVAL("@")
 	jr z, .found
 	dec b
 	jr nz, .loop

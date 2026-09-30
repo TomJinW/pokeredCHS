@@ -85,7 +85,7 @@ AddPinyinLetter:
 .addSingleCode
 	ld a, [wNamingScreenLetter]
 	ld [hli], a
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	ld a, SFX_PRESS_AB
 	call PlaySound
 	ld a, [wIMEAlphabetCase]
@@ -106,7 +106,7 @@ AddPinyinLetter:
 .addSingleCodeNoPinyinTable
 	ld a, [wNamingScreenLetter]
 	ld [hli], a
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	ld a, SFX_PRESS_AB
 	call PlaySound
 	ret
@@ -158,7 +158,7 @@ AddPinyinLetter:
 	ld [hli], a
 	ld a, b
 	ld [hli], a
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	call ResetPinyinBuffer
 	ld a, SFX_PRESS_AB
 	call PlaySound
@@ -198,7 +198,7 @@ ResetPinyinBuffer:
 	ld hl, wIMEPinyin
 	ld c, 7
 .loop
-	ld a, "@"
+	ld a, CHARVAL("@")
 	ld [hli], a
 	dec c
 	jr nz, .loop
@@ -252,7 +252,7 @@ RemoveCharacter:
 .deleteSingleChar
 	call CalcStringLengthAtHL
 	dec hl
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	hlcoord $A, 1
 	lb bc, 1, 10
 	call ClearScreenArea
@@ -260,9 +260,9 @@ RemoveCharacter:
 .deleetDoubleCharater
 	call CalcStringLengthAtHL
 	dec hl
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	dec hl
-	ld [hl], "@"
+	ld [hl], CHARVAL("@")
 	hlcoord $A, 1
 	lb bc, 1, 10
 	call ClearScreenArea
@@ -278,4 +278,3 @@ RemoveCharacter:
 	call RemoveCharacter.deleteSingleChar
 	farcall LookupPinyinTable
 	ret
-

@@ -98,7 +98,7 @@ UnusedPlayerNameLengthFunc:
 	lb bc, $ff, $00
 .loop
 	ld a, [hli]
-	cp "@"
+	cp CHARVAL("@")
 	ret z
 	dec c
 	jr .loop

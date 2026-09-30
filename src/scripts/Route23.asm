@@ -85,7 +85,7 @@ Route23Script_5125d:
 	ld a, [hli]
 	ld [de], a
 	inc de
-	cp "@"
+	cp CHARVAL("@")
 	jr nz, .copyTextLoop
 	ret
 
