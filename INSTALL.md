@@ -4,6 +4,8 @@ These instructions explain how to set up the tools required to build **pokered**
 
 If you run into trouble, ask for help on IRC or Discord (see [README.md](README.md)).
 
+Install **rgbds 1.0.4** using the [official installation guide](https://rgbds.gbdev.io/install/) or the [v1.0.4 release](https://github.com/gbdev/rgbds/releases/tag/v1.0.4). Run `rgbasm --version` afterward and confirm it reports v1.0.4. If a package manager provides another version, obtain v1.0.4 from the release page or build that tag from source following the official guide.
+
 
 ## Windows 10
 
@@ -42,9 +44,7 @@ Run setup and leave the default settings. At the "**Select Packages**" step, cho
 
 Double click on the text that says "**Skip**" next to each package to select the most recent version to install.
 
-Then follow the [**rgbds** install instructions](https://rgbds.gbdev.io/install#pre-built) for Windows with Cygwin to install **rgbds 0.6.1**.
-
-**Note:** If you already have an installed rgbds older than 0.6.0, you will need to update to 0.6.0 or 0.6.1. Ignore this if you have never installed rgbds before. If a version newer than 0.6.1 does not work, try downloading 0.6.1.
+Then follow the [**rgbds** install instructions](https://rgbds.gbdev.io/install/) for Windows with Cygwin to install **rgbds 1.0.4**.
 
 Now open the **Cygwin terminal** and enter the following commands.
 
@@ -67,7 +67,7 @@ Install [**Homebrew**](https://brew.sh/). Follow the official instructions.
 
 Open **Terminal** and prepare to enter commands.
 
-Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#pre-built) for macOS to install **rgbds 0.6.1**.
+Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/) for macOS to install **rgbds 1.0.4**.
 
 Now you're ready to [build **pokered**](#build-pokered).
 
@@ -84,7 +84,7 @@ To install the software required for **pokered**:
 sudo apt-get install make gcc git
 ```
 
-Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 0.6.1** from source.
+Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/) to build **rgbds 1.0.4** from source.
 
 ### OpenSUSE
 
@@ -94,35 +94,35 @@ To install the software required for **pokered**:
 sudo zypper install make gcc git
 ```
 
-Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 0.6.1** from source.
+Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/) to build **rgbds 1.0.4** from source.
 
 ### Arch Linux
 
 To install the software required for **pokered**:
 
 ```bash
-sudo pacman -S make gcc git
+sudo pacman -S make gcc git rgbds
 ```
 
-Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#pre-built) for Arch Linux to install **rgbds 0.6.1**.
+Check `rgbasm --version`. If the package is not v1.0.4, follow the [**rgbds** installation guide](https://rgbds.gbdev.io/install/) to install v1.0.4.
 
-If you want to compile and install **rgbds** yourself instead, then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 0.6.1** from source.
+If you want to compile and install **rgbds** yourself instead, then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/) to build **rgbds 1.0.4** from source.
 
 ### Termux
 
 To install the software required for **pokered**:
 
 ```bash
-sudo apt install make clang git sed
+pkg install make clang git sed
 ```
 
 To install **rgbds**:
 
 ```bash
-sudo apt install rgbds
+pkg install rgbds
 ```
 
-If you want to compile and install **rgbds** yourself instead, then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 0.6.1** from source.
+If you want to compile and install **rgbds** yourself instead, then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/) to build **rgbds 1.0.4** from source.
 
 ### Other distros
 
@@ -133,7 +133,7 @@ If your distro is not listed here, try to find the required software in its repo
 - `git`
 - `rgbds`
 
-If `rgbds` is not available, you'll need to follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 0.6.1** from source.
+If `rgbds` is not available, you'll need to follow the [**rgbds** instructions](https://rgbds.gbdev.io/install/) to build **rgbds 1.0.4** from source.
 
 Now you're ready to [build **pokered**](#build-pokered).
 
@@ -155,8 +155,8 @@ make
 
 ### Build with a local rgbds version
 
-If you have different projects that require different versions of `rgbds`, it might not be convenient to install rgbds 0.6.1 globally. Instead, you can put its files in a directory within pokered, such as `pokered/rgbds-0.6.1/`. Then specify it when you run `make`:
+If you have different projects that require different versions of `rgbds`, it might not be convenient to install rgbds 1.0.4 globally. Instead, you can put its files in a directory within pokered, such as `pokered/rgbds-1.0.4/`. Then specify it when you run `make`:
 
 ```bash
-make RGBDS=rgbds-0.6.1/
+make RGBDS=rgbds-1.0.4/
 ```

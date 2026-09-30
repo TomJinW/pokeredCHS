@@ -9,12 +9,8 @@
 - 纯 Windows 环境下亦可以使用 [SnDream/rgbds-ws](https://github.com/SnDream/rgbds-ws) ，将完整的本仓库克隆到该环境中的 home 目录，再配合本仓库内的 _prepare-win32.sh 进行编译。该环境具体使用方法请参考 [SnDream/rgbds-ws](https://github.com/SnDream/rgbds-ws) 提供的使用教程。arm64 版 Windows 在该环境下为 x86_64 转译运行。
 
 ### macOS 和 Linux：
-- git
-- [原版 RGBDS 0.6.1 - 0.7.0](https://rgbds.gbdev.io/install/) （从源代码编译 RGBDS 需要以下依赖）
-	-  libpng
-	-  gcc
-	-  bison
-	-  pkg-config
+- git 和 make
+- [原版 RGBDS 1.0.4](https://github.com/gbdev/rgbds/releases/tag/v1.0.4)（安装方式和从源代码编译时所需的依赖见 [官方说明](https://rgbds.gbdev.io/install/)）
 -  python3 和 pip3
 -  openpyxl
 
@@ -29,7 +25,7 @@
 - 安装所需依赖：
 
 	```
-	sudo apt install git gcc python3-pip
+	sudo apt install git make gcc python3-pip
 	```
 	
 - 安装 openpyxl，用于读取汉化 Excel 文件。
@@ -38,24 +34,7 @@
 	sudo pip3 install openpyxl
 	```
 	
-- rgbds 安装选项
-	-  （仅限 x86_64）从 Github Release 上下载原版 RGBDS 0.7.0，文件名为：  [rgbds-0.7.0-linux-x86_64.tar.xz](https://github.com/gbdev/rgbds/releases/tag/v0.7.0)
-	- arm64 Linux 需要自行从源代码编译 RGBDS 并安装。[前往这里](https://rgbds.gbdev.io/install/source)查看官方教程。
-
- 	
- 		```
-		# 创建解压目录
-		mkdir rgbds
-
-		# 解压下载好的文件到 rgbds 目录
-		tar -xvf rgbds-0.7.0-linux-x86_64.tar.xz -C rgbds
-
-		# 切换到目录
-		cd rgbds
-
-		# 使用管理员密码安装 rgbds
-		sudo ./install.sh
-		```
+- 安装 RGBDS 1.0.4：从 [v1.0.4 发布页](https://github.com/gbdev/rgbds/releases/tag/v1.0.4)获取适合系统架构的安装包，按照 [RGBDS 官方安装说明](https://rgbds.gbdev.io/install/)安装；没有适用安装包时，按官方说明从 v1.0.4 源代码编译。发行版软件包的版本可能不同，请安装后运行 `rgbasm --version` 确认是 1.0.4。
 		
 ### macOS：
 - 安装 Xcode Command Line Tools，如果安装了 Xcode ，可以跳过这个步骤。
@@ -88,34 +67,7 @@
 	pip3 install openpyxl
 	```
 	
-- rgbds 安装选项
-
-	1.  从 Github Release 上下载原版 RGBDS 0.7.0，文件名为：  [rgbds-0.7.0-macos-x86_64.zip
-](https://github.com/gbdev/rgbds/releases/tag/v0.7.0) 目前 rgbds 0.7.0 预编译包仅有 x86_64 版，Apple Silicon Mac （arm64）通过 Rosetta 2 转译运行。 
-
-		- 如果需要原生 arm64 版 rgbds，你可以：
-
-			1. [前往这里下载](https://tomjinw.github.io/download/rgbds-0.7.0.macUniversal.zip) 本人编译的 arm64 Mac 版 rgbds，文件名为：rgbds-0.7.0.macUniversal.zip。
-			2. 使用源代码自行编译 rgbds，[前往这里](https://rgbds.gbdev.io/install/source)查看官方教程。
- 	
-	3. 下载好压缩包之后：
-
- 		```
-		# 双击 zip 文件自动解压，并切换到解压后目录：
-		cd rgbds-0.7.0-macos-x86_64
-
-		# 或者如果下载的是本人编译的 arm64 Mac 版 rgbds：
-		cd rgbds-0.7.0-macos-arm64
-
-		# 可恶的 macOS GateKeeper 会默认阻止来源不明的 App，需要删除 App 的 com.apple.quarantine 属性。
-		xattr -d com.apple.quarantine rgbasm
-		xattr -d com.apple.quarantine rgbgfx
-		xattr -d com.apple.quarantine rgblink
-		xattr -d com.apple.quarantine rgbfix
-
-		# 使用管理员密码安装 rgbds
-		sudo ./install.sh
-		```
+- 安装 RGBDS 1.0.4：从 [v1.0.4 发布页](https://github.com/gbdev/rgbds/releases/tag/v1.0.4)获取适合 Mac 架构的安装包，并按照 [RGBDS 官方安装说明](https://rgbds.gbdev.io/install/)安装；也可以按官方说明从 v1.0.4 源代码编译。安装后运行 `rgbasm --version` 确认是 1.0.4。
 		
 
 
@@ -206,4 +158,3 @@ pokeredCHS/buildRGB (精灵宝可梦红·绿·蓝)
 	
 	
 	
-
