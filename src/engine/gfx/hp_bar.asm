@@ -229,7 +229,7 @@ UpdateHPBar_PrintHPNumber:
 .next
 	add hl, de
 	push hl
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ld [hli], a
 	ld [hli], a
 	ld [hli], a

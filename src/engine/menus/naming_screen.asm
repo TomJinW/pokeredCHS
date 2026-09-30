@@ -40,7 +40,7 @@ AskName:
 	pop af
 	ld [wUpdateSpritesEnabled], a
 	ld a, [wStringBuffer]
-	cp "@"
+	cp CHARVAL("@")
 	ret nz
 .declinedNickname
 	ld d, h
@@ -65,7 +65,7 @@ DisplayNameRaterScreen::
 	call ReloadTilesetTilePatterns
 	call LoadGBPal
 	ld a, [wStringBuffer]
-	cp "@"
+	cp CHARVAL("@")
 	jr z, .playerCancelled
 	ld hl, wPartyMonNicks
 	ld bc, NAME_LENGTH
@@ -120,7 +120,7 @@ DisplayNamingScreen:
 	ld [wMenuWatchedKeys], a
 	ld a, 7
 	ld [wMaxMenuItem], a
-	ld a, "@"
+	ld a, CHARVAL("@")
 	ld [wStringBuffer], a
 	xor a
 	ld hl, wNamingScreenSubmitName
@@ -709,7 +709,7 @@ CalcStringLengthAtHL:
 	ld c, $0
 .loop
 	ld a, [hl]
-	cp "@"
+	cp CHARVAL("@")
 	ret z
 	inc hl
 	inc c

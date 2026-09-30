@@ -3,7 +3,7 @@ TextBoxBorder::
 
 	; top row
 	push hl
-	ld a, "┌"
+	ld a, CHARVAL("┌")
 	ld [hli], a
 	inc a ; "─"
 	call .PlaceChars
@@ -17,11 +17,11 @@ TextBoxBorder::
 	; middle rows
 .next
 	push hl
-	ld a, "│"
+	ld a, CHARVAL("│")
 	ld [hli], a
-	ld a, " "
+	ld a, CHARVAL(" ")
 	call .PlaceChars
-	ld [hl], "│"
+	ld [hl], CHARVAL("│")
 	pop hl
 
 	ld de, SCREEN_WIDTH
@@ -30,11 +30,11 @@ TextBoxBorder::
 	jr nz, .next
 
 	; bottom row
-	ld a, "└"
+	ld a, CHARVAL("└")
 	ld [hli], a
-	ld a, "─"
+	ld a, CHARVAL("─")
 	call .PlaceChars
-	ld [hl], "┘"
+	ld [hl], CHARVAL("┘")
 	ret
 
 .PlaceChars::
@@ -163,7 +163,7 @@ PlaceString::
 
 PlaceNextChar::
 	ld a, [de]
-	cp "@"
+	cp CHARVAL("@")
 	jr nz, .NotTerminator
 	ld b, h
 	ld c, l
@@ -172,7 +172,7 @@ PlaceNextChar::
 	ret
 
 .NotTerminator
-	cp "<NEXT>"
+	cp CHARVAL("<NEXT>")
 	jr nz, .NotNext
 	ld bc, 2 * SCREEN_WIDTH
 	ldh a, [hUILayoutFlags]
@@ -186,7 +186,7 @@ PlaceNextChar::
 	jp NextChar
 
 .NotNext
-	cp "<LINE>"
+	cp CHARVAL("<LINE>")
 	jr nz, .NotLine
 	pop hl
 	hlcoord 1, 16
@@ -196,26 +196,26 @@ PlaceNextChar::
 .NotLine
 
 ; Check against a dictionary
-	dict "<NULL>",    NullChar
-	dict "<SCROLL>",  _ContTextNoPause
-	dict "<_CONT>",   _ContText
-	dict "<PARA>",    Paragraph
-	dict "<PAGE>",    PageChar
-	dict "<PLAYER>",  PrintPlayerName
-	dict "<RIVAL>",   PrintRivalName
-	dict "#",         PlacePOKe
-	dict "<PC>",      PCChar
-	dict "<ROCKET>",  RocketChar
-	dict "<TM>",      TMChar
-	dict "<TRAINER>", TrainerChar
-	dict "<CONT>",    ContText
-	dict "<……>",      SixDotsChar
-	dict "<DONE>",    DoneText
-	dict "<PROMPT>",  PromptText
-	dict "<PKMN>",    PlacePKMN
-	dict "<DEXEND>",  PlaceDexEnd
-	dict "<TARGET>",  PlaceMoveTargetsName
-	dict "<USER>",    PlaceMoveUsersName
+	dict CHARVAL("<NULL>"),    NullChar
+	dict CHARVAL("<SCROLL>"),  _ContTextNoPause
+	dict CHARVAL("<_CONT>"),   _ContText
+	dict CHARVAL("<PARA>"),    Paragraph
+	dict CHARVAL("<PAGE>"),    PageChar
+	dict CHARVAL("<PLAYER>"),  PrintPlayerName
+	dict CHARVAL("<RIVAL>"),   PrintRivalName
+	dict CHARVAL("#"),         PlacePOKe
+	dict CHARVAL("<PC>"),      PCChar
+	dict CHARVAL("<ROCKET>"),  RocketChar
+	dict CHARVAL("<TM>"),      TMChar
+	dict CHARVAL("<TRAINER>"), TrainerChar
+	dict CHARVAL("<CONT>"),    ContText
+	dict CHARVAL("<……>"),      SixDotsChar
+	dict CHARVAL("<DONE>"),    DoneText
+	dict CHARVAL("<PROMPT>"),  PromptText
+	dict CHARVAL("<PKMN>"),    PlacePKMN
+	dict CHARVAL("<DEXEND>"),  PlaceDexEnd
+	dict CHARVAL("<TARGET>"),  PlaceMoveTargetsName
+	dict CHARVAL("<USER>"),    PlaceMoveUsersName
 
 	push hl
 	push de
@@ -347,12 +347,12 @@ PromptText::
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, .ok
-	ld a, "▼"
+	ld a, CHARVAL("▼")
 	ldcoord_a 18, 17 ; ldcoord_a 18, 16
 .ok
 	call ProtectedDelay3
 	call ManualTextScroll
-	ld a, "─"
+	ld a, CHARVAL("─")
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 
 DoneText::
@@ -367,14 +367,14 @@ DoneText::
 
 Paragraph::
 	push de
-	ld a, "▼"
+	ld a, CHARVAL("▼")
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 	call ProtectedDelay3
 	call ManualTextScroll
 	hlcoord 1, 13
 	lb bc, 4, 18
 	call ClearScreenArea
-	ld a, "─"
+	ld a, CHARVAL("─")
 	ldcoord_a 18, 17
 	ld c, 20
 	call DelayFrames
@@ -384,7 +384,7 @@ Paragraph::
 
 PageChar::
 	push de
-	ld a, "▼"
+	ld a, CHARVAL("▼")
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 	call ProtectedDelay3
 	call ManualTextScroll
@@ -400,13 +400,13 @@ PageChar::
 	jp NextChar
 
 _ContText::
-	ld a, "▼"
+	ld a, CHARVAL("▼")
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 	call ProtectedDelay3
 	push de
 	call ManualTextScroll
 	pop de
-	ld a, "─"
+	ld a, CHARVAL("─")
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16
 _ContTextNoPause::
 	push de
@@ -431,7 +431,7 @@ ScrollTextUpOneLine::
 	dec b
 	jr nz, .copyText
 	hlcoord 1, 16
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ld b, SCREEN_WIDTH - 2
 .clearText
 	ld [hli], a
@@ -576,12 +576,12 @@ TextCommand_PROMPT_BUTTON::
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, TextCommand_WAIT_BUTTON
-	ld a, "▼"
+	ld a, CHARVAL("▼")
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16 ; place down arrow in lower right corner of dialogue text box
 	push bc
 	call ManualTextScroll ; blink arrow and wait for A or B to be pressed
 	pop bc
-	ld a, "─"
+	ld a, CHARVAL("─")
 	ldcoord_a 18, 17 ;ldcoord_a 18, 16 ; overwrite down arrow with blank space
 	pop hl
 	jp NextTextCommand
@@ -589,7 +589,7 @@ TextCommand_PROMPT_BUTTON::
 TextCommand_SCROLL::
 ; pushes text up two lines and sets the BC cursor to the border tile
 ; below the first character column of the text box.
-	ld a, "─"
+	ld a, CHARVAL("─")
 	ldcoord_a 18, 17 ; place blank space in lower right corner of dialogue text box
 	call ScrollTextUpOneLine
 	call ScrollTextUpOneLine

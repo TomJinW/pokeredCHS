@@ -23,10 +23,10 @@ EvolveTradeMon:
 	cp $08 ;鬼斯通 鬼 = $08D5
 	jr z, .ok
 
-	cp "H" ;鬼斯通 HAUNTER
+	cp CHARVAL("H") ;鬼斯通 HAUNTER
 	jr z, .ok
 
-	cp "G" ;鬼斯通 HAUNTER
+	cp CHARVAL("G") ;鬼斯通 HAUNTER
 	jr z, .ok
 
 	; GRAVELER

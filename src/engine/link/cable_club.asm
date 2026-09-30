@@ -492,7 +492,7 @@ TradeCenter_SelectMon:
 	ld a, 16
 	ld [wTopMenuItemY], a
 .selectStatsMenuItem
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ldcoord_a 11, 16
 	ld a, D_RIGHT | B_BUTTON | A_BUTTON
 	ld [wMenuWatchedKeys], a
@@ -509,7 +509,7 @@ TradeCenter_SelectMon:
 	call LoadScreenTilesFromBuffer1
 	jp .playerMonMenu
 .selectTradeMenuItem
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ldcoord_a 1, 16
 	ld a, D_LEFT | B_BUTTON | A_BUTTON
 	ld [wMenuWatchedKeys], a
@@ -559,10 +559,10 @@ TradeCenter_SelectMon:
 	ld l, a
 	ld a, [wMenuCursorLocation + 1]
 	ld h, a
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ld [hl], a
 .cancelMenuItem_Loop
-	ld a, "▶" ; filled arrow cursor
+	ld a, CHARVAL("▶") ; filled arrow cursor
 	ldcoord_a 1, 16 ; ldcoord_a 1, 16
 .cancelMenuItem_JoypadLoop
 	call JoypadLowSensitivity
@@ -574,14 +574,14 @@ TradeCenter_SelectMon:
 	bit BIT_D_UP, a
 	jr z, .cancelMenuItem_JoypadLoop
 ; if Up pressed
-	ld a, " "
+	ld a, CHARVAL(" ")
 	ldcoord_a 1, 16
 	ld a, [wPartyCount]
 	dec a
 	ld [wCurrentMenuItem], a
 	jp .playerMonMenu
 .cancelMenuItem_APressed
-	ld a, "▷" ; unfilled arrow cursor
+	ld a, CHARVAL("▷") ; unfilled arrow cursor
 	ldcoord_a 1, 16
 	ld a, $f
 	ld [wSerialExchangeNybbleSendData], a
@@ -636,7 +636,7 @@ TradeCenter_PlaceSelectedEnemyMonMenuCursor:
 	ld bc, SCREEN_WIDTH * 2
 
 	call AddNTimes
-	ld [hl], "▷" ; cursor
+	ld [hl], CHARVAL("▷") ; cursor
 	ret
 
 TradeCenter_DisplayStats:
@@ -1030,7 +1030,7 @@ CableClub_TextBoxBorder:
 	push hl
 	ld a, $7b ; border left vertical line tile
 	ld [hli], a
-	ld a, " "
+	ld a, CHARVAL(" ")
 	call CableClub_DrawHorizontalLine
 	ld [hl], $77 ; border right vertical line tile
 	pop hl

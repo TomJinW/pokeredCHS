@@ -475,11 +475,11 @@ DisplayChangeBoxMenu:
 	jr c, .singleDigitBoxNum
 	sub 9
 	hlcoord 8, 2
-	ld [hl], "1"
-	add "0"
+	ld [hl], CHARVAL("1")
+	add CHARVAL("0")
 	jr .next
 .singleDigitBoxNum
-	add "1"
+	add CHARVAL("1")
 .next
 	ldcoord_a 9, 2
 	hlcoord 1, 2

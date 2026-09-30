@@ -56,7 +56,7 @@ DrawHP:
 	ld de, wLoadedMonHP
 	lb bc, 2, 3
 	call PrintNumber
-	ld a, "/"
+	ld a, CHARVAL("/")
 	ld [hli], a
 	ld de, wLoadedMonMaxHP
 	lb bc, 2, 3
@@ -142,9 +142,9 @@ StatusScreen:
 	call DrawLineBox ; Draws the box around name, HP and status
 	ld de, -6
 	add hl, de
-	ld [hl], "<DOT>"
+	ld [hl], CHARVAL("<DOT>")
 	dec hl
-	ld [hl], "№"
+	ld [hl], CHARVAL("№")
 	hlcoord 19, 9
 	lb bc, 8, 6
 	call DrawLineBox ; Draws the box around types, ID No. and OT
@@ -431,13 +431,13 @@ StatusScreen2:
 	ld b, a ; Number of moves ?
 	hlcoord 11, 10
 	ld de, SCREEN_WIDTH * 2
-	ld a, "<BOLD_P>"
+	ld a, CHARVAL("<BOLD_P>")
 	call StatusScreen_PrintPP ; Print "PP"
 	ld a, b
 	and a
 	jr z, .InitPP
 	ld c, a
-	ld a, "-"
+	ld a, CHARVAL("-")
 	call StatusScreen_PrintPP ; Fill the rest with --
 .InitPP
 	ld hl, wLoadedMonMoves
@@ -474,7 +474,7 @@ StatusScreen2:
 	ld de, wStatusScreenCurrentPP
 	lb bc, 1, 2
 	call PrintNumber
-	ld a, "/"
+	ld a, CHARVAL("/")
 	ld [hli], a
 	ld de, wMaxPP
 	lb bc, 1, 2
@@ -578,13 +578,13 @@ StatusScreenToText:
 
 StatusScreen_ClearName:
 	ld bc, 10
-	ld a, " "
+	ld a, CHARVAL(" ")
 	jp FillMemory
 
 StatusScreen_PrintPP:
 ; print PP or -- c times, going down two rows each time
 	ld [wDFSCode], a
-	ld a, "@"
+	ld a, CHARVAL("@")
 	ld [wDFSCode + 1], a
 	push bc
 	push de

@@ -43,7 +43,7 @@ CompareHLBytesWithDE:
 
 .compare_loop
     ld a, [de]         ; Load the byte at the address stored in DE into register A
-	cp "@"
+	cp CHARVAL("@")
 	jr z, .done
     cp [hl]      ; Compare the byte at the address stored in HL with the value in A
 
@@ -108,7 +108,7 @@ CompareHLBytesWithDE:
 GetStrCodeAddress:
 .loop
 	ld a, [hl]
-	cp "@"
+	cp CHARVAL("@")
 	jr z, .notFound
 	; ld [wIMETmpVar], a
 	call CompareHLBytesWithDE
@@ -169,7 +169,7 @@ CalcStringLengthAtHL2:
 	ld c, $0
 .loop
 	ld a, [hl]
-	cp "@"
+	cp CHARVAL("@")
 	ret z
 	inc hl
 	inc c
@@ -223,7 +223,7 @@ PrintPageNumbers:
 .continue
 	ld a, [wIMECurrentPage]
 	hlcoord 9,8
-	add "0"
+	add CHARVAL("0")
 	ld [hl], a
 
 	hlcoord $A,8
@@ -232,7 +232,7 @@ PrintPageNumbers:
 
 	ld a, [wIMEMaxPage]
 	hlcoord $B,8
-	add "0"
+	add CHARVAL("0")
 	ld [hl], a
 	ret
 
@@ -330,7 +330,7 @@ ResetPinyinBuffer2:
 	ld hl, wIMEPinyin
 	ld c, 7
 .loop
-	ld a, "@"
+	ld a, CHARVAL("@")
 	ld [hli], a
 	dec c
 	jr nz, .loop

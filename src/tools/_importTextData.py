@@ -6,6 +6,12 @@ import openpyxl
 import shutil
 import os
 import charmap
+import re
+
+numeric_string = re.compile(r'(?m)^(\s*(?:ld|cp|add|adc|sub|sbc|and|or|xor)\s+(?:[^";\n]+,\s*)?)("[^"\n]+")(?=\s*(?:;|$))')
+
+def modernize_numeric_string(text):
+    return numeric_string.sub(lambda match: match.group(1) + 'CHARVAL(' + match.group(2) + ')', text)
 
 class bcolors:
     HEADER = '\033[95m'
@@ -128,12 +134,17 @@ for sheet in wb._sheets:
             if not repetitive:
                 replacees.append(replacee)    
 
+            if replacee not in text2Modify:
+                modern_replacee = modernize_numeric_string(replacee)
+                if modern_replacee in text2Modify:
+                    replacee = modern_replacee
+
             if not replacee in text2Modify:
                 print(bcolors.OKBLUE + "Warning! Not Found: " + replacee + ' with ' + replacer)
                 
             if sheet.cell(row=id, column = mode + 4).value == None:
                 if sheet.cell(row=id, column = mode + 3).value != None:
-                    newReplacee = sheet.cell(row=id, column = mode + 3).value
+                    newReplacee = modernize_numeric_string(str(sheet.cell(row=id, column = mode + 3).value))
                     text2Modify = text2Modify.replace(replacee,newReplacee)
                 else:
                     if buildMode != 2:
@@ -143,7 +154,7 @@ for sheet in wb._sheets:
             else:
                 lastRow = sheet.cell(row=id, column = mode + 4).value
                 if sheet.cell(row=id, column = mode + 3).value != None:
-                    newReplacee = sheet.cell(row=id, column = mode + 3).value
+                    newReplacee = modernize_numeric_string(str(sheet.cell(row=id, column = mode + 3).value))
                     text2Modify = replaceTextwithCondition(text2Modify,replacee,newReplacee,lastRow)
                 else:
                     text2Modify = replaceTextwithCondition(text2Modify,replacee,charmap.replaceText(replacer,charMap,buildMode),lastRow)
@@ -157,6 +168,5 @@ print(bcolors.OKGREEN)
 print()
 print('db Data Import complete.')
 # input("Press Return to proceed..")
-
 
 
